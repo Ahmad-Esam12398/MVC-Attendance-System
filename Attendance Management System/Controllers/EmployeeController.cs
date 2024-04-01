@@ -12,7 +12,8 @@ namespace Attendance_Management_System.Controllers
         }
         public IActionResult Index()
         {
-            return View();
+            var students = EmployeeRepo.ReadAllStudents();
+            return View(students);
         }
     }
 }

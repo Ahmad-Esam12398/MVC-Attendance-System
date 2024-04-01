@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Attendance_Management_System.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Attendance_Management_System.Data
 {
@@ -9,6 +10,9 @@ namespace Attendance_Management_System.Data
         {
             Configuration = _configuration;
         }
+
+        public List<Student> students { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));

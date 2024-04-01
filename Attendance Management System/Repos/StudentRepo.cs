@@ -1,4 +1,5 @@
 ﻿using Attendance_Management_System.Data;
+using Attendance_Management_System.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Attendance_Management_System.Repos
@@ -10,5 +11,6 @@ namespace Attendance_Management_System.Repos
         {
             db = _db;
         }
+
     }
 }

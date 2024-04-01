@@ -1,4 +1,5 @@
 ﻿using Attendance_Management_System.Data;
+using Attendance_Management_System.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Attendance_Management_System.Repos
@@ -9,6 +10,10 @@ namespace Attendance_Management_System.Repos
         public EmployeeRepo(IitiContext _db)
         {
             db = _db;
+        }
+        public List<Student> ReadAllStudents()
+        {
+            return db.students.ToList();
         }
     }
 }

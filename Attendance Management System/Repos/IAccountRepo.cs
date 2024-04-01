@@ -1,6 +1,6 @@
 ﻿namespace Attendance_Management_System.Repos
 {
-    public class IAccountRepo
+    public interface IAccountRepo
     {
     }
 }

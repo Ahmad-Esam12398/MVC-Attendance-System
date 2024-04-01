@@ -1,0 +1,40 @@
+﻿@model IEnumerable<Student>
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+<table id="mytable">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Password</th>
+            <th>Faculty</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var student in Model)
+        {
+            <tr>
+                <td>@student.UserName</td>
+                <td>@student.Password</td>
+                <td>@student.Faculty</td>
+            </tr>
+        }
+    </tbody>
+</table>
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            $('#mytable').DataTable({
+                buttons: [
+                    'copy', 'excel', 'pdf'
+                ],
+
+            });
+
+        });
+    </script>
+}
+
+

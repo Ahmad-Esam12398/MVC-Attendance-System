@@ -24,7 +24,6 @@ namespace Attendance_Management_System
             builder.Services.AddSingleton<IitiContext, itiDummy>();
             //builder.Services.AddDbContext<itiContext>(options =>
             //options.UseSqlServer(app.Configuration.GetConnectionString("DefaultConnection")));
-            var app = builder.Build();
 
             var app = builder.Build();
 
