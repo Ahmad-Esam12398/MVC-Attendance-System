@@ -13,7 +13,6 @@ namespace Attendance_Management_System
             // Add services to the container.
             builder.Services.AddControllersWithViews();
 
-            var app = builder.Build();
 
             builder.Services.AddScoped<IStudentRepo, StudentRepo>();
             builder.Services.AddScoped<IInstructorRepo, InstructorRepo>();
@@ -22,9 +21,11 @@ namespace Attendance_Management_System
             builder.Services.AddScoped<IEmployeeRepo, EmployeeRepo>();
 
 
-            builder.Services.AddSingleton<IitiContext, itiContext>();
+            builder.Services.AddSingleton<IitiContext, itiDummy>();
             //builder.Services.AddDbContext<itiContext>(options =>
             //options.UseSqlServer(app.Configuration.GetConnectionString("DefaultConnection")));
+
+            var app = builder.Build();
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
