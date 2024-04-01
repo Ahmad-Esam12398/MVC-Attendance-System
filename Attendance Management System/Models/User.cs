@@ -7,6 +7,7 @@
         public string Email { get; set; }
         public string Password { get; set; }
         public string Phone { get; set; }
+        //
         public virtual Student Student { get; set; }
         public virtual Instructor Instructor { get; set; }
         public virtual Employee Employee { get; set; }
