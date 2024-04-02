@@ -2,68 +2,131 @@
 @{
     ViewData["Title"] = "Index";
     var tracks = ViewData["Tracks"] as List<Track>;
+    var studentsNames = Model.Select(s => s.UserName).ToList();
 }
 @section styles{
     <style>
+        :root{
+            --first: #0d6efd;
+            --firstHovered: #0857cd;
+
+        }
         table.dataTable thead th, table.dataTable thead td, table.dataTable tfoot th, table.dataTable tfoot td {
             text-align: center
         }
+
+        div.dt-container div.dt-info {
+            padding-top: 0.85em;
+            padding-left: .5rem;
+        }
+
+        #mytable_wrapper > div:nth-child(1) > div.col-md-auto.me-auto > div  button{
+            background-color: var(--first);
+            border-color: white;
+        }
+        #mytable_wrapper > div:nth-child(1) > div.col-md-auto.me-auto > div  button:hover{
+            background-color: var(--firstHovered);
+        }
     </style>
 }
-
+@section NavList{
+    @Html.Partial("navButtons")
+}
 <h1>Index</h1>
-<label for="Track">Track</label>
-<select id="Track" class="form-control">
-    <option value="">All</option>
-    @foreach (var track in tracks)
-    {
-        <option value="@track.Name">@track.Name</option>
-    }
-</select>
-<table id="mytable" class="table table-hover text-center table-striped">
-    <thead>
-        <tr class="text-center">
-            <th>Name</th>
-            <th>Track</th>
-            <th>Program</th>
-            <th>University</th>
-            <th>Faculty</th>
-            <th>Gender</th>
-            <th>Phone</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var student in Model)
+<div class="mt-4">
+    <label for="Track">Track</label>
+    <select id="Track" class="form-control">
+        <option value="">All</option>
+        @foreach (var track in tracks)
         {
-            <tr>
-                <td>@student.UserName</td>
-                <td>@student.Track.Name</td>
-                <td>@student.Track.Program.Name</td>
-                <td>@student.University</td>
-                <td>@student.Faculty</td>
-                <td>@student.Gender</td>
-                <td>@student.Phone</td>
-            </tr>
+            <option value="@track.Name">@track.Name</option>
         }
-    </tbody>
-</table>
+    </select>
+</div>
+<div>
+    <table id="mytable" class="table table-hover text-center table-striped">
+        <thead>
+            <tr class="text-center">
+                <th>Name</th>
+                <th>Track</th>
+                <th>Program</th>
+                <th>University</th>
+                <th>Faculty</th>
+                <th>Gender</th>
+                <th>Phone</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var student in Model)
+            {
+                <tr>
+                    <td>@student.UserName</td>
+                    <td>@student.Track.Name</td>
+                    <td>@student.Track.Program.Name</td>
+                    <td>@student.University</td>
+                    <td>@student.Faculty</td>
+                    <td>@student.Gender</td>
+                    <td>@student.Phone</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
 @section Scripts{
+
     <script>
         $(document).ready(function () {
             var table = $('#mytable').DataTable({
-                buttons: 
-                [
-                    'copy', 'excel', 'pdf'
-                ],
+                layout: {
+                    topStart: {
+                        // buttons: ['copy', 'csv', 'excel', 'pdf', 'print', 'colvis']
+                        buttons: [
+                            {
+                                extend: 'copy',
+                                exportOptions:{
+                                    rows: ':visible'
+                                }
+                            },
+                            {
+                                extend: 'csv',
+                                exportOptions: {
+                                    rows: ':visible'
+                                }
+                            },
+                            {
+                                extend: 'excel',
+                                exportOptions: {
+                                    rows: ':visible'
+                                }
+                            },
+                            {
+                                extend: 'pdf',
+                                exportOptions: {
+                                    rows: ':visible'
+                                }, 
+                            },
+                            {
+                                extend: 'print',
+                                exportOptions: {
+                                    rows: ':visible'
+                                }
+                            },
+                            'colvis'
+                        ]
+                    }
+                },
+                // dom: 'Bfrtip',
                 order: [[1, 'asc'], [0, 'asc']],
                 pageLength: 25,
             });
+            table.buttons().container().appendTo($('.col-sm-6:eq(0)', table.table().container()));
             $("#Track").on('change', function () {
                 if (this.value == "")
                     table.columns(1).search("").draw();
                 else
                     table.columns(1).search(this.value).draw();
             })
+
         });
     </script>
 }
