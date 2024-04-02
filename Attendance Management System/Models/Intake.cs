@@ -14,6 +14,8 @@ namespace Attendance_Management_System.Models
         //navigation
         [ForeignKey("ProgramId")]
         public ITIProgram Program { get; set; }
-       
+        public virtual ICollection<Student> Students { get; set; } = new HashSet<Student>();
+
+
     }
 }
