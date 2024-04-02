@@ -21,7 +21,7 @@ namespace Attendance_Management_System
             builder.Services.AddScoped<IEmployeeRepo, EmployeeRepo>();
 
 
-            builder.Services.AddSingleton<IitiContext, itiContext>();
+            builder.Services.AddSingleton<IitiContext, itiDummy>();
             //builder.Services.AddDbContext<itiContext>(options =>
             //options.UseSqlServer(app.Configuration.GetConnectionString("DefaultConnection")));
 

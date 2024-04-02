@@ -23,5 +23,6 @@ namespace Attendance_Management_System.Models
 
         //the attendance degree not applied yet .... i guess the student have only one attandance degree not many 
 
+   
     }
 }

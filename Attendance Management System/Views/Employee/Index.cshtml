@@ -1,0 +1,71 @@
+﻿@model IEnumerable<Student>
+@{
+    ViewData["Title"] = "Index";
+    var tracks = ViewData["Tracks"] as List<Track>;
+}
+@section styles{
+    <style>
+        table.dataTable thead th, table.dataTable thead td, table.dataTable tfoot th, table.dataTable tfoot td {
+            text-align: center
+        }
+    </style>
+}
+
+<h1>Index</h1>
+<label for="Track">Track</label>
+<select id="Track" class="form-control">
+    <option value="">All</option>
+    @foreach (var track in tracks)
+    {
+        <option value="@track.Name">@track.Name</option>
+    }
+</select>
+<table id="mytable" class="table table-hover text-center table-striped">
+    <thead>
+        <tr class="text-center">
+            <th>Name</th>
+            <th>Track</th>
+            <th>Program</th>
+            <th>University</th>
+            <th>Faculty</th>
+            <th>Gender</th>
+            <th>Phone</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var student in Model)
+        {
+            <tr>
+                <td>@student.UserName</td>
+                <td>@student.Track.Name</td>
+                <td>@student.Track.Program.Name</td>
+                <td>@student.University</td>
+                <td>@student.Faculty</td>
+                <td>@student.Gender</td>
+                <td>@student.Phone</td>
+            </tr>
+        }
+    </tbody>
+</table>
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            var table = $('#mytable').DataTable({
+                buttons: 
+                [
+                    'copy', 'excel', 'pdf'
+                ],
+                order: [[1, 'asc'], [0, 'asc']],
+                pageLength: 25,
+            });
+            $("#Track").on('change', function () {
+                if (this.value == "")
+                    table.columns(1).search("").draw();
+                else
+                    table.columns(1).search(this.value).draw();
+            })
+        });
+    </script>
+}
+
+
