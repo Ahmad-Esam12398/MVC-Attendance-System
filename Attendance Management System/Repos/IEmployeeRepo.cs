@@ -4,6 +4,7 @@ namespace Attendance_Management_System.Repos
 {
     public interface IEmployeeRepo
     {
-        public List<Student> ReadAllStudents();
+        List<Student> ReadAllStudents();
+        List<Track> ReadAllTracks();
     }
 }

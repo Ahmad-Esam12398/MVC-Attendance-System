@@ -15,5 +15,9 @@ namespace Attendance_Management_System.Repos
         {
             return db.students.ToList();
         }
+        public List<Track> ReadAllTracks()
+        {
+            return db.Tracks.ToList();
+        }
     }
 }

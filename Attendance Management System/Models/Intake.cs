@@ -13,7 +13,7 @@ namespace Attendance_Management_System.Models
         public DateTime EndDate { get; set; }
         //navigation
         [ForeignKey("ProgramId")]
-        public Program Program { get; set; }
+        public ITIProgram Program { get; set; }
        
     }
 }
