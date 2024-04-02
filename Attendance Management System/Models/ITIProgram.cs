@@ -2,7 +2,7 @@
 
 namespace Attendance_Management_System.Models
 {
-    public class Program
+    public class ITIProgram
     {
         [Key]
         public int Id { get; set; }

@@ -8,8 +8,12 @@
     <thead>
         <tr>
             <th>Name</th>
-            <th>Password</th>
+            <th>Track</th>
+            <th>Program</th>
+            <th>University</th>
             <th>Faculty</th>
+            <th>Gender</th>
+            <th>Phone</th>
         </tr>
     </thead>
     <tbody>
@@ -17,8 +21,12 @@
         {
             <tr>
                 <td>@student.UserName</td>
-                <td>@student.Password</td>
+                <td>@student.Track.Name</td>
+                <td>@student.Track.Program.Name</td>
+                <td>@student.University</td>
                 <td>@student.Faculty</td>
+                <td>@student.Gender</td>
+                <td>@student.Phone</td>
             </tr>
         }
     </tbody>
@@ -31,6 +39,8 @@
                 [
                     'copy', 'excel', 'pdf'
                 ],
+                order: [[1, 'asc'], [0, 'asc']],
+                pageLength: 25,
             });
 
         });

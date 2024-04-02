@@ -17,6 +17,8 @@ namespace Attendance_Management_System.Data
         }
 
         public List<Student> students { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        List<Track> IitiContext.Tracks { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public List<ITIProgram> Programs { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
