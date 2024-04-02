@@ -16,9 +16,10 @@ namespace Attendance_Management_System.Models
         public List<Schedule> Schedules { get; set; } = new List<Schedule>();
         [ForeignKey("ProgramId")]
         public ITIProgram Program { get; set; }
-        public ICollection<Student> Students { get; set; }
         [ForeignKey("SupervisorId")]
         public Instructor Supervisor { get; set; }
+        public virtual ICollection<Student> Students { get; set; } = new HashSet<Student>();
+
         #endregion
     }
 }
