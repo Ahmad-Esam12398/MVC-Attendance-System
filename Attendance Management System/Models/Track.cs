@@ -3,5 +3,6 @@
     public class Track
     {
         public string Name { get; set; }
+        public virtual ICollection<Student> Students { get; set; } = new HashSet<Student>();
     }
 }
