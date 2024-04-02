@@ -16,7 +16,7 @@ namespace Attendance_Management_System.Models
 
         [ForeignKey(nameof(Track))]
         public int TrackID { get; set; }
-        public Track? Track { get; set; }
+        public Track Track { get; set; }
 
         public virtual ICollection<Permission> Permissions { get; set; }=new HashSet<Permission>();
         public virtual ICollection<Attendance> Attendances { get; set; } = new HashSet<Attendance>();
