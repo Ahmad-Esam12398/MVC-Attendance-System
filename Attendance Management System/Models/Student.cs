@@ -8,13 +8,21 @@ namespace Attendance_Management_System.Models
         public string Faculty { get; set; }
         public string Specialization { get; set; }
         public int GraduationYear { get; set; }
-        public int TrackId { get; set; }
-        public int IntakeId { get; set; }
 
-        //navigation
-        [ForeignKey("TrackId")]
-        public Track Track { get; set; }
-        [ForeignKey("IntakeId")]
+        [ForeignKey(nameof(Intake))]
+        public int IntakeID { get; set; }
+
         public Intake Intake { get; set; }
+
+        [ForeignKey(nameof(Track))]
+        public int TrackID { get; set; }
+        public Track Track { get; set; }
+
+        public virtual ICollection<Permission> Permissions { get; set; }=new HashSet<Permission>();
+        public virtual ICollection<Attendance> Attendances { get; set; } = new HashSet<Attendance>();
+
+        //the attendance degree not applied yet .... i guess the student have only one attandance degree not many 
+
+   
     }
 }
