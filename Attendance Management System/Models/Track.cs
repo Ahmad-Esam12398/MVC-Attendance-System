@@ -10,11 +10,13 @@ namespace Attendance_Management_System.Models
         public string Name { get; set; }
         public int ProgramId { get; set; }
         public bool IsActive { get; set; }
+        public string SupervisorId { get; set; }
 
         //navigation
         [ForeignKey("ProgramId")]
         public Program Program { get; set; }
         public ICollection<Student> Students { get; set; }
-        public ICollection<Instructor> Supervisors { get; set; }
+        [ForeignKey("SupervisorId")]
+        public Instructor Supervisor { get; set; }
     }
 }
