@@ -4,8 +4,6 @@ namespace Attendance_Management_System.Models
 {
     public class Supervisor : Instructor
     {
-        public int Id { get; set; }
-        public int InstructorId { get; set; }
         public int TrackId { get; set; }
 
         //navigation
