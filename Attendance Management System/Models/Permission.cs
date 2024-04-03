@@ -19,7 +19,7 @@ namespace Attendance_Management_System.Models
 
 
         [ForeignKey(nameof(Student))]
-        public int StudentId { get; set; }
+        public string StudentId { get; set; }
         public virtual Student Student { get; set; }
 
 

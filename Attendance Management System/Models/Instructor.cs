@@ -4,8 +4,9 @@ namespace Attendance_Management_System.Models
 {
     public class Instructor : User
     {
-        //navigation
+        #region Properties
+
+        #endregion
         public ICollection<Track> Tracks { get; set; }
-        public Track SupervisedTrack { get; set; }
     }
 }
