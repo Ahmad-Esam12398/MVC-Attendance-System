@@ -13,14 +13,14 @@ namespace Attendance_Management_System.Models
         [ForeignKey(nameof(Intake))]
         public int IntakeID { get; set; }
 
-        public Intake? Intake { get; set; }
+        public Intake Intake { get; set; }
 
         [ForeignKey(nameof(Track))]
         public int TrackID { get; set; }
-        public Track Track { get; set; }
+        public Track? Track { get; set; }
 
-        public virtual ICollection<Permission> Permissions { get; set; }=new HashSet<Permission>();
-        public virtual ICollection<Attendance> Attendances { get; set; } = new HashSet<Attendance>();
+        public ICollection<Permission> Permissions { get; set; } = new HashSet<Permission>();
+        public ICollection<Attendance> Attendances { get; set; } = new HashSet<Attendance>();
 
         //the attendance degree not applied yet .... i guess the student have only one attandance degree not many 
 

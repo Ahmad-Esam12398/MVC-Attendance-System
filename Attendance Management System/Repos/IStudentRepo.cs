@@ -1,14 +1,15 @@
 ﻿using Attendance_Management_System.Models;
+using Attendance_Management_System.ViewData;
 
 namespace Attendance_Management_System.Repos
 {
     public interface IStudentRepo
     {
-        public List<Attendance> Get_Student_Attendances_By_Id(string id);
+        public List<AttendanceViewData> Get_Student_Attendances_By_Id(int StdID);
 
 
 
-        public List<Permission> Get_Student_Permissions_By_Id(string StdID);
+        public List<Permission> Get_Student_Permissions_By_Id(int StdID);
 
 
 
@@ -16,9 +17,9 @@ namespace Attendance_Management_System.Repos
 
         public void UpdatePermission(Permission permission);
 
-        public void DeletePermission(string stdID, DateTime permissionDate);
+        public void DeletePermission(int stdID, DateTime permissionDate);
 
-        public Permission PermissionDetails(string stdID, DateTime permissionDate);
+        public Permission PermissionDetails(int stdID, DateTime permissionDate);
 
 
 

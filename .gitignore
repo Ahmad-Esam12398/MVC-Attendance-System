@@ -2,6 +2,7 @@
 # compiled source #
 ###################
 .vs/*
+*.csprj
 *.com
 *.class
 *.dll

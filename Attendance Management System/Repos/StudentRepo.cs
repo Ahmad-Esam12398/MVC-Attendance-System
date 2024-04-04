@@ -1,5 +1,6 @@
 ﻿using Attendance_Management_System.Data;
 using Attendance_Management_System.Models;
+using Attendance_Management_System.ViewData;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -21,23 +22,34 @@ namespace Attendance_Management_System.Repos
            // db.SaveChanges();
         }
 
-        public void DeletePermission(string stdID,DateTime permissionDate)
+        public void DeletePermission(int stdID,DateTime permissionDate)
         {
             var permission=PermissionDetails(stdID,permissionDate);
             db.Permissions.Remove(permission);
         }
 
-        public List<Attendance> Get_Student_Attendances_By_Id(string stdID)
+        public List<AttendanceViewData> Get_Student_Attendances_By_Id(int stdID)
         {
+            var student = db.students.FirstOrDefault(x => x.ID == stdID);
+            if (student!=null)
+            {
+                var track = student.Track;
+
+            }
+
+
+
+
+
             throw new NotImplementedException();
         }
 
-        public List<Permission> Get_Student_Permissions_By_Id(string StdID)
+        public List<Permission> Get_Student_Permissions_By_Id(int StdID)
         {
             return db.Permissions.Where(x=>x.StudentId==StdID).ToList();
         }
 
-        public Permission PermissionDetails(string stdID, DateTime permissionDate)
+        public Permission PermissionDetails(int stdID, DateTime permissionDate)
         {
             return db.Permissions.Where(x => x.StudentId == stdID && x.DateCreated == permissionDate).FirstOrDefault();
         }

@@ -17,15 +17,13 @@ namespace Attendance_Management_System.Models
         [Required(ErrorMessage = "*")]
 
         public string BodyOfDescription { get; set; }
-
         public PermissionStatus Status { get; set; } = PermissionStatus.Pending;
         [Required(ErrorMessage = "*")]
 
         public DateTime DateCreated { get; set; }
 
-
         [ForeignKey(nameof(Student))]
-        public string StudentId { get; set; }
+        public int StudentId { get; set; }
         public virtual Student? Student { get; set; }
 
 
