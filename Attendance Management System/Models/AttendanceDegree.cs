@@ -2,5 +2,6 @@
 {
     public class AttendanceDegree
     {
+        public int Id { get; set; }
     }
 }
