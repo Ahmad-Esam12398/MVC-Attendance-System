@@ -1,8 +1,16 @@
-﻿namespace Attendance_Management_System.Models
+﻿using Microsoft.EntityFrameworkCore;
+using System.CodeDom.Compiler;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace Attendance_Management_System.Models
 {
     public abstract class User
     {
-        public string Id { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int ID { get; set; }
+        [Key]
+        public string NationalId { get; set; }
         public string UserName { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }

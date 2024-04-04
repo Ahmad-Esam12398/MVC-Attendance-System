@@ -1,0 +1,185 @@
+﻿@model IEnumerable<Student>
+@{
+    ViewData["Title"] = "Set Attendance";
+    var tracks = ViewData["Tracks"] as List<Track>;
+    var studentsNames = Model.Select(s => s.UserName).ToList();
+}
+@section styles {
+    <link rel="stylesheet" href="~/css/Employee.css" />
+}
+@section NavList {
+    @Html.Partial("navButtons")
+}
+<h1>Index</h1>
+<div class="mt-4">
+    <label for="Track">Track</label>
+    <select id="Track" class="form-control">
+        <option value="">All</option>
+        @foreach (var track in tracks)
+        {
+            <option value="@track.Name">@track.Name</option>
+        }
+    </select>
+</div>
+<div>
+    <table id="mytable" class="table table-hover text-center table-striped">
+        <thead>
+            <tr class="text-center">
+                <th>Name</th>
+                <th>Track</th>
+                <th>Program</th>
+                <th>Gender</th>
+                <th>Phone</th>
+                <th>Arrival Time</th>
+                <th>Leaving Time</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var student in Model)
+            {
+                <tr>
+                    <td>@student.UserName</td>
+                    <td>@student.Track.Name</td>
+                    <td>@student.Track.Program.Name</td>
+                    <td>@student.Gender</td>
+                    <td>@student.Phone</td>
+                        @{
+                            @:<td>
+                            var attendance = student.Attendances.FirstOrDefault(a => a.Date == DateOnly.FromDateTime(DateTime.Now));
+                            if(attendance != null)
+                            {
+
+                                <span class="text-primary">@attendance.Time_in.Value.ToString("HH : mm : ss")</span>
+                            }
+                            else
+                            {
+                                <input type="checkbox" data-id="@student.ID" class="Arrival" />
+                            }
+                            @:</td>
+                            @:<td>
+                            if(attendance != null)
+                            {
+                                if(attendance.Time_out.HasValue)
+                                {
+                                    <span class="text-danger">@attendance.Time_out.Value.ToString("HH : mm : ss")</span>
+                                }
+                                else
+                                {
+                                    <input type="checkbox" data-id="@student.ID" class="Leaving" />
+                                }
+
+                            }
+                            else
+                            {
+                                <input type="checkbox" data-id="@student.ID" class="Leaving" disabled />
+                            }
+                            @:</td>
+                        }
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+@section Scripts {
+
+    <script>
+        $(document).ready(function () {
+            var table = $('#mytable').DataTable({
+                layout: {
+                    topStart: {
+                        buttons: [
+                            'colvis',
+                            'pageLength'
+                        ]
+                    }
+                },
+                // dom: 'Bfrtip',
+                order: [[1, 'asc'], [0, 'asc']],
+                pageLength: 25,
+            });
+            table.buttons().container().appendTo($('.col-sm-6:eq(0)', table.table().container()));
+            $("#Track").on('change', function () {
+                if (this.value == "")
+                    table.columns(1).search("").draw();
+                else
+                    table.columns(1).search(this.value).draw();
+            })
+            $(".Arrival").on('change', function () {
+                // console.log(id, isChecked);
+                // console.log($(this).parent().html());
+                // console.log(formatClock(date));
+                var id = $(this).data('id');
+                var isChecked = $(this).is(':checked');
+                var date = luxon.DateTime.now().setZone('Africa/Cairo').toJSDate();
+                var nextCheck = this.parentElement.nextElementSibling.children[0];
+                console.log(nextCheck);
+                $.ajax({
+                    url: '/Employee/SetAttendance',
+                    type: 'POST',
+                    data: { id: id, dateTime: date, type: 'in' },
+                    success: data => {
+                        if (data.success) {
+                            swal({
+                                title: 'Success!',
+                                text: 'Attendance Assigned Successfully',
+                                icon: 'success',
+                                timer: 1000,
+                                button: false
+                            });
+                            $(this).parent().html(`<span class="text-primary">${formatClock(date)}</span>`);
+                            nextCheck.disabled = false;
+                        }
+                        else {
+                            swal({
+                                title: 'Error!',
+                                text: `Error! ${data.message}`,
+                                icon: 'error',
+                            });
+                        }
+                    }
+                });
+            });
+            $(".Leaving").on('change', function () {
+                var id = $(this).data('id');
+                var isChecked = $(this).is(':checked');
+                var date = luxon.DateTime.now().setZone('Africa/Cairo').toJSDate();
+                // console.log(id, isChecked);
+                // console.log($(this).parent().html());
+                // console.log(formatClock(date));
+                $.ajax({
+                    url: '/Employee/SetAttendance',
+                    type: 'POST',
+                    data: { id: id, dateTime: date, type: 'out' },
+                    success: data => {
+                        if(data.success){
+                            swal({
+                                title: 'Success!',
+                                text: 'Attendance Assigned Successfully',
+                                icon: 'success',
+                                timer: 1000,
+                                showConfirmButton: false
+                            });
+                            $(this).parent().html(`<span class="text-danger">${ formatClock(date) } </span>`);
+                        }
+                        else{
+                            $(this).prop('checked', false);
+                            swal({
+                                title: 'Error!',
+                                text: `Error! ${data.message}`,
+                                icon: 'error',
+                            });
+                        }
+                    },
+                });
+            });
+            function formatClock(date){
+                let hours = date.getHours().toString().length == 1 ? `0${date.getHours()}` : date.getHours();
+                let minutes = date.getMinutes().toString().length == 1 ? `0${date.getMinutes()}` : date.getMinutes();
+                let seconds = date.getSeconds().toString().length == 1 ? `0${date.getSeconds()}` : date.getSeconds();
+                return `${hours} : ${minutes} : ${seconds}`;
+            }
+        });
+    </script>
+}
+
+

@@ -41,14 +41,14 @@
                     <div class="sidebar_img"><img src="~/images/ITI.png" alt="" /></div>
                     <span class="nav_logo-name">Attendace System</span>
                 </a>
-                 <div class="nav_list">
-        <a href="#" class="nav_link">
-            <i class="bx bx-user nav_icon"></i>
-            <span class="nav_name">Profile</span>
-        </a>
-    </div>
-                <!--Section Nav-List -->
-                @RenderSection("NavList", required: false)
+                <div class="nav_list">
+                    <a href="#" class="nav_link">
+                        <i class="bx bx-user nav_icon"></i>
+                        <span class="nav_name">Profile</span>
+                    </a>
+                    <!--Section Nav-List -->
+                    @RenderSection("NavList", required: false)
+                </div>
             </div>
             <a href="#" class="nav_link nav_last">
                 <i class="bx bx-log-out nav_icon"></i>
@@ -74,6 +74,8 @@
     <script src="https://cdn.datatables.net/buttons/3.0.1/js/buttons.print.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/3.0.1/js/buttons.colVis.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/3.0.1/js/buttons.bootstrap5.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/luxon@3.4.4/build/global/luxon.min.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     @* <script src=""></script> *@
     <!-- End Scripts -->
     <script src="~/js/layout.js" type="module"></script>

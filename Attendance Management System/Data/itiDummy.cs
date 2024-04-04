@@ -7,6 +7,8 @@ namespace Attendance_Management_System.Data
         public List<Student> students { get; set; }
         public List<Track> Tracks { get; set; }
         public List<ITIProgram> Programs { get; set; }
+        public List<Schedule> Schedules { get; set; }
+        public List<Attendance> Attendances { get; set; }
         public itiDummy()
         {
             Seed();
@@ -55,7 +57,7 @@ namespace Attendance_Management_System.Data
                     Id = 1,
                     Name = "PD",
                     IsActive = true,
-                    Program = Programs[0]
+                    Program = Programs[0],
                 },
                 new Track()
                 {
@@ -92,7 +94,8 @@ namespace Attendance_Management_System.Data
             {
                 new Student()
                 {
-                    Id = "29803121600573",
+                    ID = 1,
+                    NationalId = "29803121600573",
                     UserName = "AhmadEsam",
                     Email = "Ahmad.esam1231998@gmail.com",
                     Phone = "01015328933",
@@ -104,7 +107,8 @@ namespace Attendance_Management_System.Data
                 },
                 new Student()
                 {
-                    Id = "29803151800654",
+                    ID = 2,
+                    NationalId = "29803151800654",
                     UserName = "AliEmad",
                     Email = "ali@example.com",
                     Phone = "01115328933",
@@ -116,7 +120,8 @@ namespace Attendance_Management_System.Data
                 },
                 new Student()
                 {
-                    Id = "32006485523654",
+                    ID = 3,
+                    NationalId = "32006485523654",
                     UserName = "AhmedAbdallah",
                     Email = "AhmadL3swy@example.com",
                     Phone = "01215328933",
@@ -128,7 +133,8 @@ namespace Attendance_Management_System.Data
                 },
                 new Student()
                 {
-                    Id = "42557896652148",
+                    ID = 4,
+                    NationalId = "42557896652148",
                     UserName = "Raheek",
                     Email = "Raheek@gmail.com",
                     Phone = "01015328933",
@@ -140,7 +146,8 @@ namespace Attendance_Management_System.Data
                 },
                 new Student()
                 {
-                    Id = "53665485772015",
+                    ID = 5,
+                    NationalId = "53665485772015",
                     UserName = "Nada",
                     Email = "Nada@yahoo.com",
                     Phone = "01015328933",
@@ -174,7 +181,8 @@ namespace Attendance_Management_System.Data
                 }
                 students.Add(new Student()
                 {
-                    Id = new string(id),
+                    ID = i,
+                    NationalId = new string(id),
                     UserName = "Student" + i,
                     Email = "Student" + i + "@example.com",
                     Phone = "01015328933",
@@ -187,6 +195,30 @@ namespace Attendance_Management_System.Data
             }
             #endregion
             #endregion
+            #region Schedule
+            Schedules = new List<Schedule>()
+            {
+                new Schedule()
+                {
+                    Id = 1,
+                    Date = DateOnly.FromDateTime(DateTime.Now),
+                    StartTime = TimeOnly.Parse("09:00"),
+                    EndTime = TimeOnly.Parse("22:00"),
+                    Track = Tracks[0],
+                },
+                new Schedule()
+                {
+                    Id = 2,
+                    Date = DateOnly.FromDateTime(DateTime.Now.AddDays(1)),
+                    StartTime = TimeOnly.Parse("11:00"),
+                    EndTime = TimeOnly.Parse("22:00"),
+                    Track = Tracks[1],
+                }
+            };
+            Tracks[0].Students = students.Where(s => s.Track == Tracks[0]).ToList();
+            Tracks[1].Students = students.Where(s => s.Track == Tracks[1]).ToList();
+            #endregion
+            Attendances = new List<Attendance>();
         }
         #endregion
     }
