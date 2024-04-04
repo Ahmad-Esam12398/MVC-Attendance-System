@@ -1,6 +1,9 @@
 ###################
 # compiled source #
 ###################
+Attendance Management System/Migrations/*
+Attendance Management System/appsettings.json
+.json
 .vs/*
 *.csprj
 *.com
@@ -75,3 +78,5 @@ _[Ss]cripts
 *.nupkg
 *.ncrunchsolution
 *.dot[Cc]over
+/Attendance Management System/appsettings.json
+/Attendance Management System/appsettings.json
