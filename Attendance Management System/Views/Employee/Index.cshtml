@@ -3,45 +3,33 @@
     ViewData["Title"] = "Index";
     var tracks = ViewData["Tracks"] as List<Track>;
     var studentsNames = Model.Select(s => s.UserName).ToList();
+    var schedules = ViewData["Schedules"] as List<Schedule>;
+    int tolerance = ViewBag.Tolerance;
 }
 @section styles{
-    <style>
-        :root{
-            --first: #0d6efd;
-            --firstHovered: #0857cd;
-
-        }
-        table.dataTable thead th, table.dataTable thead td, table.dataTable tfoot th, table.dataTable tfoot td {
-            text-align: center
-        }
-
-        div.dt-container div.dt-info {
-            padding-top: 0.85em;
-            padding-left: .5rem;
-        }
-
-        #mytable_wrapper > div:nth-child(1) > div.col-md-auto.me-auto > div  button{
-            background-color: var(--first);
-            border-color: white;
-        }
-        #mytable_wrapper > div:nth-child(1) > div.col-md-auto.me-auto > div  button:hover{
-            background-color: var(--firstHovered);
-        }
-    </style>
+    <link rel="stylesheet" href="~/css/Employee.css" />
 }
 @section NavList{
     @Html.Partial("navButtons")
 }
 <h1>Index</h1>
-<div class="mt-4">
-    <label for="Track">Track</label>
-    <select id="Track" class="form-control">
-        <option value="">All</option>
-        @foreach (var track in tracks)
-        {
-            <option value="@track.Name">@track.Name</option>
-        }
-    </select>
+<div class="mt-4 form-control d-flex justify-content-between">
+    <div class="mt-3" style="width: 12% !important;">
+        <label for="Track">Track</label>
+        <select id="Track" class="form-control">
+            <option value="">All</option>
+            @foreach (var track in tracks)
+            {
+                <option value="@track.Name">@track.Name</option>
+            }
+        </select>
+    </div>
+    <div class="mt-2 d-flex flex-wrap">
+        <label for="dateFrom">From</label>
+        <input id="dateFrom" type="date" class="form-control"/>
+        <label for="dateTo">To</label>
+        <input id="dateTo" type="date" class="form-control" />
+    </div>
 </div>
 <div>
     <table id="mytable" class="table table-hover text-center table-striped">
@@ -54,20 +42,60 @@
                 <th>Faculty</th>
                 <th>Gender</th>
                 <th>Phone</th>
+                <th>Attendance Date</th>
+                <th>Status</th>
+                <th>Checked In</th>
+                <th>Checked Out</th>
             </tr>
         </thead>
         <tbody>
-            @foreach (var student in Model)
+            @foreach (Schedule currentSchedule in schedules.Where(s=> s.Date <= DateOnly.FromDateTime(DateTime.Now)))
             {
-                <tr>
-                    <td>@student.UserName</td>
-                    <td>@student.Track.Name</td>
-                    <td>@student.Track.Program.Name</td>
-                    <td>@student.University</td>
-                    <td>@student.Faculty</td>
-                    <td>@student.Gender</td>
-                    <td>@student.Phone</td>
-                </tr>
+                @foreach (Student student in currentSchedule.Track.Students)
+                {
+                    <tr>
+                        <td>@student.UserName</td>
+                        <td>@student.Track.Name</td>
+                        <td>@student.Track.Program.Name</td>
+                        <td>@student.University</td>
+                        <td>@student.Faculty</td>
+                        <td>@student.Gender</td>
+                        <td>@student.Phone</td>
+                        <td>@currentSchedule.Date</td>
+                        @{
+                            string TextClass = "";
+                            string bgClass = "";
+                            string status = "";
+                            var attendance = student.Attendances.FirstOrDefault(a => a.Date == currentSchedule.Date);
+                            if(attendance == null)
+                            {
+                                bgClass = "bg-danger";
+                                TextClass = "text-danger";
+                                status = "Absent";
+                            }
+                            else
+                            {
+                                if (attendance?.Time_in != null && attendance?.Time_in <= currentSchedule?.StartTime.AddMinutes(tolerance))
+                                {
+                                    bgClass = "bg-primary";
+                                    TextClass = "text-primary";
+                                    status = "On Time";
+                                }
+                                else
+                                {
+                                    bgClass = "bg-warning";
+                                    TextClass = "text-warning";
+                                    status = "Late";
+                                }
+                            }
+                                    @:
+                                    <td><span class="@TextClass @bgClass rounded-4 px-2">@status</span></td>
+                                    @:<td>@(attendance?.Time_in == null ? "N/A" : attendance.Time_in)</td>
+                                    @:<td>@(attendance?.Time_out == null ? "N/A" : attendance.Time_out)</td>
+                        }
+
+                    </tr>
+                }
             }
         </tbody>
     </table>
@@ -84,34 +112,100 @@
                             {
                                 extend: 'copy',
                                 exportOptions:{
-                                    rows: ':visible'
+                                    rows: ':visible',
+                                    columns: ':visible'
                                 }
                             },
                             {
                                 extend: 'csv',
                                 exportOptions: {
-                                    rows: ':visible'
+                                    rows: ':visible',
+                                    columns: ':visible'
+                                },
+                                action: function (e, dt, node, config) {
+                                    swal({
+                                        buttons: [true, "Save"],
+                                        title: "Save",
+                                        content: {
+                                            element: "input",
+                                            attributes: {
+                                                placeholder: "File Name",
+                                            },
+                                        },
+                                    })
+                                    .then(value => {
+                                        $(node).removeClass('processing');
+                                        if (value) {
+                                            config.filename = value;
+                                            $.fn.dataTable.ext.buttons.pdfHtml5.action.call(this, e, dt, node, config);
+
+                                        }
+                                    })
                                 }
                             },
                             {
                                 extend: 'excel',
                                 exportOptions: {
-                                    rows: ':visible'
+                                    rows: ':visible',
+                                    columns: ':visible'
+                                },
+                                action: function (e, dt, node, config) {
+                                    swal({
+                                        buttons: [true, "Save"],
+                                        title: "Save",
+                                        content: {
+                                            element: "input",
+                                            attributes: {
+                                                placeholder: "File Name",
+                                            },
+                                        },
+                                    })
+                                    .then(value => {
+                                        $(node).removeClass('processing');
+                                        if (value) {
+                                            config.filename = value;
+                                            $.fn.dataTable.ext.buttons.pdfHtml5.action.call(this, e, dt, node, config);
+
+                                        }
+                                    })
                                 }
                             },
                             {
                                 extend: 'pdf',
                                 exportOptions: {
-                                    rows: ':visible'
-                                }, 
+                                    rows: ':visible',
+                                    columns: ':visible',
+                                },
+                                action: function (e, dt, node, config){
+                                    swal({
+                                        buttons: [true, "Save"],
+                                        title: "Save",
+                                        content: {
+                                            element: "input",
+                                            attributes: {
+                                                placeholder: "File Name",
+                                            },
+                                        },
+                                    })
+                                    .then(value => {
+                                        $(node).removeClass('processing');
+                                        if (value) {
+                                            config.filename = value;
+                                            $.fn.dataTable.ext.buttons.pdfHtml5.action.call(this, e, dt, node, config);
+
+                                        }
+                                    })
+                                }
                             },
                             {
                                 extend: 'print',
                                 exportOptions: {
-                                    rows: ':visible'
+                                    rows: ':visible',
+                                    columns: ':visible'
                                 }
                             },
-                            'colvis'
+                            'colvis',
+                            'pageLength'
                         ]
                     }
                 },
@@ -120,13 +214,34 @@
                 pageLength: 25,
             });
             table.buttons().container().appendTo($('.col-sm-6:eq(0)', table.table().container()));
+            table.column(2).visible(false);
             $("#Track").on('change', function () {
                 if (this.value == "")
                     table.columns(1).search("").draw();
                 else
                     table.columns(1).search(this.value).draw();
             })
+            $("#dateFrom").attr('max', new Date().toISOString().split('T')[0]);
+            $("#dateTo").attr('max', new Date().toISOString().split('T')[0]);
 
+            $.fn.dataTable.ext.search.push(
+                function (settings, data, dataIndex) {
+                    var min = new Date($('#dateFrom').val());
+                    var max = new Date($('#dateTo').val());
+                    var date = new Date(data[7]); // use data for the date column
+
+                    if (
+                        (isNaN(min) || date >= min) &&
+                        (isNaN(max) || date <= max)
+                    ) {
+                        return true;
+                    }
+                    return false;
+                }
+            );
+            $("#dateFrom, #dateTo").on('change', function () {
+                table.draw();
+            });
         });
     </script>
 }

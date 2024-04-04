@@ -12,11 +12,8 @@ namespace Attendance_Management_System.Models
     {
         public int ID { get; set; }
         public string Reason { get; set; }
-
         public string BodyOfDescription { get; set; }
-
         public PermissionStatus Status { get; set; } = PermissionStatus.Pending;
-
 
         [ForeignKey(nameof(Student))]
         public int StudentId { get; set; }
