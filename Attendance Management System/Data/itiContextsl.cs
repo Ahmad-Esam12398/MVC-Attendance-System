@@ -3,22 +3,29 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Attendance_Management_System.Data
 {
-    public class itiContextSl : DbContext, IitiContext
+    public class itiContextSl : DbContext
     {
         #region DbSets
+        public DbSet<Admin> Admins { get; set; }
+        public DbSet<Attendance> Attendances { get; set; }
+
+        public DbSet<AttendanceDegree> AttendanceDegrees { get; set; }
+
+        public DbSet<Employee> Employees { get; set; }
+
+        public DbSet<Instructor> Instructors { get; set; }
+
+        public DbSet<Intake> Intakes { get; set; }
+   
+        public DbSet<ITIProgram> ItiPrograms { get; set; }
+        public DbSet<Permission> Permissions { get; set; }
+        
         public DbSet<Schedule> Schedules { get; set; }
         public DbSet<ScheduleEvent> ScheduleEvents { get; set; }
+        public DbSet<Student> Students { get; set; }
+
         public DbSet<Track> Tracks { get; set; }
         #endregion
-        public readonly IConfiguration Configuration;
-        public itiContextSl(IConfiguration _configuration)
-        {
-            Configuration = _configuration;
-        }
-
-        public List<Student> students { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        List<Track> IitiContext.Tracks { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public List<ITIProgram> Programs { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -68,9 +75,13 @@ namespace Attendance_Management_System.Data
                 .Property(se => se.EndTime)
                 .IsRequired();
             #endregion
-
+            
             base.OnModelCreating(modelBuilder);
         }
-
+        public void Initialise()
+        {
+            Database.EnsureDeleted();
+            Database.EnsureCreated();
+        }
     }
 }
