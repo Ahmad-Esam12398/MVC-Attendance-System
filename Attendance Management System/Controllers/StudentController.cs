@@ -10,9 +10,16 @@ namespace Attendance_Management_System.Controllers
         {
             StudentRepo = _StudentRepo;
         }
-        public IActionResult Index()
-        {
-            return View();
-        }
+        //public IActionResult Index()
+        //{
+        //    return View();
+        //}
+
+
+    
+
+       
+
+
     }
 }

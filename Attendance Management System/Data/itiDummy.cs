@@ -7,6 +7,8 @@ namespace Attendance_Management_System.Data
         public List<Student> students { get; set; }
         public List<Track> Tracks { get; set; }
         public List<ITIProgram> Programs { get; set; }
+        
+      public List<Permission> Permissions { get; set; }
         public itiDummy()
         {
             Seed();
@@ -187,6 +189,28 @@ namespace Attendance_Management_System.Data
             }
             #endregion
             #endregion
+
+            #region Permission
+            Permissions = [
+                
+                new Permission { 
+                    StudentId= "29803151800654" ,
+                    Reason="Latance",
+                    BodyOfDescription="متاخر فى المواصلات ",
+                    DateCreated= new DateTime(2024,3,1,8,40,10)
+
+                },
+            new Permission {
+                    StudentId= "29803151800654" ,
+                    Reason="illness",
+                    BodyOfDescription="تعبان فى البيت عندى دور برد ",
+                    DateCreated= new DateTime(2024,3,5,5,11,12)
+
+                }
+            ]; 
+            #endregion
+
+
         }
         #endregion
     }
