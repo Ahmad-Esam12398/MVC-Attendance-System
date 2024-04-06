@@ -29,5 +29,27 @@ namespace Attendance_Management_System.Repos
         {
             return db.Permissions.Where(u => u.Status == PermissionStatus.Pending).ToList();
         }
+
+        public List<Schedule> getSchedules()
+        {
+            return db.Schedules;
+        }
+
+        public void AddSchedule(Schedule Schedule)
+        {
+            Schedule.TrackId = 1;
+            db.Schedules.Add(Schedule);
+        }
+        public void DeleteSchedule(int id)
+        {
+            var Schedule = db.Schedules.Find(u => u.Id == id);
+            db.Schedules.Remove(Schedule);
+        }
+
+        public void UpdateSchedule(Schedule schedule)
+        {
+            var index = db.Schedules.FindIndex(u => u.Id == schedule.Id);
+            db.Schedules[index] = schedule;   
+        }
     }
 }
