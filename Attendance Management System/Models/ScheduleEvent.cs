@@ -1,9 +1,12 @@
-﻿namespace Attendance_Management_System.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Attendance_Management_System.Models
 {
     public class ScheduleEvent
     {
         #region Properties
         public int Id { get; set; }
+        [MaxLength(50)]
         public string Name { get; set; }
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }

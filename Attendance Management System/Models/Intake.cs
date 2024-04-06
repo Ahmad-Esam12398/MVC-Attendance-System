@@ -7,14 +7,13 @@ namespace Attendance_Management_System.Models
     {
         [Key]
         public int Id { get; set; }
-        public string Name { get; set; }
-        public int ProgramId { get; set; }
-        public DateTime StartDate { get; set; }
-        public DateTime EndDate { get; set; }
+        [Range(1, 200)]
+        public byte Number { get; set; }
+        public DateOnly StartDate { get; set; }
+        public DateOnly EndDate { get; set; }
         //navigation
-        [ForeignKey("ProgramId")]
-        public ITIProgram Program { get; set; }
-        public virtual ICollection<Student> Students { get; set; } = new HashSet<Student>();
+        public ICollection<TrackIntake> Tracks { get; set; }
+        //public ICollection<Student> Students { get; set; } = new HashSet<Student>();
 
 
     }

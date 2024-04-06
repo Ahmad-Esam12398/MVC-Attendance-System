@@ -6,13 +6,12 @@ namespace Attendance_Management_System.Models
     {
         [Key]
         public int Id { get; set; }
+        [MaxLength(20)]
         public string Name { get; set; }
+        [MaxLength(50)]
         public string Description { get; set; }
         public bool IsActive { get; set; }
-       
-
         //navigation
-        public ICollection<Track> Tracks { get; set; }
-        public ICollection<Intake> Intakes { get; set; }
+        public ICollection<Track> Tracks { get; set; } = new HashSet<Track>();
     }
 }
