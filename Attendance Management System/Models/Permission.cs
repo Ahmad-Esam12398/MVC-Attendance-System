@@ -17,6 +17,7 @@ namespace Attendance_Management_System.Models
         [Required(ErrorMessage = "*")]
 
         public string BodyOfDescription { get; set; }
+        public DateOnly Date { get; set; }
         public PermissionStatus Status { get; set; } = PermissionStatus.Pending;
         [Required(ErrorMessage = "*")]
 

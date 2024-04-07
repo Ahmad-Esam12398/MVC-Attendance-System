@@ -1,29 +1,30 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Attendance_Management_System.Models
 {
     public class Student : User
     {
-        
+        [MaxLength(20)]
         public string University { get; set; }
+        [MaxLength(20)]
         public string Faculty { get; set; }
-        public string Specialization { get; set; }
+        [MaxLength(20)]
+        public string? Specialization { get; set; }
+        [Range(2010, 2030)]
         public int GraduationYear { get; set; }
 
-        [ForeignKey(nameof(Intake))]
-        public int IntakeID { get; set; }
+        //[ForeignKey(nameof(Intake))]
+        //public int IntakeID { get; set; }
 
-        public Intake Intake { get; set; }
+        //public Intake Intake { get; set; }
 
         [ForeignKey(nameof(Track))]
         public int TrackID { get; set; }
-        public Track? Track { get; set; }
+        public Track Track { get; set; }
 
         public ICollection<Permission> Permissions { get; set; } = new HashSet<Permission>();
         public ICollection<Attendance> Attendances { get; set; } = new HashSet<Attendance>();
-
-        //the attendance degree not applied yet .... i guess the student have only one attandance degree not many 
-
-   
+        public ICollection<AttendanceDegree> AttendanceDegrees { get; set; } = new HashSet<AttendanceDegree>();
     }
 }

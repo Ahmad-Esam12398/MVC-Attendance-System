@@ -5,6 +5,7 @@ namespace Attendance_Management_System.Repos
 {
     public interface IStudentRepo
     {
+        public Student GetStudentById(int id);
         public List<AttendanceViewData> Get_Student_Attendances_By_Id(int StdID);
 
 

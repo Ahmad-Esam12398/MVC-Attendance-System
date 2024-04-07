@@ -11,6 +11,9 @@ namespace Attendance_Management_System.ViewData
 
         public string Status { get; set; }
 
-
+        public override string ToString()
+        {
+            return $"{Date}:{Time_in}:{Time_out}:{Status}"; 
+        }
     }
 }

@@ -92,6 +92,7 @@ namespace Attendance_Management_System.Data
             };
             #endregion
             #region Students
+            
             students = new List<Student>()
             {
                 new Student()
@@ -119,7 +120,8 @@ namespace Attendance_Management_System.Data
                     Password = "12345678",
                     University = "Mansoura",
                     Faculty = "CS",
-                    Track = Tracks[0]
+                    Track = Tracks[0],
+                    TrackID=1
                 },
                 new Student()
                 {
@@ -134,7 +136,6 @@ namespace Attendance_Management_System.Data
                     Faculty = "Engineering",
                     Track = Tracks[0],
                     TrackID=1,
-                    Permissions=Permissions.Where(p=>p.StudentId==3).ToList(),
 
                 },
                 new Student()
@@ -206,21 +207,21 @@ namespace Attendance_Management_System.Data
             Permissions = [
                 
                 new Permission { 
-                    StudentId= 3 ,
+                    StudentId= 2 ,
                     Reason="Latance",
                     BodyOfDescription="متاخر فى المواصلات ",
                     DateCreated= new DateTime(2024,3,2,8,40,10),
-                    Student= students[2],
+                    Student= students[1],
                     Status=Models.PermissionStatus.Refused
 
 
                 },
             new Permission {
-                    StudentId= 3 ,
+                    StudentId= 2 ,
                     Reason="illness",
                     BodyOfDescription="تعبان فى البيت عندى دور برد ",
                     DateCreated= new DateTime(2024,3,5,5,11,12),
-                    Student= students[3],
+                    Student= students[1],
                     Status=Models.PermissionStatus.Accepted
 
 
@@ -237,7 +238,7 @@ namespace Attendance_Management_System.Data
                     Id = 1,
                     Date = DateOnly.FromDateTime(DateTime.Now),
                     StartTime = TimeOnly.Parse("09:00"),
-                    EndTime = TimeOnly.Parse("22:00"),
+                    EndTime = TimeOnly.Parse("20:00"),
                     Track = Tracks[0],
                     TrackId= 1
                 },
@@ -246,7 +247,7 @@ namespace Attendance_Management_System.Data
                     Id = 2,
                     Date = DateOnly.FromDateTime(DateTime.Now.AddDays(1)),
                     StartTime = TimeOnly.Parse("11:00"),
-                    EndTime = TimeOnly.Parse("22:00"),
+                    EndTime = TimeOnly.Parse("20:00"),
                     Track = Tracks[1],
 
                 }
@@ -282,7 +283,7 @@ namespace Attendance_Management_System.Data
                     Id = Schedules.Count + 1, // Assign a unique ID
                     Date = date,
                     StartTime = TimeOnly.Parse("09:00"), // Assuming the start time is 09:00
-                    EndTime = TimeOnly.Parse("22:00"),   // Assuming the end time is 22:00
+                    EndTime = TimeOnly.Parse("20:00"),   // Assuming the end time is 22:00
                     Track = Tracks[0], // Assuming Tracks is the array containing tracks
                     TrackId=1
                 };
@@ -296,7 +297,14 @@ namespace Attendance_Management_System.Data
             #endregion
 
             #region Attendance
-            Attendances = new List<Attendance>();
+            Attendances = [new Attendance() {
+                StudentId = 1,
+                Student = students[0],
+                Date= new DateOnly(2024, 3, 2),
+                Time_in = new TimeOnly(9, 2),
+                Time_out = new TimeOnly(20, 0)
+            }];
+           
 
             foreach (var item in datesForTrack0)
             {
@@ -304,11 +312,11 @@ namespace Attendance_Management_System.Data
                 Attendance attendance = new Attendance()
                 {
                     
-                    StudentId = 3,
-                    Student = students[3],
+                    StudentId = 2,
+                    Student = students[1],
                     Date = item,
                     Time_in = new TimeOnly(9, 2),
-                    Time_out = new TimeOnly(22, 0)
+                    Time_out = new TimeOnly(20, 0)
                 };
                 Attendances.Add(attendance);
 

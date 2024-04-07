@@ -31,17 +31,81 @@ namespace Attendance_Management_System.Repos
         public List<AttendanceViewData> Get_Student_Attendances_By_Id(int stdID)
         {
             var student = db.students.FirstOrDefault(x => x.ID == stdID);
+            List<AttendanceViewData> attendances_for_view = new List<AttendanceViewData>();
+
             if (student!=null)
             {
-                var track = student.Track;
 
+
+                var track_Schedule = db.Schedules.Where(sc => sc.TrackId == student.TrackID).ToHashSet();
+                var attendances=db.Attendances.Where(at=>at.StudentId==stdID).ToHashSet();
+                var permissions=db.Permissions.Where(p=>p.StudentId==stdID).ToHashSet();
+
+        
+                
+                foreach (var item in track_Schedule)
+                {
+                    
+                   
+
+                    var check_the_attendance=attendances.FirstOrDefault(at=>at.Date==item.Date);
+                    if (check_the_attendance != null)
+                    {
+                        AttendanceViewData att = new AttendanceViewData()
+                        {
+                            Date = check_the_attendance.Date,
+                            Time_in = (TimeOnly)check_the_attendance.Time_in,
+                            Time_out = (TimeOnly)check_the_attendance.Time_out,
+                            Status = "Attend"
+
+
+                        };
+                        attendances_for_view.Add(att);
+                    }
+                    else {
+                        var check_the_permission = permissions.FirstOrDefault(p => new DateOnly(p.DateCreated.Year,p.DateCreated.Month,p.DateCreated.Day)== item.Date);
+
+                        if(check_the_permission != null&&check_the_permission.Status== PermissionStatus.Accepted)
+                        {
+
+                            AttendanceViewData att = new AttendanceViewData()
+                            {
+                                Date = new DateOnly(check_the_permission.DateCreated.Year,check_the_permission.DateCreated.Month,check_the_permission.DateCreated.Day),
+                                Time_in = new TimeOnly(9,0),
+                                Time_out = new TimeOnly(22,0),
+                                Status = "Permission"
+
+
+                            };
+                            attendances_for_view.Add(att);
+                        }
+                        else
+                        {
+                            AttendanceViewData att = new AttendanceViewData()
+                            {
+                                Date = item.Date,
+                                Time_in = new TimeOnly(9, 0),
+                                Time_out = new TimeOnly(22, 0),
+                                Status = "Absent"
+
+
+                            };
+                            attendances_for_view.Add(att);
+                        }
+                    }
+
+                }
             }
 
 
 
 
 
-            throw new NotImplementedException();
+
+
+            var result =attendances_for_view.OrderByDescending(at => at.Date).ToList();
+
+            return result ;
         }
 
         public List<Permission> Get_Student_Permissions_By_Id(int StdID)
@@ -49,7 +113,7 @@ namespace Attendance_Management_System.Repos
             return db.Permissions.Where(x=>x.StudentId==StdID).ToList();
         }
 
-        public Permission PermissionDetails(int stdID, DateTime permissionDate)
+            public Permission PermissionDetails(int stdID, DateTime permissionDate)
         {
             return db.Permissions.Where(x => x.StudentId == stdID && x.DateCreated == permissionDate).FirstOrDefault();
         }
@@ -64,6 +128,12 @@ namespace Attendance_Management_System.Repos
                 permission_In_Data.Reason = permission.Reason;
             }
             
+        }
+
+            public  Student GetStudentById(int id)
+        {
+           return db.students.FirstOrDefault(s=>s.ID==id);
+
         }
     }
 }
