@@ -56,7 +56,24 @@
                 <td>
                     @student_Attend.Time_out
                 </td>
-                <td>
+                @{
+                        string TextClass = "";
+
+                        if (student_Attend.Status =="Attend")
+                        {
+                            TextClass = "text-success";
+                        }
+                        else if (student_Attend.Status == "Absent")
+                        {
+                            TextClass = "text-danger";
+                        }
+                        else
+                        {
+                            TextClass = "text-primary";
+                        }
+
+                }
+                    <td class="@TextClass rounded-4 px-2">
                     @student_Attend.Status
                 </td>
             </tr>
@@ -67,63 +84,3 @@
     </table>
 </div>
 
-@section Scripts {
-    <script>
-        $(document).ready(function () {
-            var table = $('#mytable').DataTable({
-                // DataTables initialization options
-                paging: true,
-                ordering: true,
-                searching: true,
-                // Add more options as needed
-
-                // Custom buttons configuration
-                buttons: [
-                    {
-                        extend: 'copy',
-                        exportOptions: {
-                            columns: ':visible'
-                        }
-                    },
-                    {
-                        extend: 'csv',
-                        exportOptions: {
-                            columns: ':visible'
-                        }
-                    },
-                    {
-                        extend: 'excel',
-                        exportOptions: {
-                            columns: ':visible'
-                        }
-                    },
-                    {
-                        extend: 'pdf',
-                        exportOptions: {
-                            columns: ':visible'
-                        }
-                    },
-                    {
-                        extend: 'print',
-                        exportOptions: {
-                            columns: ':visible'
-                        }
-                    }
-                ]
-            });
-
-            // Additional JavaScript logic for handling events, filters, etc.
-            // For example:
-            $('#Status').on('change', function () {
-                table.column(3).search(this.value).draw();
-            });
-
-            // Date range filtering
-            $('#dateFrom, #dateTo').on('change', function () {
-                var fromDate = $('#dateFrom').val();
-                var toDate = $('#dateTo').val();
-                table.columns(0).search(fromDate + '|' + toDate, true, false).draw();
-            });
-        });
-    </script>
-}

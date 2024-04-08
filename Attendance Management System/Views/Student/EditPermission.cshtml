@@ -1,0 +1,20 @@
+﻿@model Attendance_Management_System.Models.Permission
+
+<h2>Edit Permission</h2>
+
+<form asp-action="EditPermission">
+    <input type="hidden" asp-for="StudentId" />
+    <input type="hidden" asp-for="DateCreated" />
+    <div class="form-group">
+        <label for="Reason">Reason:</label>
+        <input type="text" class="form-control" id="Reason" name="Reason" value="@Model.Reason" required />
+        <span asp-validation-for="Reason" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label for="BodyOfDescription">Body of Description:</label>
+        <input type="text" class="form-control" id="BodyOfDescription" name="BodyOfDescription" value="@Model.BodyOfDescription" required />
+        <span asp-validation-for="BodyOfDescription" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Update</button>
+    <a asp-action="Permissions" asp-route-id="@Model.StudentId">Back to Permissions</a>
+</form>

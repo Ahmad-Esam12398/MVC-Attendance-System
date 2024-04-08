@@ -53,7 +53,7 @@ namespace Attendance_Management_System.Controllers
                 permission.StudentId = id;
                 permission.DateCreated = DateTime.Now;
                 StudentRepo.CreatePermission(permission);
-                return RedirectToAction("Permissions", new { id });
+                return RedirectToAction("Permission", new { id });
             }
             ViewBag.StudentId = id;
             return View(permission);
@@ -77,18 +77,11 @@ namespace Attendance_Management_System.Controllers
             if (ModelState.IsValid)
             {
                 StudentRepo.UpdatePermission(permission);
-                return RedirectToAction("Permissions", new { id = permission.StudentId });
+                return RedirectToAction("Permission", new { id = permission.StudentId });
             }
             return View(permission);
         }
 
-        // Delete a permission
-        [HttpPost]
-        public IActionResult DeletePermission(int id, DateTime permissionDate)
-        {
-            StudentRepo.DeletePermission(id, permissionDate);
-            return RedirectToAction("Permissions", new { id });
-        }
 
 
 

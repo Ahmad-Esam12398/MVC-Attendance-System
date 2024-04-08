@@ -110,7 +110,7 @@ namespace Attendance_Management_System.Repos
 
         public List<Permission> Get_Student_Permissions_By_Id(int StdID)
         {
-            return db.Permissions.Where(x=>x.StudentId==StdID).ToList();
+            return db.Permissions.Where(x=>x.StudentId==StdID).OrderByDescending(per=>per.DateCreated).ToList();
         }
 
             public Permission PermissionDetails(int stdID, DateTime permissionDate)

@@ -5,6 +5,8 @@
     List<string> StatusList = [PermissionStatus.Accepted.ToString(), PermissionStatus.Pending.ToString(), PermissionStatus.Refused.ToString()];
     int id = ViewBag.id;
 
+    // Check if there is a permission for today
+    bool hasPermissionForToday = Model.Any(p => p.DateCreated.Date == DateTime.Today);
 }
 @section Styles {
     <link rel=" stylesheet" href="~/css/Employee.css" />
@@ -34,7 +36,9 @@
 
 </div>
 <div>
-    <a asp-action="CreatePermission" asp-route-id=@id class="btn btn-success">Create New Permission</a>
+    <br />
+    <a asp-action="CreatePermission" asp-route-id=@id class="btn btn-success @if(hasPermissionForToday) { <text>disabled</text> }">Create New Permission</a>
+    <br />
     <table id="mytable" class="table table-hover text-center table-striped">
         <thead>
             <tr class="text-center">
@@ -49,6 +53,15 @@
             {
                 <tr>
                     <td>
+                        @if (student_Permission.Status == PermissionStatus.Pending)
+                        {
+                               <div style="float: left;">
+                            <a href="@Url.Action("EditPermission", "Student", new { id = student_Permission.StudentId, permissionDate = student_Permission.DateCreated })">
+                                <i class="bx bx-edit fa-stack-1x fa-inverse" style="transform: scale(1.7); color: gray;"></i>
+                            </a>
+                            </div>
+
+                        }
                         @{
                             var res=DateOnly.FromDateTime(student_Permission.DateCreated);
                             //new DateOnly(student_Permission.DateCreated.Year, student_Permission.DateCreated.Month, student_Permission.DateCreated.Day);
@@ -68,27 +81,25 @@
                     </td>
                     @{
                         string TextClass = "";
-                        string bgClass = "";
                         if(student_Permission.Status==PermissionStatus.Accepted)
                         {
-                            bgClass = "bg-success";
                             TextClass = "text-success";
                         }
                         else if (student_Permission.Status == PermissionStatus.Refused)
                         {
-                            bgClass = "bg-danger";
                             TextClass = "text-danger";
                         }
                         else
                         {
-                            bgClass = "bg-warning";
                             TextClass = "text-warning";
                         }
 
                     <td class=" @TextClass fw-bolder">
 
                         @student_Permission.Status
+                          
                     </td>
+                       
                     }
                 </tr>
 
