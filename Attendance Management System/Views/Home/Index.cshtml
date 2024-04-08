@@ -1,8 +1,53 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
+    Layout = null;
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Additional CSS files or styles -->
+    <style>
+        /* Additional custom styles can be added here if needed */
+        html, body {
+            height: 100%;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+        }
+
+        .btn-primary {
+            background-color: #7B96D4; /* Primary button background color */
+            border-color: #7B96D4; /* Primary button border color */
+        }
+
+            .btn-primary:hover {
+                background-color: #5d82b8; /* Hover state background color */
+                border-color: #5d82b8; /* Hover state border color */
+            }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div >
+                <div class="text-center">
+                    <h1 class="display-4">Welcome back!</h1>
+                    <p>Want to see your attendance?<br /><br /> <a href="/Identity/Account/Login" class="btn btn-primary">Login here</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JavaScript files -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <!-- Additional JavaScript files or scripts -->
+</body>
+</html>

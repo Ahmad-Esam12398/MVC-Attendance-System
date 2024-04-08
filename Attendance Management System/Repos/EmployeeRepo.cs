@@ -30,10 +30,10 @@ namespace Attendance_Management_System.Repos
         {
             return db.Schedules.ToList();
         }
-        public int SetAttendance(int id, DateTime dateTime, string type)
+        public int SetAttendance(String id, DateTime dateTime, string type)
         {
-            var student = db.students.FirstOrDefault(s=> s.ID == id);
-            if(student == null)
+            var student = db.students.FirstOrDefault(s => s.NationalId == id);
+            if (student == null)
             {
                 return 1;
             }
@@ -41,9 +41,10 @@ namespace Attendance_Management_System.Repos
             var checkOut = db.Attendances.FirstOrDefault(a => a.StudentId == id && a.Date == DateOnly.FromDateTime(dateTime));
             if (type == "in" && checkIn != null)
                 return 2;
-            if(type == "out" && checkOut == null)
+            if (type == "out" && checkOut == null)
                 return 3;
-            if(type == "in")
+            if (type == "in")
+
             {
                 Attendance attendance = new Attendance()
                 {

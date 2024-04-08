@@ -16,7 +16,7 @@ namespace Attendance_Management_System.Models
         public PermissionStatus Status { get; set; } = PermissionStatus.Pending;
 
         [ForeignKey(nameof(Student))]
-        public int StudentId { get; set; }
+        public String StudentId { get; set; }
         public virtual Student Student { get; set; }
 
 

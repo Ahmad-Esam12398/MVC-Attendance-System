@@ -1,30 +1,29 @@
-﻿using Attendance_Management_System.Models;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using Attendance_Management_System.Models;
+using Microsoft.Extensions.Configuration;
 
 namespace Attendance_Management_System.Data
 {
     public class itiContext : DbContext, IitiContext
     {
-        #region DbSets
         public DbSet<Schedule> Schedules { get; set; }
         public DbSet<ScheduleEvent> ScheduleEvents { get; set; }
         public DbSet<Track> Tracks { get; set; }
-        #endregion
-        public readonly IConfiguration Configuration;
-        public itiContext(IConfiguration _configuration)
+        public DbSet<User> Users { get; set; }
+        public List<Student> students { get; set; }
+        public List<ITIProgram> Programs { get; set; }
+        public List<Attendance> Attendances { get; set; }
+        private readonly IConfiguration _configuration;
+
+        public itiContext(DbContextOptions<itiContext> options, IConfiguration configuration) : base(options)
         {
-            Configuration = _configuration;
+            _configuration = configuration;
         }
 
-        public List<Student> students { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        List<Track> IitiContext.Tracks { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public List<ITIProgram> Programs { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        List<Schedule> IitiContext.Schedules { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        List<Attendance> IitiContext.Attendances { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
+            optionsBuilder.UseSqlServer(_configuration.GetConnectionString("DefaultConnection"));
             base.OnConfiguring(optionsBuilder);
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -67,6 +66,14 @@ namespace Attendance_Management_System.Data
                 .Property(se => se.EndTime)
                 .IsRequired();
             #endregion
+            // Configure the relationship between Track and Instructor
+            modelBuilder.Entity<Track>()
+                .HasOne(t => t.Supervisor)
+                .WithMany()
+                .HasForeignKey(t => t.SupervisorId);
+            // Define primary key for Attendance entity
+            modelBuilder.Entity<Attendance>()
+                .HasKey(a => a.Id);
 
             base.OnModelCreating(modelBuilder);
         }

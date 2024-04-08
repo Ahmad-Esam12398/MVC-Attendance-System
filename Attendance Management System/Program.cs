@@ -1,6 +1,4 @@
-using Attendance_Management_System.Data;
-using Attendance_Management_System.Repos;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Hosting;
 
 namespace Attendance_Management_System
 {
@@ -8,45 +6,14 @@ namespace Attendance_Management_System
     {
         public static void Main(string[] args)
         {
-            var builder = WebApplication.CreateBuilder(args);
+            var host = Host.CreateDefaultBuilder(args)
+                .ConfigureWebHostDefaults(webBuilder =>
+                {
+                    webBuilder.UseStartup<Startup>();
+                })
+                .Build();
 
-            // Add services to the container.
-            builder.Services.AddControllersWithViews();
-
-
-            builder.Services.AddScoped<IStudentRepo, StudentRepo>();
-            builder.Services.AddScoped<IInstructorRepo, InstructorRepo>();
-            builder.Services.AddScoped<IAdminRepo, AdminRepo>();
-            builder.Services.AddScoped<IAccountRepo, AccountRepo>();
-            builder.Services.AddScoped<IEmployeeRepo, EmployeeRepo>();
-
-
-            builder.Services.AddSingleton<IitiContext, itiDummy>();
-            //builder.Services.AddDbContext<itiContext>(options =>
-            //options.UseSqlServer(app.Configuration.GetConnectionString("DefaultConnection")));
-
-            var app = builder.Build();
-
-            // Configure the HTTP request pipeline.
-            if (!app.Environment.IsDevelopment())
-            {
-                app.UseExceptionHandler("/Home/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                app.UseHsts();
-            }
-
-            app.UseHttpsRedirection();
-            app.UseStaticFiles();
-
-            app.UseRouting();
-
-            app.UseAuthorization();
-
-            app.MapControllerRoute(
-                name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}");
-
-            app.Run();
+            host.Run();
         }
     }
 }

@@ -31,7 +31,7 @@ namespace Attendance_Management_System.Controllers
             return View(todaysStudents);
         }
         [HttpPost]
-        public IActionResult SetAttendance(int id, string type)
+        public IActionResult SetAttendance(String id, string type)
         {
             switch(EmployeeRepo.SetAttendance(id, DateTime.Now, type))
             {

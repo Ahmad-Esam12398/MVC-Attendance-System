@@ -1,0 +1,107 @@
+﻿@page
+@model LoginModel
+
+@{
+    ViewData["Title"] = "Log in";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <!-- Bootstrap CSS link -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .btn-primary {
+            background-color: #7B96D4; /* Primary button background color */
+            border-color: #7B96D4; /* Primary button border color */
+        }
+
+            .btn-primary:hover {
+                background-color: #5d82b8; /* Hover state background color */
+                border-color: #5d82b8; /* Hover state border color */
+            }
+    </style>
+</head>
+<body>
+
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Left section for login form -->
+            <div class="col-md-6 p-0">
+                <div style="background-color: #4C6FBF; height: 100vh; color: white;">
+                    <div class="container h-100">
+                        <div class="row h-100 justify-content-center align-items-center">
+                            <div class="col-md-8">
+                                <section>
+                                    <form id="account" method="post">
+                                        <h2 class="text-center">Welcome Back!</h2>
+                                        <hr />
+                                        <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+                                         <div class="form-floating mb-3">
+                                            <label asp-for="Input.NationalId" class="form-label">National ID</label>
+
+                                            <input asp-for="Input.NationalId" class="form-control" autocomplete="off" aria-required="true" placeholder="Your National ID" />
+                                            <span asp-validation-for="Input.NationalId" class="text-danger"></span>
+                                        </div> 
+                                       @*  <div class="form-floating mb-3">
+                                            <label asp-for="Input.Email" class="form-label">Email</label>
+                                            <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
+                                            <span asp-validation-for="Input.Email" class="text-danger"></span>
+                                        </div> *@
+                                        <div class="form-floating mb-3">
+                                            <label asp-for="Input.Password" class="form-label">Password</label>
+                                            <input asp-for="Input.Password" class="form-control" autocomplete="current-password" aria-required="true" placeholder="Password" />
+                                            <span asp-validation-for="Input.Password" class="text-danger"></span>
+                                        </div>
+                                        <div class="checkbox mb-3">
+                                            <label asp-for="Input.RememberMe" class="form-label">
+                                                <input class="form-check-input" asp-for="Input.RememberMe" />
+                                                @Html.DisplayNameFor(m => m.Input.RememberMe)
+                                            </label>
+                                        </div>
+                                        <div>
+                                            <button id="login-submit" type="submit" class="w-100 btn btn-lg btn-primary">Log in</button>
+                                        </div>
+                                        <div>
+                                            <p class="text-center">
+                                                <a id="forgot-password" asp-page="./ForgotPassword" style="color: white;">Forgot your password?</a>
+                                            </p>
+                                        </div>
+                                    </form>
+                                </section>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Right section for content -->
+            <div class="col-md-6 p-0">
+                <div style="background-color: white; height: 100vh;">
+                    <div class="container h-100">
+                        <div class="row h-100 justify-content-center align-items-center">
+                            <div class="col-md-8">
+                                <img src="~/images/login.png" alt="Login Image" class="img-fluid" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS scripts (optional, depending on Bootstrap features you use) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <!-- Your page scripts -->
+    @section Scripts {
+        <partial name="_ValidationScriptsPartial" />
+    }
+
+</body>
+</html>
