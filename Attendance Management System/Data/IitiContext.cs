@@ -12,5 +12,6 @@ namespace Attendance_Management_System.Data
         List<Attendance> Attendances { get; set; }
         
 
+
     }
 }

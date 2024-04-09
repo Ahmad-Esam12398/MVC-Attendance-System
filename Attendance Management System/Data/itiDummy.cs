@@ -359,7 +359,7 @@ namespace Attendance_Management_System.Data
                 Student = students[2]
             });
             #endregion
-      
+
         }
         #endregion
     }
