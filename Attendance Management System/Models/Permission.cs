@@ -20,7 +20,11 @@ namespace Attendance_Management_System.Models
         public PermissionStatus Status { get; set; } = PermissionStatus.Pending;
 
         [ForeignKey(nameof(Student))]
-        public int StudentId { get; set; }
+
+        public int StudentId { get; set; } 
         public Student Student { get; set; }
+
+        public DateOnly Date { get; set; } // Added DateOnly
+
     }
 }

@@ -9,6 +9,8 @@ namespace Attendance_Management_System.Data
         public List<ITIProgram> Programs { get; set; }
         public List<Schedule> Schedules { get; set; }
         public List<Attendance> Attendances { get; set; }
+        // ********** Added List Of Permissions ********** //
+        public List<Permission> Permissions { get; set; }
         public itiDummy()
         {
             Seed();
@@ -217,6 +219,43 @@ namespace Attendance_Management_System.Data
             };
             Tracks[0].Students = students.Where(s => s.Track == Tracks[0]).ToList();
             Tracks[1].Students = students.Where(s => s.Track == Tracks[1]).ToList();
+            #endregion
+            // ********** Added Permissions ********** //
+            #region Permissions
+            Permissions = new List<Permission>()
+            {
+                new Permission()
+                {
+                 ID=1,
+                 Reason="Late",
+                 BodyOfDescription="I was late because of the traffic",
+                 Status=PermissionStatus.Pending,
+                 StudentId=1,
+                 Date = new DateOnly(2024, 4, 3),
+                 Student=students[0]
+                
+                },
+                new Permission()
+                {
+                 ID=2,
+                 Reason="Sick",
+                 BodyOfDescription="I was sick",
+                 Status=PermissionStatus.Pending,
+                 StudentId=2,
+                 Date = new DateOnly(2024, 4, 5),
+                 Student=students[1]
+                },
+                new Permission()
+                {
+                 ID=3,
+                 Reason="Late",
+                 BodyOfDescription="I was late because of the traffic",
+                 Status=PermissionStatus.Pending,
+                 StudentId=3,
+                 Date = new DateOnly(2024, 4, 4),
+                 Student=students[2]
+                }
+            };
             #endregion
             Attendances = new List<Attendance>();
         }

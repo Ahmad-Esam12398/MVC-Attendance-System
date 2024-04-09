@@ -1,0 +1,164 @@
+﻿@model IEnumerable<ScheduleDto>
+
+    @{
+        ViewData["Title"] = "Schedule";
+        ViewData["Name"] = "AhmedL3swy";
+        Layout = "_layout";
+    }
+
+    <div class="container">
+        @* Filters Section*@
+        <div class="d-flex justify-content-center mb-3">
+            <div class="date-filter">
+                <span>
+                    <i class='bx bx-calendar'></i>
+                    <span>Filter By Date</span>
+                </span>
+                <input type="date" id="Date" placeholder="Search by Date" />
+                <button class="btn
+            " type="button" title="ResetDate" id="ClearDate">
+                    <i class='bx bx-x'></i> Reset Date
+                </button>
+
+            </div>
+        </div>
+        @* Main Table Section*@
+        <table id="myTable" class="display">
+            @* Table Header*@
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>StartTime</th>
+                    <th>EndTime</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            @* Table Body*@
+            <tbody>
+                @foreach (var item in Model)
+                                  {
+                <tr>
+                    <td>@item.Date</td>
+                    <td>@item.StartTime</td>
+                    <td>@item.EndTime</td>
+                    @* Actions *@
+                    <td>
+                        <button class="btn btn-lg add" type="button" title="Add" data-bs-toggle="modal" data-bs-target="#AddModal">
+                            <i class='bx bx-plus' style="z-index: 1000;"></i>
+                        </button>
+
+                        <button class="btn btn-lg edit" type="button" title="Edit"
+                    
+                                data-bs-toggle="modal" data-bs-target="#EditModal"
+                                data-Id="@item.Id" 
+                                data-date="@item.Date" data-start-time="@item.StartTime"
+                                data-end-time="@item.EndTime">
+                            <i class='bx bx-edit'></i>
+                        </button>
+
+                        <button class="btn btn-lg delete" action="/Instructor/Delete" id="@item.Id"  type="button" title="Delete">
+                            <i class='bx bx-trash' style="z-index: 1000;"></i>
+                        </button>
+                    </td>
+                </tr>
+                                  }
+
+                </td>
+                </tr>
+            </tbody>
+        </table>
+        
+
+    </div>
+
+    @section NavList
+{
+        <div class="nav_list">
+            <a href="/Permissions" class="nav_link">
+                <i class="bx bx-message-square-detail nav_icon"></i>
+                <span class="nav_name">Student Permissions</span>
+            </a>
+            <a href="/Schedule" class="nav_link">
+                <i class="bx bx-table nav_icon"></i>
+                <span class="nav_name">Schedule</span>
+            </a>
+        </div>
+    }
+    @section Scripts
+{
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.30.1/moment.min.js" ></script>
+        <script src="https://cdn.datatables.net/2.0.3/js/dataTables.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-toast-plugin/1.3.2/jquery.toast.min.js" integrity="sha512-zlWWyZq71UMApAjih4WkaRpikgY9Bz1oXIW5G0fED4vk14JjGlQ1UmkGM392jEULP8jbNMiwLWdM8Z87Hu88Fw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script src="~/js/index.js"></script>
+
+
+    }
+    @section Styles
+{
+
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-toast-plugin/1.3.2/jquery.toast.min.css" integrity="sha512-wJgJNTBBkLit7ymC6vvzM1EcSWeM9mmOu+1USHaRBbHkm6W9EgM0HY27+UtUaprntaYQJF75rc8gjxllKs5OIQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <link rel="stylesheet" href="https://cdn.datatables.net/2.0.3/css/dataTables.dataTables.css" />
+    }
+
+
+
+@*Modal for Add With Add button*@
+<div class="modal fade " id="AddModal" tabindex="-1" aria-labelledby="AddModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="AddModalLabel">Add Schedule</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                <form id="AddForm" method="post" action="AddSchedule">
+                    <div class="form-group">
+                        <label for="Date">Date</label>
+                        <input type="date" class="form-control" id="Date" name="Date" required />
+                    </div>
+                    <div class="form-group
+                     ">
+                        <label for="StartTime">StartTime</label>
+                        <input type="time" class="form-control" id="StartTime" name="StartTime" required />
+                    </div>
+
+                    <div class="form-group
+                     ">
+                        <label for="EndTime">EndTime</label>
+                        <input type="time" class="form-control" id="EndTime" name="EndTime" required />
+                    </div>
+                    <button type="submit" class="btn btn-primary">Add</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+@*Modal for Edit With Edit button*@
+<div class="modal fade" id="EditModal" tabindex="-1" aria-labelledby="EditModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="EditModalLabel">Edit Schedule</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                <form id="EditForm" method="post" action="UpdateSchedule">
+                    <input type="hidden" id="EditId" name="Id" />
+                    <div class="form-group">
+                        <label for="EditDate">Date</label>
+                        <input type="date" class="form-control" id="EditDate" name="Date" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="EditStartTime">StartTime</label>
+                        <input type="time" class="form-control" id="EditStartTime" name="StartTime" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="EditEndTime">EndTime</label>
+                        <input type="time" class="form-control" id="EditEndTime" name="EndTime" required />
+                    </div>
+                    <button type="submit" class="btn btn-primary">Edit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
