@@ -1,7 +1,14 @@
-﻿namespace Attendance_Management_System.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Attendance_Management_System.Models
 {
+    public enum JobTitle
+    {
+        Security,
+        StudentsAffairs,
+    }
     public class Employee : User
     {
-        public string JobTitle { get; set; }
+        public JobTitle JobTitle { get; set; }
     }
 }

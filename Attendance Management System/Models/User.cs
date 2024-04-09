@@ -9,7 +9,6 @@ namespace Attendance_Management_System.Models
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ID { get; set; }
-        [Key]
         public string NationalId { get; set; }
         public string UserName { get; set; }
         public string Email { get; set; }
