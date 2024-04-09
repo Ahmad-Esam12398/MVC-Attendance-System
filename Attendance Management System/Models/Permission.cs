@@ -11,7 +11,8 @@ namespace Attendance_Management_System.Models
     }
     public class Permission
     {
-        //public int ID { get; set; }
+        public int ID { get; set; }
+        [MaxLength(20)]
         [Required(ErrorMessage ="*")]
         public string Reason { get; set; }
         [Required(ErrorMessage = "*")]
