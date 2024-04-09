@@ -38,6 +38,8 @@
 <div>
     <br />
     <a asp-action="CreatePermission" asp-route-id=@id class="btn btn-success @if(hasPermissionForToday) { <text>disabled</text> }">Create New Permission</a>
+
+    
     <br />
     <table id="mytable" class="table table-hover text-center table-striped">
         <thead>
@@ -108,3 +110,37 @@
         </tbody>
     </table>
 </div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('#createPermissionModal').modal({
+                show: false
+            });
+
+            $('#editPermissionModal').modal({
+                show: false
+            });
+
+            // Add event listeners to show modals when buttons are clicked
+            $('#createPermissionBtn').click(function () {
+                $('#createPermissionModal').modal('show');
+            });
+
+            $('#editPermissionBtn').click(function () {
+                $('#editPermissionModal').modal('show');
+            });
+        });
+    </script>
+
+}
+@* <!-- Add button to open create permission modal -->
+<button type="button" id="createPermissionBtn" class="btn btn-success">Create New Permission</button>
+
+<!-- Add button to open edit permission modal -->
+<button type="button" id="editPermissionBtn" class="btn btn-primary">Edit Permission</button>
+
+<!-- Include the modals at the end of your main view -->
+@Html.Partial("CreatePermissionModal", new Attendance_Management_System.Models.Permission())
+@Html.Partial("EditPermissionModal", new Attendance_Management_System.Models.Permission())
+ *@
