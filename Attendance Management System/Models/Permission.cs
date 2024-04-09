@@ -16,7 +16,8 @@ namespace Attendance_Management_System.Models
         [Required(ErrorMessage ="*")]
         public string Reason { get; set; }
         [Required(ErrorMessage = "*")]
-
+        
+        [MaxLength(50)]
         public string BodyOfDescription { get; set; }
         public DateOnly Date { get; set; }
         public PermissionStatus Status { get; set; } = PermissionStatus.Pending;
@@ -26,8 +27,7 @@ namespace Attendance_Management_System.Models
 
         [ForeignKey(nameof(Student))]
         public int StudentId { get; set; }
-        public virtual Student? Student { get; set; }
-
+        public Student Student { get; set; }
 
     }
 }
