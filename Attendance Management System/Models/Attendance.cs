@@ -10,7 +10,7 @@ namespace Attendance_Management_System.Models
         public int Id { get; set; }
 
         [ForeignKey(nameof(Student))]
-        public string StudentId { get; set; } 
+        public int StudentId { get; set; }
 
         public DateOnly Date { get; set; } = new DateOnly(DateTime.Today.Year, DateTime.Today.Month, DateTime.Today.Day);
         public TimeOnly? Time_in { get; set; } = TimeOnly.FromDateTime(DateTime.Now);
