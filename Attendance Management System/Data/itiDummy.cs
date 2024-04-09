@@ -11,6 +11,7 @@ namespace Attendance_Management_System.Data
       public List<Permission> Permissions { get; set; }
         public List<Schedule> Schedules { get; set; }
         public List<Attendance> Attendances { get; set; }
+        // ********** Added List Of Permissions ********** //
         public itiDummy()
         {
             Seed();
@@ -321,8 +322,44 @@ namespace Attendance_Management_System.Data
                 Attendances.Add(attendance);
 
             }
-           
+
             #endregion
+            // ********** Added Permissions ********** //
+            #region Permissions
+            Permissions.Add(new Permission()
+            {
+
+                Reason = "Late",
+                BodyOfDescription = "I was late because of the traffic",
+                Status = PermissionStatus.Pending,
+                StudentId = 1,
+                DateCreated = new DateTime(2024, 4, 3),
+                Student = students[0]
+
+            });
+            Permissions.Add(new Permission()
+            {
+
+                Reason = "Sick",
+                BodyOfDescription = "I was sick",
+                Status = PermissionStatus.Pending,
+                StudentId = 2,
+                DateCreated = new DateTime(2024, 4, 9),
+                Student = students[1]
+            });
+
+            Permissions.Add(new Permission()
+            {
+
+                Reason = "Late",
+                BodyOfDescription = "I was late because of the traffic",
+                Status = PermissionStatus.Pending,
+                StudentId = 3,
+                DateCreated = new DateTime(2024, 4, 4),
+                Student = students[2]
+            });
+            #endregion
+      
         }
         #endregion
     }
