@@ -11,6 +11,8 @@ namespace Attendance_Management_System.Data
         List<Schedule> Schedules { get; set; }
         List<Attendance> Attendances { get; set; }
         
+        // ********** Added List Of Permissions ********** //
+        List<Permission> Permissions { get; set; }
 
     }
 }
