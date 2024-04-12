@@ -36,8 +36,8 @@ namespace Attendance_Management_System.Controllers
         {
             if (ModelState.IsValid)
             {
-                // Fetch the user from the database
-                var user = await _userManager.FindByIdAsync(model.Id);
+                // Fetch the user from the database based on UserName
+                var user = await _userManager.FindByNameAsync(model.UserName);
                 if (user == null)
                 {
                     return NotFound();
@@ -66,10 +66,10 @@ namespace Attendance_Management_System.Controllers
             // If ModelState is not valid, redisplay the form with validation errors
             return View("Edit", model);
         }
-        public async Task<IActionResult> ResetPassword(string id)
+        public async Task<IActionResult> ResetPassword(int id)
         {
-            // Find the user by id
-            var user = await _userManager.FindByIdAsync(id);
+            // Find the user by an alternate unique identifier, such as email
+            var user = await _userManager.FindByIdAsync(id.ToString());
             if (user == null)
             {
                 return NotFound();
@@ -90,8 +90,11 @@ namespace Attendance_Management_System.Controllers
                 return View(model);
             }
 
+            // Convert the user ID from int to string
+            string userId = model.UserId.ToString();
+
             // Find the user by id
-            var user = await _userManager.FindByIdAsync(model.UserId);
+            var user = await _userManager.FindByIdAsync(userId);
             if (user == null)
             {
                 return NotFound();

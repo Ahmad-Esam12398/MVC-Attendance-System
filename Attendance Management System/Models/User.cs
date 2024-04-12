@@ -6,6 +6,7 @@ namespace Attendance_Management_System.Models
 {
     public class User : IdentityUser
     {
+
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public string NationalId { get; set; }
@@ -25,8 +26,9 @@ namespace Attendance_Management_System.Models
         public string Phone { get; set; }
 
         public char Gender { get; set; }
+        public int Id { get; set; }
 
-        public User() { } // Parameterless constructor
+        public User() { } 
 
     }
 }
