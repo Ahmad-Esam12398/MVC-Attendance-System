@@ -1,6 +1,4 @@
-using Attendance_Management_System.Data;
-using Attendance_Management_System.Repos;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Hosting;
 
 namespace Attendance_Management_System
 {
@@ -45,8 +43,14 @@ namespace Attendance_Management_System
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
+            var host = Host.CreateDefaultBuilder(args)
+                .ConfigureWebHostDefaults(webBuilder =>
+                {
+                    webBuilder.UseStartup<Startup>();
+                })
+                .Build();
 
-            app.Run();
+            host.Run();
         }
     }
 }

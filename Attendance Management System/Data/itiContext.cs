@@ -1,5 +1,6 @@
-﻿using Attendance_Management_System.Models;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using Attendance_Management_System.Models;
+using Microsoft.Extensions.Configuration;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace Attendance_Management_System.Data
@@ -16,13 +17,32 @@ namespace Attendance_Management_System.Data
         public DbSet<ITIProgram> Programs { get; set; }
         public DbSet<Permission> Permissions { get; set; }
         public DbSet<TrackIntake> TrackIntakes { get; set; }
+        public DbSet<User> Users { get; set; }
 
         #endregion
         public readonly IConfiguration Configuration;
-        public itiContext(IConfiguration _configuration)
+
+        public itiContext(DbContextOptions<itiContext> options, IConfiguration _configuration) : base(options)
         {
             Configuration = _configuration;
         }
+
+
+        List<Track> IitiContext.Tracks { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public List<ITIProgram> Programs { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        List<Schedule> IitiContext.Schedules { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        List<Attendance> IitiContext.Attendances { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
+        List<Track> IitiContext.Tracks { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public List<ITIProgram> Programs { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        List<Schedule> IitiContext.Schedules { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        List<Attendance> IitiContext.Attendances { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
+        List<Track> IitiContext.Tracks { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public List<ITIProgram> Programs { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        List<Schedule> IitiContext.Schedules { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        List<Attendance> IitiContext.Attendances { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
@@ -45,21 +65,6 @@ namespace Attendance_Management_System.Data
 
             modelBuilder.Entity<Schedule>()
                 .Property(s => s.EndTime)
-                .IsRequired();
-            #endregion
-            #region ScheduleEvent Relations and Validations
-
-            // Property validations for ScheduleEvent entity
-            modelBuilder.Entity<ScheduleEvent>()
-                .Property(se => se.Name)
-                .IsRequired();
-            modelBuilder.Entity<Schedule>()
-                .Property(se => se.StartTime)
-                .IsRequired();
-            modelBuilder.Entity<Schedule>()
-                .Property(se => se.EndTime)
-                .IsRequired();
-            #endregion
             #region Permissions
             modelBuilder.Entity<Permission>()
                 .HasKey(p => new { p.StudentId, p.Date });
@@ -81,6 +86,29 @@ namespace Attendance_Management_System.Data
             modelBuilder.Entity<TrackIntake>()
                 .HasKey(ti => new { ti.TrackId, ti.IntakeId });
             #endregion
+            #endregion
+            #region ScheduleEvent Relations and Validations
+            // Configure the relationship between Track and Instructor
+            modelBuilder.Entity<Track>()
+                .HasOne(t => t.Supervisor)
+                .WithMany()
+                .HasForeignKey(t => t.SupervisorId);
+            // Define primary key for Attendance entity
+            modelBuilder.Entity<Attendance>()
+                .HasKey(a => a.Id);
+
+            // Property validations for ScheduleEvent entity
+            modelBuilder.Entity<ScheduleEvent>()
+                .Property(se => se.Name)
+                .IsRequired();
+            modelBuilder.Entity<Schedule>()
+                .Property(se => se.StartTime)
+                .IsRequired();
+            modelBuilder.Entity<Schedule>()
+                .Property(se => se.EndTime)
+                .IsRequired();
+            #endregion
+
             base.OnModelCreating(modelBuilder);
         }
 
