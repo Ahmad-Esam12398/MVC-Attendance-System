@@ -40,8 +40,11 @@ namespace Attendance_Management_System.Data
 
         List<Track> IitiContext.Tracks { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public List<ITIProgram> Programs { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public List <Permission> Permissions { get=>throw new NotImplementedException(); set => throw new NotImplementedException(); }
         List<Schedule> IitiContext.Schedules { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         List<Attendance> IitiContext.Attendances { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        // ********** Added List Of Permissions ********** //
+        List<Permission> IitiContext.Permissions { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

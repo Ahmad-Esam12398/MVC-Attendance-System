@@ -13,14 +13,23 @@ namespace Attendance_Management_System.Models
     {
         public int ID { get; set; }
         [MaxLength(20)]
+        [Required(ErrorMessage ="*")]
         public string Reason { get; set; }
+        [Required(ErrorMessage = "*")]
+        
         [MaxLength(50)]
         public string BodyOfDescription { get; set; }
         public DateOnly Date { get; set; }
         public PermissionStatus Status { get; set; } = PermissionStatus.Pending;
+        [Required(ErrorMessage = "*")]
+
+        public DateTime DateCreated { get; set; }= DateTime.Now;
 
         [ForeignKey(nameof(Student))]
         public int StudentId { get; set; }
-        public Student Student { get; set; }
+        public virtual Student? Student { get; set; }
+
+
+
     }
 }

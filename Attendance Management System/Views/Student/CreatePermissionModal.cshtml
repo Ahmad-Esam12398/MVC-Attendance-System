@@ -1,0 +1,62 @@
+﻿@model Attendance_Management_System.Models.Permission
+
+<!-- Modal for creating a new permission -->
+<div class="modal fade" id="createPermissionModal" tabindex="-1" aria-labelledby="createPermissionModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="createPermissionModalLabel">Create New Permission</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Form for creating a new permission -->
+                <form asp-action="CreatePermission">
+                    <div class="form-group">
+                        <label for="Reason">Reason:</label>
+                        <select class="form-control" id="Reason" name="Reason" required onchange="toggleOtherReason(this.value)">
+                            <option value="">Select Reason</option>
+                            <option value="late">Late</option>
+                            <option value="illness">Illness</option>
+                            <option value="other">Other</option>
+                        </select>
+                        <span asp-validation-for="Reason" class="text-danger"></span>
+                    </div>
+                    <div class="form-group" id="otherReasonContainer" style="display: none;">
+                        <label for="OtherReason">Other Reason:</label>
+                        <input type="text" class="form-control" id="OtherReason" name="OtherReason" />
+                    </div>
+                    <div class="form-group">
+                        <label for="BodyOfDescription">Body of Description:</label>
+                        <textarea class="form-control" id="BodyOfDescription" name="BodyOfDescription" required></textarea>
+                        <span asp-validation-for="BodyOfDescription" class="text-danger"></span>
+                    </div>
+                    <br />
+                    <div class="form-group">
+                        <a asp-action="Permission" asp-route-id="@ViewBag.StudentId" class="btn btn-primary">Back to Permissions</a>
+
+                        <button type="submit" class="btn btn-success" style="float:right">Submit</button>
+
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    function toggleOtherReason(value) {
+        var otherReasonContainer = document.getElementById("otherReasonContainer");
+        var otherReasonInput = document.getElementById("OtherReason");
+
+        if (value === "other") {
+            otherReasonContainer.style.display = "block";
+            otherReasonInput.required = true;
+        } else {
+            otherReasonContainer.style.display = "none";
+            otherReasonInput.required = false;
+        }
+    }
+</script>
