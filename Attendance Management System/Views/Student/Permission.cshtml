@@ -1,0 +1,146 @@
+﻿@model List<Permission>
+
+@{
+    ViewData["Title"] = "Student Attendence";
+    List<string> StatusList = [PermissionStatus.Accepted.ToString(), PermissionStatus.Pending.ToString(), PermissionStatus.Refused.ToString()];
+    int id = ViewBag.id;
+
+    // Check if there is a permission for today
+    bool hasPermissionForToday = Model.Any(p => p.DateCreated.Date == DateTime.Today);
+}
+@section Styles {
+    <link rel=" stylesheet" href="~/css/Employee.css" />
+}
+
+@section NavList {
+    @Html.Partial("NavButtons_student", id)
+}
+<div class="mt-4 form-control d-flex justify-content-between">
+    <div class="mt-3" style="width: 12% !important;">
+        <label for="Status">Status</label>
+        <select id="Status" class="form-control">
+            <option value="">All</option>
+            @foreach (var status in StatusList)
+            {
+                <option value="@status">@status</option>
+            }
+        </select>
+    </div>
+
+    <div class="mt-2 d-flex flex-wrap">
+        <label for="dateFrom">From</label>
+        <input id="dateFrom" type="date" class="form-control" />
+        <label for="dateTo">To</label>
+        <input id="dateTo" type="date" class="form-control" />
+    </div>
+
+</div>
+<div>
+    <br />
+    <a asp-action="CreatePermission" asp-route-id=@id class="btn btn-success @if(hasPermissionForToday) { <text>disabled</text> }">Create New Permission</a>
+
+    
+    <br />
+    <table id="mytable" class="table table-hover text-center table-striped">
+        <thead>
+            <tr class="text-center">
+                <th>Permission Date</th>
+                <th>Permission Time</th>
+                <th>Reason</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var student_Permission in Model)
+            {
+                <tr>
+                    <td>
+                        @if (student_Permission.Status == PermissionStatus.Pending)
+                        {
+                               <div style="float: left;">
+                            <a href="@Url.Action("EditPermission", "Student", new { id = student_Permission.StudentId, permissionDate = student_Permission.DateCreated })">
+                                <i class="bx bx-edit fa-stack-1x fa-inverse" style="transform: scale(1.7); color: gray;"></i>
+                            </a>
+                            </div>
+
+                        }
+                        @{
+                            var res=DateOnly.FromDateTime(student_Permission.DateCreated);
+                            //new DateOnly(student_Permission.DateCreated.Year, student_Permission.DateCreated.Month, student_Permission.DateCreated.Day);
+                            res.ToString();
+                        }
+                        @res
+                        
+                    </td>
+                    <td>
+                        
+                               @{var x = new TimeOnly(student_Permission.DateCreated.Hour, student_Permission.DateCreated.Minute);}
+                               @x
+                    
+                    </td>
+                    <td>
+                        @student_Permission.Reason
+                    </td>
+                    @{
+                        string TextClass = "";
+                        if(student_Permission.Status==PermissionStatus.Accepted)
+                        {
+                            TextClass = "text-success";
+                        }
+                        else if (student_Permission.Status == PermissionStatus.Refused)
+                        {
+                            TextClass = "text-danger";
+                        }
+                        else
+                        {
+                            TextClass = "text-warning";
+                        }
+
+                    <td class=" @TextClass fw-bolder">
+
+                        @student_Permission.Status
+                          
+                    </td>
+                       
+                    }
+                </tr>
+
+            }
+
+        </tbody>
+    </table>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('#createPermissionModal').modal({
+                show: false
+            });
+
+            $('#editPermissionModal').modal({
+                show: false
+            });
+
+            // Add event listeners to show modals when buttons are clicked
+            $('#createPermissionBtn').click(function () {
+                $('#createPermissionModal').modal('show');
+            });
+
+            $('#editPermissionBtn').click(function () {
+                $('#editPermissionModal').modal('show');
+            });
+        });
+    </script>
+
+}
+@* <!-- Add button to open create permission modal -->
+<button type="button" id="createPermissionBtn" class="btn btn-success">Create New Permission</button>
+
+<!-- Add button to open edit permission modal -->
+<button type="button" id="editPermissionBtn" class="btn btn-primary">Edit Permission</button>
+
+<!-- Include the modals at the end of your main view -->
+@Html.Partial("CreatePermissionModal", new Attendance_Management_System.Models.Permission())
+@Html.Partial("EditPermissionModal", new Attendance_Management_System.Models.Permission())
+ *@

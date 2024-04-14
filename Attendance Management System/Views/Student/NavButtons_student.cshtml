@@ -1,0 +1,11 @@
+﻿@model int
+<a asp-action="Permission" asp-controller="student" asp-route-id="@Model" class="nav_link">
+    
+        <i class="bx bx-check fa-stack-1x fa-inverse"style="transform: scale(1.7);"></i> 
+    <span class="nav_name">Permissions</span>
+</a>
+
+<a asp-action="Attendance" asp-controller="student" asp-route-id="@Model" class="nav_link" a>
+    <i class="bx bx-file nav_icon" ></i>
+    <span class="nav_name">Your Attendance</span>
+</a>
