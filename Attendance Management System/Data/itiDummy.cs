@@ -1,6 +1,5 @@
 ﻿using Attendance_Management_System.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
@@ -15,7 +14,19 @@ namespace Attendance_Management_System.Data
        public List<ITIProgram> Programs { get; set; }
        public List<Schedule> Schedules { get; set; }
        public List<Attendance> Attendances { get; set; }
-       public itiDummy(DbContextOptions<itiDummy> options) : base(options)
+        public List<Permission> Permissions { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public DbSet<AttendanceDegree> AttendanceDegrees { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public DbSet<ScheduleEvent> ScheduleEvents { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public DbSet<TrackIntake> TrackIntakes { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public List<Student> Students { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        DbSet<Student> IitiContext.Students { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        DbSet<Track> IitiContext.Tracks { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        DbSet<ITIProgram> IitiContext.Programs { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        DbSet<Permission> IitiContext.Permissions { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        DbSet<Schedule> IitiContext.Schedules { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        DbSet<Attendance> IitiContext.Attendances { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
+        public itiDummy(DbContextOptions<itiDummy> options) : base(options)
        {
            Seed();
        }
@@ -35,7 +46,7 @@ namespace Attendance_Management_System.Data
            {
                new User
                {
-                   Id = "1",
+                   Id = 1,
                    UserName = "admin@example.com",
                    NormalizedUserName = "ADMIN@EXAMPLE.COM",
                    Email = "admin@example.com",
@@ -45,7 +56,7 @@ namespace Attendance_Management_System.Data
                },
                new User
                {
-                   Id = "2",
+                   Id = 2,
                    UserName = "student@example.com",
                    NormalizedUserName = "STUDENT@EXAMPLE.COM",
                    Email = "student@example.com",

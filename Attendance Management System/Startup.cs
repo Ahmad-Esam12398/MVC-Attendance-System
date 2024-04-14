@@ -1,15 +1,8 @@
 ﻿using Attendance_Management_System.Data;
-using Attendance_Management_System.Repos;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Attendance_Management_System.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
-using System;
 
 namespace Attendance_Management_System
 {

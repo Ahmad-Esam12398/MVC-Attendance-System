@@ -1,4 +1,7 @@
+using Attendance_Management_System.Data;
+using Attendance_Management_System.Repos;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 
 namespace Attendance_Management_System
 {
@@ -19,7 +22,11 @@ namespace Attendance_Management_System
             builder.Services.AddScoped<IEmployeeRepo, EmployeeRepo>();
 
 
-            builder.Services.AddSingleton<IitiContext, itiContext>();
+            //builder.Services.AddSingleton<IitiContext, itiContext>();
+            builder.Services.AddDbContext<itiContext>(options =>
+            {
+                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+            });
             //builder.Services.AddDbContext<itiContext>(options =>
             //options.UseSqlServer(app.Configuration.GetConnectionString("DefaultConnection")));
 

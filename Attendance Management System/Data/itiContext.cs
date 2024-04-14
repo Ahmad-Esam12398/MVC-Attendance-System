@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace Attendance_Management_System.Data
 {
-    public class itiContext : DbContext, IitiContext
+    public class itiContext : DbContext
     {
         #region DbSets
         public DbSet<Student> Students { get; set; }
@@ -20,37 +20,18 @@ namespace Attendance_Management_System.Data
         public DbSet<User> Users { get; set; }
 
         #endregion
-        public readonly IConfiguration Configuration;
+        //public readonly IConfiguration Configuration;
 
-        public itiContext(DbContextOptions<itiContext> options, IConfiguration _configuration) : base(options)
-        {
-            Configuration = _configuration;
-        }
-
-
-        List<Track> IitiContext.Tracks { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public List<ITIProgram> Programs { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        List<Schedule> IitiContext.Schedules { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        List<Attendance> IitiContext.Attendances { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-
-        List<Track> IitiContext.Tracks { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public List<ITIProgram> Programs { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        List<Schedule> IitiContext.Schedules { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        List<Attendance> IitiContext.Attendances { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-
-        List<Track> IitiContext.Tracks { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public List<ITIProgram> Programs { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public List <Permission> Permissions { get=>throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        List<Schedule> IitiContext.Schedules { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        List<Attendance> IitiContext.Attendances { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        // ********** Added List Of Permissions ********** //
-        List<Permission> IitiContext.Permissions { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
-            base.OnConfiguring(optionsBuilder);
-        }
+        //public itiContext(DbContextOptions<itiContext> options, IConfiguration _configuration) : base(options)
+        //{
+        //    Configuration = _configuration;
+        //}
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //{
+        //    optionsBuilder.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
+        //    base.OnConfiguring(optionsBuilder);
+        //}
+        public itiContext(DbContextOptions<itiContext> options) : base(options) { }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Seed();
@@ -67,7 +48,7 @@ namespace Attendance_Management_System.Data
                 .IsRequired();
 
             modelBuilder.Entity<Schedule>()
-                .Property(s => s.EndTime)
+                .Property(s => s.EndTime);
             #region Permissions
             modelBuilder.Entity<Permission>()
                 .HasKey(p => new { p.StudentId, p.Date });
@@ -95,7 +76,7 @@ namespace Attendance_Management_System.Data
             modelBuilder.Entity<Track>()
                 .HasOne(t => t.Supervisor)
                 .WithMany()
-                .HasForeignKey(t => t.SupervisorId);
+                .HasForeignKey(t => t.SuperVisorId);
             // Define primary key for Attendance entity
             modelBuilder.Entity<Attendance>()
                 .HasKey(a => a.Id);

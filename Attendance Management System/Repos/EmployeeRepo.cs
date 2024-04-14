@@ -6,14 +6,15 @@ namespace Attendance_Management_System.Repos
 {
     public class EmployeeRepo : IEmployeeRepo
     {
-        IitiContext db;
+        itiContext db;
         int initialAbsenceDegrees = 500;
-        public EmployeeRepo(IitiContext _db)
+        public EmployeeRepo(itiContext _db)
         {
             db = _db;
         }
         public List<Student> ReadAllStudents()
         {
+            
             return db.Students.ToList();
         }
         public List<Track> ReadAllTracks()
