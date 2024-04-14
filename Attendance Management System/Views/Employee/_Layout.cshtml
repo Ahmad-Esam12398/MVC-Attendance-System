@@ -77,6 +77,17 @@
     <script src="https://cdn.jsdelivr.net/npm/luxon@3.4.4/build/global/luxon.min.js"></script>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     @* <script src=""></script> *@
+    <script>
+        $(document).ready(function () {
+            document.documentElement.style.setProperty('--first-color', $("UserColor").value);
+            $("#UserColor").on('change', function(){
+                document.documentElement.style.setProperty('--first-color', this.value);
+                console.log("Changed");
+                // document.documentElement.style.setProperty('--first-color', this.value);
+                // document.documentElement.style.setProperty('--first-color', this.value);
+            })
+        });
+    </script>
     <!-- End Scripts -->
     <script src="~/js/layout.js" type="module"></script>
 

@@ -7,32 +7,33 @@ namespace Attendance_Management_System.Repos
     public class EmployeeRepo : IEmployeeRepo
     {
         IitiContext db;
+        int initialAbsenceDegrees = 500;
         public EmployeeRepo(IitiContext _db)
         {
             db = _db;
         }
         public List<Student> ReadAllStudents()
         {
-            return db.students.ToList();
+            return db.Students.ToList();
         }
         public List<Track> ReadAllTracks()
         {
-            return db.Tracks.ToList();
+            return db.Tracks.Include(t=> t.Program).ToList();
         }
         public List<Student> ReadTodaysStudents()
         {
             var todayDate = DateTime.Now;
             var todaysTracks = db.Schedules.Where(s => s.Date == DateOnly.FromDateTime(todayDate)).Select(s=> s.Track).ToList();
-            var todaysStudents = db.students.Where(s => todaysTracks.Contains(s.Track)).ToList();
+            var todaysStudents = db.Students.Where(s => todaysTracks.Contains(s.Track)).ToList();
             return todaysStudents;
         }
         public List<Schedule> ReadSchedules()
         {
-            return db.Schedules.ToList();
+            return db.Schedules.Include(s=> s.Track).ThenInclude(t => t.Students).ToList();
         }
         public int SetAttendance(int id, DateTime dateTime, string type)
         {
-            var student = db.students.FirstOrDefault(s=> s.ID == id);
+            var student = db.Students.FirstOrDefault(s=> s.ID == id);
             if(student == null)
             {
                 return 1;
@@ -48,22 +49,44 @@ namespace Attendance_Management_System.Repos
                 Attendance attendance = new Attendance()
                 {
                     StudentId = id,
-                    Student = student,
                     Date = DateOnly.FromDateTime(dateTime),
                     Time_in = TimeOnly.FromDateTime(dateTime)
                 };
                 db.Attendances.Add(attendance);
-                student.Attendances.Add(attendance);
-                //db.SaveChanges();
+                //student.Attendances.Add(attendance);
             }
             else if(type == "out")
             {
                 var attendance = db.Attendances.FirstOrDefault(a => a.StudentId == id && a.Date == DateOnly.FromDateTime(dateTime));
                 attendance.Time_out = TimeOnly.FromDateTime(dateTime);
                 student.Attendances.Single(s => s.Date == DateOnly.FromDateTime(dateTime)).Time_out = TimeOnly.FromDateTime(dateTime);
-                //db.SaveChanges();
             }
+            db.SaveChanges();
             return 0;
+        }
+        public void CalculateAttendanceDegrees()
+        {
+            var students = db.Students.Include(s=> s.AttendanceDegrees).Where(s => s.AttendanceDegrees.Max(ad => ad.UntilDate) != DateOnly.FromDateTime(DateTime.Now)).ToList();
+            foreach(var student in students)
+            {
+                var totalDays = db.Schedules.Where(s => s.Track == student.Track).Select(s=> s.Date).Distinct();
+                var totalStudentsdays = db.Attendances.Where(a => a.StudentId == student.ID).Select(a=> a.Date).Distinct();
+                int absentDays = totalDays.Except(totalStudentsdays).Count();
+                var attendanceDegree = new AttendanceDegree()
+                {
+                    StudentId = student.ID,
+                    AbscenceDays = absentDays,
+                    AttendanceDegrees = initialAbsenceDegrees - absentDays * 10,
+                    UntilDate = DateOnly.FromDateTime(DateTime.Now)
+                };
+                db.AttendanceDegrees.Add(attendanceDegree);
+                db.SaveChanges();
+            }
+        }
+        public List<AttendanceDegree> ReadAttendanceDegrees()
+        {
+            CalculateAttendanceDegrees();
+            return db.AttendanceDegrees.Include(ad=> ad.Student).ThenInclude(s=> s.Track).ToList();
         }
     }
 }

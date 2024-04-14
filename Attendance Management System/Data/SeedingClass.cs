@@ -1,34 +1,32 @@
 ﻿using Attendance_Management_System.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace Attendance_Management_System.Data
 {
-    public class itiDummy : IitiContext
+    static public class SeedingClass
     {
-        public List<Student> students { get; set; }
-        public List<Track> Tracks { get; set; }
-        public List<ITIProgram> Programs { get; set; }
-        public List<Schedule> Schedules { get; set; }
-        public List<Attendance> Attendances { get; set; }
-        public List<AttendanceDegree> AttendanceDegrees { get; set; }
-        public DbSet<Student> Students { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        DbSet<Attendance> IitiContext.Attendances { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        DbSet<AttendanceDegree> IitiContext.AttendanceDegrees { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        DbSet<Schedule> IitiContext.Schedules { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public DbSet<ScheduleEvent> ScheduleEvents { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        DbSet<Track> IitiContext.Tracks { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        DbSet<ITIProgram> IitiContext.Programs { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public DbSet<Permission> Permissions { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public DbSet<TrackIntake> TrackIntakes { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-
-        public itiDummy()
+        public static List<Student> students { get; set; }
+        public static List<Track> Tracks { get; set; }
+        public static List<ITIProgram> Programs { get; set; }
+        public static List<Schedule> Schedules { get; set; }
+        public static List<Attendance> Attendances { get; set; }
+        public static List<AttendanceDegree> AttendanceDegrees { get; set; }
+        public static List<Intake> Intakes { get; set; }
+        public static List<TrackIntake> TrackIntakes { get; set; }
+        public static void MakeLists()
         {
-            Seed();
-        }
-        #region Seed Initial Data
-        private void Seed()
-        {
+            #region Intakes
+            Intakes = new List<Intake>()
+            {
+                new Intake()
+                {
+                    Id = 1,
+                    Number = 44,
+                    StartDate = DateOnly.Parse("2023-09-01"),
+                    EndDate = DateOnly.Parse("2024-09-01"),
+                },
+            };
+            #endregion
             #region Programs
             Programs = new List<ITIProgram>()
             {
@@ -70,35 +68,35 @@ namespace Attendance_Management_System.Data
                     Id = 1,
                     Name = "PD",
                     IsActive = true,
-                    Program = Programs[0],
+                    ProgramId = Programs[0].Id,
                 },
                 new Track()
                 {
                     Id = 2,
                     Name = "OS",
                     IsActive = true,
-                    Program = Programs[0]
+                    ProgramId = Programs[0].Id,
                 },
                 new Track()
                 {
                     Id = 3,
                     Name = "AI",
                     IsActive = true,
-                    Program = Programs[1]
+                    ProgramId = Programs[1].Id,
                 },
                 new Track()
                 {
                     Id = 4,
                     Name = "MERN",
                     IsActive = true,
-                    Program = Programs[1]
+                    ProgramId = Programs[1].Id,
                 },
                 new Track()
                 {
                     Id = 5,
                     Name = "MEAN",
                     IsActive = true,
-                    Program = Programs[1]
+                    ProgramId = Programs[1].Id,
                 },
             };
             #endregion
@@ -116,7 +114,7 @@ namespace Attendance_Management_System.Data
                     Password = "12345678",
                     University = "Mansoura",
                     Faculty = "Engineering",
-                    Track = Tracks[0]
+                    TrackID = Tracks[0].Id
                 },
                 new Student()
                 {
@@ -129,7 +127,7 @@ namespace Attendance_Management_System.Data
                     Password = "12345678",
                     University = "Mansoura",
                     Faculty = "CS",
-                    Track = Tracks[0]
+                    TrackID = Tracks[0].Id
                 },
                 new Student()
                 {
@@ -142,7 +140,7 @@ namespace Attendance_Management_System.Data
                     Password = "12345678",
                     University = "Cairo",
                     Faculty = "Engineering",
-                    Track = Tracks[0]
+                    TrackID = Tracks[1].Id
                 },
                 new Student()
                 {
@@ -155,7 +153,7 @@ namespace Attendance_Management_System.Data
                     Password = "12345678",
                     University = "AinShams",
                     Faculty = "Engineering",
-                    Track = Tracks[1]
+                    TrackID = Tracks[1].Id
                 },
                 new Student()
                 {
@@ -168,7 +166,7 @@ namespace Attendance_Management_System.Data
                     Password = "12345678",
                     University = "Tanta",
                     Faculty = "CS",
-                    Track = Tracks[1]
+                    TrackID = Tracks[2].Id
                 }
             };
             #region randomize students data
@@ -203,7 +201,7 @@ namespace Attendance_Management_System.Data
                     Password = "12345678",
                     University = Universities[random.Next(Universities.Count)],
                     Faculty = Faculties[random.Next(Faculties.Count)],
-                    Track = Tracks[random.Next(Tracks.Count)]
+                    TrackID = Tracks[random.Next(Tracks.Count)].Id
                 });
             }
             #endregion
@@ -217,7 +215,7 @@ namespace Attendance_Management_System.Data
                     Date = DateOnly.FromDateTime(DateTime.Now),
                     StartTime = TimeOnly.Parse("09:00"),
                     EndTime = TimeOnly.Parse("22:00"),
-                    Track = Tracks[0],
+                    TrackId = 1,
                 },
                 new Schedule()
                 {
@@ -225,25 +223,54 @@ namespace Attendance_Management_System.Data
                     Date = DateOnly.FromDateTime(DateTime.Now.AddDays(1)),
                     StartTime = TimeOnly.Parse("11:00"),
                     EndTime = TimeOnly.Parse("22:00"),
-                    Track = Tracks[1],
+                    TrackId = 2,
                 }
             };
-            Tracks[0].Students = students.Where(s => s.Track == Tracks[0]).ToList();
-            Tracks[1].Students = students.Where(s => s.Track == Tracks[1]).ToList();
+            //Tracks[0].Students = students.Where(s => s.Track == Tracks[0]).ToList();
+            //Tracks[1].Students = students.Where(s => s.Track == Tracks[1]).ToList();
+            #endregion
+            #region Intake Tracks
+            TrackIntakes = new List<TrackIntake>()
+            {
+                new TrackIntake()
+                {
+                    TrackId = 1,
+                    IntakeId = 1
+                },
+                new TrackIntake()
+                {
+                    TrackId = 2,
+                    IntakeId = 1
+                },
+                new TrackIntake()
+                {
+                    TrackId = 3,
+                    IntakeId = 1
+                },
+                new TrackIntake()
+                {
+                    TrackId = 4,
+                    IntakeId = 1
+                },
+                new TrackIntake()
+                {
+                    TrackId = 5,
+                    IntakeId = 1
+                }
+            };
             #endregion
             Attendances = new List<Attendance>();
             AttendanceDegrees = new List<AttendanceDegree>();
         }
-
-        public int SaveChanges()
+        public static void Seed(this ModelBuilder modelBuilder)
         {
-            throw new NotImplementedException();
+            MakeLists();
+            modelBuilder.Entity<Intake>().HasData(Intakes);
+            modelBuilder.Entity<ITIProgram>().HasData(Programs);
+            modelBuilder.Entity<Track>().HasData(Tracks);
+            modelBuilder.Entity<Student>().HasData(students);
+            modelBuilder.Entity<Schedule>().HasData(Schedules);
+            modelBuilder.Entity<TrackIntake>().HasData(TrackIntakes);
         }
-
-        public EntityEntry Update(object entity)
-        {
-            throw new NotImplementedException();
-        }
-        #endregion
     }
 }

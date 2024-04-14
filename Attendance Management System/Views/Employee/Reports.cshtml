@@ -1,18 +1,15 @@
-﻿@model IEnumerable<Student>
+﻿@model IEnumerable<AttendanceDegree>
 @{
     ViewData["Title"] = "Index";
     var tracks = ViewData["Tracks"] as List<Track>;
-    var studentsNames = Model.Select(s => s.UserName).ToList();
-    var schedules = ViewData["Schedules"] as List<Schedule>;
-    int tolerance = ViewBag.Tolerance;
 }
-@section styles{
+@section styles {
     <link rel="stylesheet" href="~/css/Employee.css" />
 }
-@section NavList{
+@section NavList {
     @Html.Partial("navButtons")
 }
-<h1>Index</h1>
+<h1>Reports</h1>
 <div class="mt-4 form-control d-flex justify-content-between">
     <div class="mt-3" style="width: 12% !important;">
         <label for="Track">Track</label>
@@ -26,7 +23,7 @@
     </div>
     <div class="mt-2 d-flex flex-wrap">
         <label for="dateFrom">From</label>
-        <input id="dateFrom" type="date" class="form-control"/>
+        <input id="dateFrom" type="date" class="form-control" />
         <label for="dateTo">To</label>
         <input id="dateTo" type="date" class="form-control" />
     </div>
@@ -37,74 +34,36 @@
             <tr class="text-center">
                 <th>Name</th>
                 <th>Track</th>
-                <th>Program</th>
-                <th>University</th>
-                <th>Faculty</th>
-                <th>Gender</th>
-                <th>Phone</th>
-                <th>Attendance Date</th>
-                <th>Status</th>
-                <th>Checked In</th>
-                <th>Checked Out</th>
+                <th>until Date</th>
+                <th>Absence Days Count</th>
+                <th>Degree</th>
             </tr>
         </thead>
         <tbody>
-            @foreach (Schedule currentSchedule in schedules.Where(s=> s.Date <= DateOnly.FromDateTime(DateTime.Now)))
+            @foreach (AttendanceDegree degree in Model)
             {
-                @foreach (Student student in currentSchedule.Track.Students)
-                {
-                    var studentTrack = tracks.FirstOrDefault(t => t.Id == student.TrackID);
-                    <tr>
-                        <td>@student.UserName</td>
-                        <td>@studentTrack.Name</td>
-                        <td>@studentTrack.Program.Name</td>
-                        <td>@student.University</td>
-                        <td>@student.Faculty</td>
-                        <td>@student.Gender</td>
-                        <td>@student.Phone</td>
-                        <td>@currentSchedule.Date</td>
-                        @{
-                            string TextClass = "";
-                            string bgClass = "";
-                            string status = "";
-                            var attendance = student.Attendances.FirstOrDefault(a => a.Date == currentSchedule.Date);
-                            if(attendance == null)
-                            {
-                                bgClass = "bg-danger";
-                                TextClass = "text-danger";
-                                status = "Absent";
-                            }
-                            else
-                            {
-                                if (attendance?.Time_in != null && attendance?.Time_in > currentSchedule?.StartTime.AddMinutes(tolerance))
-                                {
-                                    bgClass = "bg-warning";
-                                    TextClass = "text-warning";
-                                    status = "Late";
-                                }
-                                else
-                                {
-                                    bgClass = "bg-primary";
-                                    TextClass = "text-primary";
-                                    status = "On Time";
-                                }
-                            }
-                                    @:
-                                    <td><span class="@TextClass @bgClass rounded-4 px-2">@status</span></td>
-                                    @:<td>@(attendance?.Time_in == null ? "N/A" : attendance.Time_in)</td>
-                                    @:<td>@(attendance?.Time_out == null ? "N/A" : attendance.Time_out)</td>
-                        }
-
-                    </tr>
-                }
+                <tr>
+                    <td>@degree.Student.UserName</td>
+                    <td>@degree.Student.Track.Name</td>
+                    <td>@degree.UntilDate</td>
+                    <td>@degree.AbscenceDays</td>
+                    <td>@degree.AttendanceDegrees</td>
+                </tr>
             }
         </tbody>
     </table>
 </div>
-@section Scripts{
+@section Scripts {
 
     <script>
         $(document).ready(function () {
+            document.documentElement.style.setProperty('--first', $("UserColor").value);
+            $("#UserColor").on('change', function () {
+                document.documentElement.style.setProperty('--first', this.value);
+                console.log("Changed");
+                // document.documentElement.style.setProperty('--first-color', this.value);
+                // document.documentElement.style.setProperty('--first-color', this.value);
+            })
             var table = $('#mytable').DataTable({
                 layout: {
                     topStart: {
@@ -112,7 +71,7 @@
                         buttons: [
                             {
                                 extend: 'copy',
-                                exportOptions:{
+                                exportOptions: {
                                     rows: ':visible',
                                     columns: ':visible'
                                 }
@@ -134,14 +93,14 @@
                                             },
                                         },
                                     })
-                                    .then(value => {
-                                        $(node).removeClass('processing');
-                                        if (value) {
-                                            config.filename = value;
-                                            $.fn.dataTable.ext.buttons.pdfHtml5.action.call(this, e, dt, node, config);
+                                        .then(value => {
+                                            $(node).removeClass('processing');
+                                            if (value) {
+                                                config.filename = value;
+                                                $.fn.dataTable.ext.buttons.pdfHtml5.action.call(this, e, dt, node, config);
 
-                                        }
-                                    })
+                                            }
+                                        })
                                 }
                             },
                             {
@@ -161,14 +120,14 @@
                                             },
                                         },
                                     })
-                                    .then(value => {
-                                        $(node).removeClass('processing');
-                                        if (value) {
-                                            config.filename = value;
-                                            $.fn.dataTable.ext.buttons.pdfHtml5.action.call(this, e, dt, node, config);
+                                        .then(value => {
+                                            $(node).removeClass('processing');
+                                            if (value) {
+                                                config.filename = value;
+                                                $.fn.dataTable.ext.buttons.pdfHtml5.action.call(this, e, dt, node, config);
 
-                                        }
-                                    })
+                                            }
+                                        })
                                 }
                             },
                             {
@@ -177,7 +136,7 @@
                                     rows: ':visible',
                                     columns: ':visible',
                                 },
-                                action: function (e, dt, node, config){
+                                action: function (e, dt, node, config) {
                                     swal({
                                         buttons: [true, "Save"],
                                         title: "Save",
@@ -188,14 +147,14 @@
                                             },
                                         },
                                     })
-                                    .then(value => {
-                                        $(node).removeClass('processing');
-                                        if (value) {
-                                            config.filename = value;
-                                            $.fn.dataTable.ext.buttons.pdfHtml5.action.call(this, e, dt, node, config);
+                                        .then(value => {
+                                            $(node).removeClass('processing');
+                                            if (value) {
+                                                config.filename = value;
+                                                $.fn.dataTable.ext.buttons.pdfHtml5.action.call(this, e, dt, node, config);
 
-                                        }
-                                    })
+                                            }
+                                        })
                                 }
                             },
                             {
@@ -215,7 +174,7 @@
                 pageLength: 25,
             });
             table.buttons().container().appendTo($('.col-sm-6:eq(0)', table.table().container()));
-            table.column(2).visible(false);
+            // table.column(2).visible(false);
             $("#Track").on('change', function () {
                 if (this.value == "")
                     table.columns(1).search("").draw();
@@ -246,5 +205,7 @@
         });
     </script>
 }
+
+
 
 

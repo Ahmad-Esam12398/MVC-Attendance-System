@@ -46,5 +46,12 @@ namespace Attendance_Management_System.Controllers
             }
             return Json(new { success = false, Message = "Invalid Data" });
         }
+        public IActionResult Reports()
+        {
+            var tracks = EmployeeRepo.ReadAllTracks();
+            ViewBag.Tracks = tracks;
+            var attendanceDegrees = EmployeeRepo.ReadAttendanceDegrees();
+            return View(attendanceDegrees);
+        }
     }
 }

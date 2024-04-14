@@ -1,27 +1,28 @@
 ﻿using Attendance_Management_System.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace Attendance_Management_System.Data
 {
     public class itiContext : DbContext, IitiContext
     {
         #region DbSets
+        public DbSet<Student> Students { get; set; }
+        public DbSet<Attendance> Attendances { get; set; }
+        public DbSet<AttendanceDegree> AttendanceDegrees { get; set; }
         public DbSet<Schedule> Schedules { get; set; }
         public DbSet<ScheduleEvent> ScheduleEvents { get; set; }
         public DbSet<Track> Tracks { get; set; }
+        public DbSet<ITIProgram> Programs { get; set; }
+        public DbSet<Permission> Permissions { get; set; }
+        public DbSet<TrackIntake> TrackIntakes { get; set; }
+
         #endregion
         public readonly IConfiguration Configuration;
         public itiContext(IConfiguration _configuration)
         {
             Configuration = _configuration;
         }
-
-        public List<Student> students { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        List<Track> IitiContext.Tracks { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public List<ITIProgram> Programs { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        List<Schedule> IitiContext.Schedules { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        List<Attendance> IitiContext.Attendances { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
@@ -29,12 +30,9 @@ namespace Attendance_Management_System.Data
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Seed();
             #region Schedule Relations and Validations
             //  1-M relationship between Schedule and Track
-            modelBuilder.Entity<Schedule>()
-                .HasOne(s => s.Track)
-                .WithMany(t => t.Schedules)
-                .HasForeignKey(s => s.TrackId);
 
             // Property validations for Schedule entity
             modelBuilder.Entity<Schedule>()
@@ -50,11 +48,6 @@ namespace Attendance_Management_System.Data
                 .IsRequired();
             #endregion
             #region ScheduleEvent Relations and Validations
-            // 1-M relationship between ScheduleEvent and Schedule
-            modelBuilder.Entity<ScheduleEvent>()
-                .HasOne(se => se.Schedule)
-                .WithMany(s => s.ScheduleEvents)
-                .HasForeignKey(se => se.ScheduleId);
 
             // Property validations for ScheduleEvent entity
             modelBuilder.Entity<ScheduleEvent>()
@@ -67,7 +60,27 @@ namespace Attendance_Management_System.Data
                 .Property(se => se.EndTime)
                 .IsRequired();
             #endregion
-
+            #region Permissions
+            modelBuilder.Entity<Permission>()
+                .HasKey(p => new { p.StudentId, p.Date });
+            #endregion
+            #region Attendance
+            modelBuilder.Entity<Attendance>()
+                .HasKey(a => new { a.StudentId, a.Date });
+            #endregion
+            #region AttendanceDegree
+            modelBuilder.Entity<AttendanceDegree>()
+                .HasKey(ad => new { ad.StudentId, ad.UntilDate });
+            #endregion
+            #region Student
+            modelBuilder.Entity<Student>()
+                .HasIndex(s => s.NationalId)
+                .IsUnique();
+            #endregion
+            #region Track Intake
+            modelBuilder.Entity<TrackIntake>()
+                .HasKey(ti => new { ti.TrackId, ti.IntakeId });
+            #endregion
             base.OnModelCreating(modelBuilder);
         }
 
