@@ -6,6 +6,7 @@ namespace Attendance_Management_System.Data
 {
     public class itiContext : DbContext, IitiContext
     {
+        #region DbSets
         public DbSet<Schedule> Schedules { get; set; }
         public DbSet<ScheduleEvent> ScheduleEvents { get; set; }
         public DbSet<Track> Tracks { get; set; }
@@ -13,17 +14,18 @@ namespace Attendance_Management_System.Data
         public List<Student> students { get; set; }
         public List<ITIProgram> Programs { get; set; }
         public List<Attendance> Attendances { get; set; }
-        private readonly IConfiguration _configuration;
+        #endregion
+        public readonly IConfiguration Configuration;
 
-        public itiContext(DbContextOptions<itiContext> options, IConfiguration configuration) : base(options)
+        public itiContext(DbContextOptions<itiContext> options, IConfiguration _configuration) : base(options)
         {
-            _configuration = configuration;
+            Configuration = _configuration;
         }
 
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(_configuration.GetConnectionString("DefaultConnection"));
+            optionsBuilder.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
             base.OnConfiguring(optionsBuilder);
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
