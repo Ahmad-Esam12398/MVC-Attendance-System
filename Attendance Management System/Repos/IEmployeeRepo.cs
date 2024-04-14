@@ -7,7 +7,7 @@ namespace Attendance_Management_System.Repos
         List<Student> ReadAllStudents();
         List<Track> ReadAllTracks();
         List<Student> ReadTodaysStudents();
-        int SetAttendance(String id, DateTime dateTime, string type);
+        int SetAttendance(int id, DateTime dateTime, string type);
         List<Schedule> ReadSchedules();
     }
 }
