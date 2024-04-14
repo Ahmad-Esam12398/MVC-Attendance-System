@@ -13,7 +13,7 @@ namespace Attendance_Management_System.Repos
         }
         public List<Student> ReadAllStudents()
         {
-            return db.students.ToList();
+            return db.Students.ToList();
         }
         public List<Track> ReadAllTracks()
         {
@@ -23,7 +23,7 @@ namespace Attendance_Management_System.Repos
         {
             var todayDate = DateTime.Now;
             var todaysTracks = db.Schedules.Where(s => s.Date == DateOnly.FromDateTime(todayDate)).Select(s=> s.Track).ToList();
-            var todaysStudents = db.students.Where(s => todaysTracks.Contains(s.Track)).ToList();
+            var todaysStudents = db.Students.Where(s => todaysTracks.Contains(s.Track)).ToList();
             return todaysStudents;
         }
         public List<Schedule> ReadSchedules()
@@ -32,7 +32,7 @@ namespace Attendance_Management_System.Repos
         }
         public int SetAttendance(int id, DateTime dateTime, string type)
         {
-            var student = db.students.FirstOrDefault(s=> s.ID == id);
+            var student = db.Students.FirstOrDefault(s=> s.ID == id);
             if(student == null)
             {
                 return 1;

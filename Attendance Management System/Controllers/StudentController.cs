@@ -84,7 +84,13 @@ namespace Attendance_Management_System.Controllers
 
 
 
-
+        // Delete a permission
+        [HttpPost]
+        public IActionResult DeletePermission(int id, DateTime permissionDate)
+        {
+            StudentRepo.DeletePermission(id, permissionDate);
+            return RedirectToAction("Permissions", new { id });
+        }
 
 
     }

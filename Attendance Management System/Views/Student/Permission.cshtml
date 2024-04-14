@@ -41,7 +41,7 @@
 
     
     <br />
-    <table id="mytable" class="table table-hover text-center table-striped">
+    <table id="myTable" class="table table-hover text-center table-striped">
         <thead>
             <tr class="text-center">
                 <th>Permission Date</th>
@@ -55,7 +55,7 @@
             {
                 <tr>
                     <td>
-                        @if (student_Permission.Status == PermissionStatus.Pending)
+                        @if (student_Permission.Status == PermissionStatus.Pending&&DateOnly.FromDateTime(student_Permission.DateCreated)==DateOnly.FromDateTime(DateTime.Now))
                         {
                                <div style="float: left;">
                             <a href="@Url.Action("EditPermission", "Student", new { id = student_Permission.StudentId, permissionDate = student_Permission.DateCreated })">
@@ -79,6 +79,7 @@
                     
                     </td>
                     <td>
+                        
                         @student_Permission.Reason
                     </td>
                     @{
@@ -99,6 +100,18 @@
                     <td class=" @TextClass fw-bolder">
 
                         @student_Permission.Status
+
+                            @if (student_Permission.Status == PermissionStatus.Pending && DateOnly.FromDateTime(student_Permission.DateCreated) == DateOnly.FromDateTime(DateTime.Now))
+                            {
+                                <div style="float: right;">
+                                    <a href="@Url.Action("DeletePermission", "Student", new { id = student_Permission.StudentId, permissionDate = student_Permission.DateCreated })" onclick="return confirm('Are you sure to delete this Permission')" >
+                                        <i class="bx bx-trash fa-stack-1x fa-inverse" style="transform: scale(2.5); color: red; "></i>
+                                    </a>
+                                    |<a class="btn btn-danger" asp-action="DeletePermission" asp-route-id="@student_Permission.StudentId" asp-route-permissionDate="@student_Permission.DateCreated" onclick="return confirm('Are you sure to delete this Permission')" as>quick Delete</a>
+
+                                </div>
+
+                            }
                           
                     </td>
                        
@@ -131,9 +144,34 @@
                 $('#editPermissionModal').modal('show');
             });
         });
+
     </script>
 
+
+     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.datatables.net/2.0.3/js/dataTables.js"></script>
+    <script src="https://cdn.datatables.net/2.0.3/js/dataTables.bootstrap5.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.0.1/js/dataTables.buttons.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.0.1/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.0.1/js/buttons.print.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.0.1/js/buttons.colVis.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.0.1/js/buttons.bootstrap5.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/luxon@3.4.4/build/global/luxon.min.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+    <script src="~/js/student_Attendance.js" ></script>
+
+  
+
+
+
 }
+
 @* <!-- Add button to open create permission modal -->
 <button type="button" id="createPermissionBtn" class="btn btn-success">Create New Permission</button>
 
