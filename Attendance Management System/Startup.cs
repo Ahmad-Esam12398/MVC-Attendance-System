@@ -32,7 +32,7 @@ namespace Attendance_Management_System
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             // Configure ASP.NET Core Identity to use itiContext for user and role management
-            services.AddIdentity<User, IdentityRole>(options =>
+            services.AddIdentity<User, IdentityRole<int>>(options =>
             {
                 // Lockout settings
                 options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(30);
