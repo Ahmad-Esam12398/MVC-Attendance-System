@@ -105,7 +105,6 @@ namespace TestProject
             {
                 new Student()
                 {
-                    ID = 1,
                     NationalId = "29803121600573",
                     UserName = "AhmadEsam",
                     Email = "Ahmad.esam1231998@gmail.com",
@@ -118,7 +117,6 @@ namespace TestProject
                 },
                 new Student()
                 {
-                    ID = 2,
                     NationalId = "29803151800654",
                     UserName = "AliEmad",
                     Email = "ali@example.com",
@@ -131,7 +129,6 @@ namespace TestProject
                 },
                 new Student()
                 {
-                    ID = 3,
                     NationalId = "32006485523654",
                     UserName = "AhmedAbdallah",
                     Email = "AhmadL3swy@example.com",
@@ -144,7 +141,6 @@ namespace TestProject
                 },
                 new Student()
                 {
-                    ID = 4,
                     NationalId = "42557896652148",
                     UserName = "Raheek",
                     Email = "Raheek@gmail.com",
@@ -157,7 +153,6 @@ namespace TestProject
                 },
                 new Student()
                 {
-                    ID = 5,
                     NationalId = "53665485772015",
                     UserName = "Nada",
                     Email = "Nada@yahoo.com",
