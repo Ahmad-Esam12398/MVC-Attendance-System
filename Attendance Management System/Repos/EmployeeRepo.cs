@@ -6,9 +6,9 @@ namespace Attendance_Management_System.Repos
 {
     public class EmployeeRepo : IEmployeeRepo
     {
-        IitiContext db;
+        itiContext db;
         int initialAbsenceDegrees = 500;
-        public EmployeeRepo(IitiContext _db)
+        public EmployeeRepo(itiContext _db)
         {
             db = _db;
         }
@@ -33,7 +33,7 @@ namespace Attendance_Management_System.Repos
         }
         public int SetAttendance(int id, DateTime dateTime, string type)
         {
-            var student = db.Students.FirstOrDefault(s=> s.ID == id);
+            var student = db.Students.FirstOrDefault(s=> s.Id == id);
             if(student == null)
             {
                 return 1;
@@ -70,11 +70,11 @@ namespace Attendance_Management_System.Repos
             foreach(var student in students)
             {
                 var totalDays = db.Schedules.Where(s => s.Track == student.Track).Select(s=> s.Date).Distinct();
-                var totalStudentsdays = db.Attendances.Where(a => a.StudentId == student.ID).Select(a=> a.Date).Distinct();
+                var totalStudentsdays = db.Attendances.Where(a => a.StudentId == student.Id).Select(a=> a.Date).Distinct();
                 int absentDays = totalDays.Except(totalStudentsdays).Count();
                 var attendanceDegree = new AttendanceDegree()
                 {
-                    StudentId = student.ID,
+                    StudentId = student.Id,
                     AbscenceDays = absentDays,
                     AttendanceDegrees = initialAbsenceDegrees - absentDays * 10,
                     UntilDate = DateOnly.FromDateTime(DateTime.Now)

@@ -5,8 +5,8 @@ namespace Attendance_Management_System.Repos
 {
     public class AdminRepo : IAdminRepo
     {
-        IitiContext db;
-        public AdminRepo(IitiContext _db)
+        itiContext db;
+        public AdminRepo(itiContext _db)
         {
             db = _db;
         }

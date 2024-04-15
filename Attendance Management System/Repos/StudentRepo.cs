@@ -10,8 +10,8 @@ namespace Attendance_Management_System.Repos
 {
     public class StudentRepo : IStudentRepo
     {
-        IitiContext db;
-        public StudentRepo(IitiContext _db)
+        itiContext db;
+        public StudentRepo(itiContext _db)
         {
             db = _db;
         }
@@ -30,7 +30,7 @@ namespace Attendance_Management_System.Repos
 
         public List<AttendanceViewData> Get_Student_Attendances_By_Id(int stdID)
         {
-            var student = db.students.FirstOrDefault(x => x.ID == stdID);
+            var student = db.Students.FirstOrDefault(x => x.Id == stdID);
             List<AttendanceViewData> attendances_for_view = new List<AttendanceViewData>();
 
             if (student!=null)
@@ -132,7 +132,7 @@ namespace Attendance_Management_System.Repos
 
             public  Student GetStudentById(int id)
         {
-           return db.students.FirstOrDefault(s=>s.ID==id);
+           return db.Students.FirstOrDefault(s=>s.Id==id);
 
         }
     }
