@@ -1,5 +1,6 @@
 ﻿using Attendance_Management_System.Models;
 using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace Attendance_Management_System.Data
 {
@@ -105,7 +106,7 @@ namespace Attendance_Management_System.Data
             {
                 new Student()
                 {
-                    ID = 1,
+                    Id = -1,
                     NationalId = "29803121600573",
                     UserName = "AhmadEsam",
                     Email = "Ahmad.esam1231998@gmail.com",
@@ -118,7 +119,7 @@ namespace Attendance_Management_System.Data
                 },
                 new Student()
                 {
-                    ID = 2,
+                    Id = -2,
                     NationalId = "29803151800654",
                     UserName = "AliEmad",
                     Email = "ali@example.com",
@@ -131,7 +132,7 @@ namespace Attendance_Management_System.Data
                 },
                 new Student()
                 {
-                    ID = 3,
+                    Id = -3,
                     NationalId = "32006485523654",
                     UserName = "AhmedAbdallah",
                     Email = "AhmadL3swy@example.com",
@@ -144,7 +145,7 @@ namespace Attendance_Management_System.Data
                 },
                 new Student()
                 {
-                    ID = 4,
+                    Id = -4,
                     NationalId = "42557896652148",
                     UserName = "Raheek",
                     Email = "Raheek@gmail.com",
@@ -157,7 +158,7 @@ namespace Attendance_Management_System.Data
                 },
                 new Student()
                 {
-                    ID = 5,
+                    Id = -5,
                     NationalId = "53665485772015",
                     UserName = "Nada",
                     Email = "Nada@yahoo.com",
@@ -192,7 +193,7 @@ namespace Attendance_Management_System.Data
                 }
                 students.Add(new Student()
                 {
-                    ID = i,
+                    Id = -i,
                     NationalId = new string(id),
                     UserName = "Student" + i,
                     Email = "Student" + i + "@example.com",
@@ -265,12 +266,12 @@ namespace Attendance_Management_System.Data
         public static void Seed(this ModelBuilder modelBuilder)
         {
             MakeLists();
-            modelBuilder.Entity<Intake>().HasData(Intakes);
+           /* modelBuilder.Entity<Intake>().HasData(Intakes);
             modelBuilder.Entity<ITIProgram>().HasData(Programs);
             modelBuilder.Entity<Track>().HasData(Tracks);
-            modelBuilder.Entity<Student>().HasData(students);
+           // modelBuilder.Entity<Student>().HasData(students);
             modelBuilder.Entity<Schedule>().HasData(Schedules);
-            modelBuilder.Entity<TrackIntake>().HasData(TrackIntakes);
+            modelBuilder.Entity<TrackIntake>().HasData(TrackIntakes);*/
         }
     }
 }
