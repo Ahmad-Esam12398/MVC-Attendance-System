@@ -4,6 +4,7 @@ using Attendance_Management_System.ViewData;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using NuGet.DependencyResolver;
 using System.Security;
 
 namespace Attendance_Management_System.Repos
@@ -133,6 +134,15 @@ namespace Attendance_Management_System.Repos
             public  Student GetStudentById(int id)
         {
            return db.Students.FirstOrDefault(s=>s.ID==id);
+
+        }
+
+        public List<Schedule> getSchedules(int stdID)
+        {
+            var student=GetStudentById(stdID);
+            var trackId=student.TrackID;
+           
+            return db.Schedules.Where(s => s.TrackId == trackId).ToList();
 
         }
     }

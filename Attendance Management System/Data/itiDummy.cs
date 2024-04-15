@@ -241,7 +241,8 @@ namespace Attendance_Management_System.Data
                     StartTime = TimeOnly.Parse("09:00"),
                     EndTime = TimeOnly.Parse("20:00"),
                     Track = Tracks[0],
-                    TrackId= 1
+                    TrackId= 1,
+                    ScheduleEvents= new List<ScheduleEvent>(){new ScheduleEvent() { Id=1,Name="javaScript" } }
                 },
                 new Schedule()
                 {
@@ -249,7 +250,8 @@ namespace Attendance_Management_System.Data
                     Date = DateOnly.FromDateTime(DateTime.Now.AddDays(1)),
                     StartTime = TimeOnly.Parse("11:00"),
                     EndTime = TimeOnly.Parse("20:00"),
-                    Track = Tracks[1],
+                    Track = Tracks[1]
+                    
 
                 }
             };

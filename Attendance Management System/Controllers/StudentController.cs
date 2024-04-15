@@ -1,4 +1,5 @@
-﻿using Attendance_Management_System.Models;
+﻿using Attendance_Management_System.Dtos;
+using Attendance_Management_System.Models;
 using Attendance_Management_System.Repos;
 using Microsoft.AspNetCore.Mvc;
 
@@ -92,6 +93,25 @@ namespace Attendance_Management_System.Controllers
             return RedirectToAction("Permissions", new { id });
         }
 
+        public IActionResult Schedules(int id)
+        {
+            var schedules = StudentRepo.getSchedules(id);
+            ViewBag.id = id;
 
+            List<ScheduleDto> SchedulesDtos = new List<ScheduleDto>();
+            foreach (var schedule in schedules)
+            {
+                SchedulesDtos.Add(new ScheduleDto(schedule));
+            }
+            return View(SchedulesDtos);
+        }
+
+
+        public IActionResult ScheduleEvents(int stdId, int scheduleId)
+        {
+            var schedulesEvents = StudentRepo.getSchedules(stdId).FirstOrDefault(sc => sc.Id == scheduleId).ScheduleEvents;
+            ViewBag.id = stdId;
+            return View(schedulesEvents);
+        }
     }
 }
