@@ -3,3 +3,6 @@ V1
 2:IitiContext,o
 2:students,m
 2:get_m_,O
+2:DeletePermission,F
+2:id,K
+2:permissionDate,oA

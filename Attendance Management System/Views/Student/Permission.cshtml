@@ -107,8 +107,7 @@
                                     <a href="@Url.Action("DeletePermission", "Student", new { id = student_Permission.StudentId, permissionDate = student_Permission.DateCreated })" onclick="return confirm('Are you sure to delete this Permission')" >
                                         <i class="bx bx-trash fa-stack-1x fa-inverse" style="transform: scale(2.5); color: red; "></i>
                                     </a>
-                                    |<a class="btn btn-danger" asp-action="DeletePermission" asp-route-id="@student_Permission.StudentId" asp-route-permissionDate="@student_Permission.DateCreated" onclick="return confirm('Are you sure to delete this Permission')" as>quick Delete</a>
-
+                                   
                                 </div>
 
                             }

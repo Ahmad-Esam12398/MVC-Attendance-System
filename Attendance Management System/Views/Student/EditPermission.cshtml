@@ -1,4 +1,4 @@
-﻿@model Attendance_Management_System.Models.Permission
+﻿@* @model Attendance_Management_System.Models.Permission
 
 <h2>Edit Permission</h2>
 
@@ -17,4 +17,42 @@
     </div>
     <button type="submit" class="btn btn-primary">Update</button>
     <a asp-action="Permission" asp-route-id="@Model.StudentId">Back to Permissions</a>
-</form>
+</form> *@
+
+
+@model Attendance_Management_System.Models.Permission
+
+<h2>Edit Permission</h2>
+
+<div class="detailscontainer">
+    <h2>Edit Permission</h2>
+    <hr />
+    <div class="row">
+        <div>
+            <form asp-action="EditPermission">
+                <input type="hidden" asp-for="StudentId" />
+                <input type="hidden" asp-for="DateCreated" />
+                <div class="form-group">
+                    <label for="Reason">Reason:</label>
+                    <select class="form-control" id="Reason" name="Reason" required onchange="toggleOtherReason(this.value)">
+                        <option value="late" selected="@((Model.Reason == "late") ? "selected" : null)">Late</option>
+                        <option value="illness" selected="@((Model.Reason == "illness") ? "selected" : null)">Illness</option>
+                        <option value="other" selected="@((Model.Reason == "other") ? "selected" : null)">Other</option>
+                    </select>
+                    <span asp-validation-for="Reason" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="BodyOfDescription">Body of Description:</label>
+                    <textarea class="form-control" id="BodyOfDescription" name="BodyOfDescription" required>@Model.BodyOfDescription</textarea>
+                    <span asp-validation-for="BodyOfDescription" class="text-danger"></span>
+                </div>
+                <br />
+                <div class="form-group">
+                    <a asp-action="Permission" asp-route-id="@Model.StudentId" class="btn btn-primary">Back to Permissions</a>
+                    <button type="submit" class="btn btn-success" style="float:right">Update</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

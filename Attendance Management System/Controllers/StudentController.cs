@@ -22,6 +22,8 @@ namespace Attendance_Management_System.Controllers
 
 
         public IActionResult Attendance(int id)
+        
+        
         {
             
             var attendList=StudentRepo.Get_Student_Attendances_By_Id(id);
@@ -86,11 +88,10 @@ namespace Attendance_Management_System.Controllers
 
 
         // Delete a permission
-        [HttpPost]
         public IActionResult DeletePermission(int id, DateTime permissionDate)
         {
             StudentRepo.DeletePermission(id, permissionDate);
-            return RedirectToAction("Permissions", new { id });
+            return RedirectToAction("Permission", new { id });
         }
 
         public IActionResult Schedules(int id)

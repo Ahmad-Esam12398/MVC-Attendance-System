@@ -16,7 +16,7 @@ namespace Attendance_Management_System
             builder.Services.AddDbContext<itiContext>(options =>
 options.UseSqlServer(builder.Configuration.GetConnectionString("Ali_Connection")));
 
-            builder.Services.AddScoped<IitiContext, itiDummy>();
+            builder.Services.AddSingleton<IitiContext, itiDummy>();
 
 
 

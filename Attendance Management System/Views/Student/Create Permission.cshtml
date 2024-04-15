@@ -37,10 +37,7 @@
         </select>
         <span asp-validation-for="Reason" class="text-danger"></span>
     </div>
-    <div class="form-group" id="otherReasonContainer" style="display: none;">
-        <label for="OtherReason">Other Reason:</label>
-        <input type="text" class="form-control" id="OtherReason" name="OtherReason" />
-    </div>
+    
     <div class="form-group">
         <label for="BodyOfDescription">Body of Description:</label>
         <textarea class="form-control" id="BodyOfDescription" name="BodyOfDescription" required></textarea>
@@ -61,17 +58,3 @@
     <br />
 </div>
 </div>
-<script>
-    function toggleOtherReason(value) {
-        var otherReasonContainer = document.getElementById("otherReasonContainer");
-        var otherReasonInput = document.getElementById("OtherReason");
-
-        if (value === "other") {
-            otherReasonContainer.style.display = "block";
-            otherReasonInput.required = true;
-        } else {
-            otherReasonContainer.style.display = "none";
-            otherReasonInput.required = false;
-        }
-    }
-</script>
