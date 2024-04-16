@@ -10,6 +10,7 @@ using Attendance_Management_System.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using System;
+using System.Security.Claims;
 
 namespace Attendance_Management_System
 {
@@ -47,6 +48,10 @@ namespace Attendance_Management_System
             .AddSignInManager<SignInManager<User>>()
             .AddUserManager<UserManager<User>>()
             .AddEntityFrameworkStores<itiContext>(); // Add Entity Framework stores for user and role management
+
+            // Add UserManger Claims Principal
+            services.AddScoped<ClaimsPrincipal>(s =>
+            s.GetService<IHttpContextAccessor>().HttpContext.User);
 
             // Add Razor Pages services
             services.AddRazorPages();
