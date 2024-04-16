@@ -4,9 +4,9 @@ namespace Attendance_Management_System.Models
 {
     public class Supervisor : Instructor
     {
-        public int TrackId { get; set; }
+        public int SupTrackId { get; set; }
         //navigation
-        [ForeignKey("TrackId")]
+        [ForeignKey("SupTrackId")]
         public Track Track { get; set; }
     }
 }

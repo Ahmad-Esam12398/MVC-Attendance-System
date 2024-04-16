@@ -266,12 +266,12 @@ namespace Attendance_Management_System.Data
         public static void Seed(this ModelBuilder modelBuilder)
         {
             MakeLists();
-           /* modelBuilder.Entity<Intake>().HasData(Intakes);
+            modelBuilder.Entity<Intake>().HasData(Intakes);
             modelBuilder.Entity<ITIProgram>().HasData(Programs);
             modelBuilder.Entity<Track>().HasData(Tracks);
-           // modelBuilder.Entity<Student>().HasData(students);
+            modelBuilder.Entity<Student>().HasData(students);
             modelBuilder.Entity<Schedule>().HasData(Schedules);
-            modelBuilder.Entity<TrackIntake>().HasData(TrackIntakes);*/
+            modelBuilder.Entity<TrackIntake>().HasData(TrackIntakes);
         }
     }
 }
