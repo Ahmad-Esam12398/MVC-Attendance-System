@@ -19,7 +19,7 @@ namespace Attendance_Management_System.Controllers
         public IActionResult Permissions()
         {
             // Get the list of permissions from the database
-            var Permissions = InstructorRepo.getPendingPermissions();
+            var Permissions = InstructorRepo.getPendingPermissionsByTrackID(1);
             // Convert the list of permissions to a list of PermissionDto
             List<PermissionDto> PermissionsDtos = new List<PermissionDto>();
             foreach (var permission in Permissions)
@@ -31,7 +31,7 @@ namespace Attendance_Management_System.Controllers
         public IActionResult Schedule()
         {
             // Get the list of schedules from the database
-            var Schedules = InstructorRepo.getSchedules();
+            var Schedules = InstructorRepo.getSchedulesByTrackID(1);
             // Convert the list of schedules to a list of ScheduleDto
             List<ScheduleDto> SchedulesDtos = new List<ScheduleDto>();
             foreach (var schedule in Schedules)
