@@ -102,6 +102,7 @@ namespace Attendance_Management_System.Areas.Identity.Pages.Account
         }
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
+        
         {
             returnUrl ??= Url.Content("~/");
 
@@ -111,6 +112,22 @@ namespace Attendance_Management_System.Areas.Identity.Pages.Account
             {
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
+                // Add The Account as Dummy User for Testing
+                // var Add =await _signInManager.UserManager.CreateAsync(new User { UserName = "Account", NationalId = "1000", Email = "Ahmed@gmail.com" }, "123456aA!");
+                //var user = new User { UserName = "Account", NationalId = "1000", Email = "Ahmed@gmail.com" };
+                //var Add = await _signInManager.UserManager.CreateAsync(user, "123456aA!");
+
+                //if (!Add.Succeeded)
+                //{
+                //    foreach (var error in Add.Errors)
+                //    {
+                //        ModelState.AddModelError(string.Empty, error.Description);
+                //    }
+                //    return Page();
+                //}
+                //Save Changes
+                //await _signInManager.UserManager.UpdateAsync(new User { UserName = Input.NationalId, NationalId = Input.NationalId, Email = Input.NationalId + "@gmail.com" });
+
                 var result = await _signInManager.PasswordSignInAsync(Input.NationalId, Input.Password, Input.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
