@@ -51,6 +51,11 @@ namespace Attendance_Management_System
             // Add Razor Pages services
             services.AddRazorPages();
             services.AddSingleton<IEmailSender, EmailSender>();
+            services.AddScoped<IStudentRepo, StudentRepo>();
+            services.AddScoped<IInstructorRepo, InstructorRepo>();
+            services.AddScoped<IAdminRepo, AdminRepo>();
+            services.AddScoped<IAccountRepo, AccountRepo>();
+            services.AddScoped<IEmployeeRepo, EmployeeRepo>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
