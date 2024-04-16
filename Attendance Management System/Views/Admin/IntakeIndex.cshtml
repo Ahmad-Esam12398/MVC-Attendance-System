@@ -1,0 +1,33 @@
+﻿@model IEnumerable<Attendance_Management_System.Models.Intake>
+
+<a asp-action="CreateIntake" class="btn btn-primary">Create Intake</a>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Program ID</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var intake in Model)
+        {
+            <tr>
+                <td>@intake.Id</td>
+                <td>@intake.Name</td>
+                <td>@intake.ProgramId</td>
+                <td>@intake.StartDate.ToShortDateString()</td>
+                <td>@intake.EndDate.ToShortDateString()</td>
+                <td>
+                    <a asp-action="IntakeDetails" asp-route-id="@intake.Id">Details</a> |
+                    <a asp-action="EditIntake" asp-route-id="@intake.Id">Edit</a> |
+                    <a asp-action="DeleteIntake" asp-route-id="@intake.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

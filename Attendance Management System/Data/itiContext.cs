@@ -9,6 +9,9 @@ namespace Attendance_Management_System.Data
         public DbSet<Schedule> Schedules { get; set; }
         public DbSet<ScheduleEvent> ScheduleEvents { get; set; }
         public DbSet<Track> Tracks { get; set; }
+        public DbSet<ITIProgram> Programs { get; set; }
+        public DbSet<Intake> Intakes { get; set; }
+      //  public DbSet<Instructor> instructors { get; set; }
         #endregion
         public readonly IConfiguration Configuration;
         public itiContext(IConfiguration _configuration)
@@ -17,6 +20,10 @@ namespace Attendance_Management_System.Data
         }
 
         public List<Student> students { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public List<ITIProgram> programs { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public List<Intake> intakes { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public List<Track> tracks { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public List<Instructor> instructors { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

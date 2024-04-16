@@ -1,0 +1,29 @@
+﻿@model IEnumerable<Attendance_Management_System.Models.Instructor>
+
+<a asp-action="CreateInstructor" class="btn btn-primary">Create Instructor</a>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var instructor in Model)
+        {
+            <tr>
+                <td>@instructor.Id</td>
+                <td>@instructor.UserName</td>
+                <td>@instructor.Email</td>
+                <td>
+                    <a asp-action="InstructorDetails" asp-route-id="@instructor.Id">Details</a> |
+                    <a asp-action="EditInstructor" asp-route-id="@instructor.Id">Edit</a> |
+                    <a asp-action="DeleteInstructor" asp-route-id="@instructor.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
