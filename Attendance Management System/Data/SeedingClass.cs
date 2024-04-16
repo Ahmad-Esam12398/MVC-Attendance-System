@@ -14,6 +14,8 @@ namespace Attendance_Management_System.Data
         public static List<AttendanceDegree> AttendanceDegrees { get; set; }
         public static List<Intake> Intakes { get; set; }
         public static List<TrackIntake> TrackIntakes { get; set; }
+
+        public static List<Permission> Permissions { get; set; }
         public static void MakeLists()
         {
             #region Intakes
@@ -260,8 +262,22 @@ namespace Attendance_Management_System.Data
                 }
             };
             #endregion
+            #region Attendances
             Attendances = new List<Attendance>();
+            #endregion
+            #region AttendanceDegrees
             AttendanceDegrees = new List<AttendanceDegree>();
+            #endregion
+            #region Permissions
+            Permissions = new List<Permission>()
+            {
+              new Permission { ID = 1, StudentId = students[0].Id, Status = PermissionStatus.Pending ,Reason="1", BodyOfDescription="1", Date=DateOnly.FromDateTime(DateTime.Now), DateCreated=DateTime.Now},
+              new Permission { ID = 2, StudentId = students[1].Id, Status = PermissionStatus.Pending ,Reason="2", BodyOfDescription="2", Date=DateOnly.FromDateTime(DateTime.Now), DateCreated=DateTime.Now},
+              new Permission { ID = 3, StudentId = students[2].Id, Status = PermissionStatus.Pending ,Reason="3", BodyOfDescription="3", Date=DateOnly.FromDateTime(DateTime.Now), DateCreated=DateTime.Now},
+              new Permission { ID = 4, StudentId = students[3].Id, Status = PermissionStatus.Pending ,Reason="4", BodyOfDescription="4", Date=DateOnly.FromDateTime(DateTime.Now), DateCreated=DateTime.Now},
+              new Permission { ID = 5, StudentId = students[4].Id, Status = PermissionStatus.Pending ,Reason="5", BodyOfDescription="5", Date=DateOnly.FromDateTime(DateTime.Now), DateCreated=DateTime.Now},
+            };
+            #endregion
         }
         public static void Seed(this ModelBuilder modelBuilder)
         {
@@ -272,6 +288,8 @@ namespace Attendance_Management_System.Data
             modelBuilder.Entity<Student>().HasData(students);
             modelBuilder.Entity<Schedule>().HasData(Schedules);
             modelBuilder.Entity<TrackIntake>().HasData(TrackIntakes);
+            //Seed Permissions
+            modelBuilder.Entity<Permission>().HasData(Permissions);
         }
     }
 }
