@@ -9,5 +9,6 @@ namespace Attendance_Management_System.Data
         List<Intake> intakes { get; set; }
         List<Track> tracks { get; set; }
         List<Instructor> instructors { get; set; }
+        List<Supervisor> supervisors { get; set; }
     }
 }

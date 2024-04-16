@@ -24,6 +24,7 @@ namespace Attendance_Management_System.Data
         public List<Intake> intakes { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public List<Track> tracks { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public List<Instructor> instructors { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public List<Supervisor> supervisors { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

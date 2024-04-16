@@ -11,141 +11,16 @@ namespace Attendance_Management_System.Data
         public List<Intake> intakes { get; set; }
         public List<Track> tracks { get; set; }
         public List<Instructor> instructors { get; set; }
-        public List<Supervisor> supervisors { get; set; }
+        public List<Supervisor> supervisors { get; set; } 
 
         public itiDummy()
         {
+           
             Seed();
         }
 
         private void Seed()
         {
-            // Fill in the data for each property
-
-            supervisors = new List<Supervisor>()
-            {
-                new Supervisor()
-                {
-                    Id = "1",
-                    UserName = "Nadia",
-                    Email = "nadia@yahoo.com",
-                    Password = "password", // Fill in a password
-                    Phone = "0123456789", // Fill in a phone number
-                    Track=tracks[0],
-
-                }
-            };
-
-            programs = new List<ITIProgram>()
-            {
-                new ITIProgram()
-                {
-                    Id = 1,
-                    Name = "9-months",
-                    Description = "9-months ITI Program", // Fill in a description
-                    Tracks = new List<Track>()
-                    {
-                        tracks[0],tracks[1]
-
-                    },
-                    Intakes = new List<Intake>()
-                    {
-                        intakes[0]
-                    }
-                },
-                new ITIProgram()
-                {
-                    Id = 2,
-                    Name = "4-months",
-                    Description = "4-months ITI Program", // Fill in a description
-                    Tracks = new List<Track>()
-                    {
-                        tracks[0],tracks[1]
-
-                    },
-                    Intakes = new List<Intake>()
-                    {
-                        intakes[0]
-                    }
-                }
-            };
-
-            tracks = new List<Track>()
-            {
-                new Track()
-                {
-                    Id = 1,
-                    Name = "PD",
-                    IsActive = true,
-                    ProgramId = 1,
-                    SupervisorId = "1",
-                    Schedules = new List<Schedule>()
-                    {
-                        // Add schedules for the PD track
-                    },
-                    Students = new List<Student>()
-                    {
-                        // Add students enrolled in the PD track
-                       students[0]
-                    }
-                },
-                new Track()
-                {
-                    Id = 2,
-                    Name = "SD",
-                    IsActive = false,
-                    ProgramId = 1,
-                    SupervisorId = "1",
-                    Schedules = new List<Schedule>()
-                    {
-                        // Add schedules for the SD track
-                    },
-                    Students = new List<Student>()
-                    {
-                        // Add students enrolled in the SD track
-                    }
-                }
-            };
-
-            intakes = new List<Intake>()
-            {
-                new Intake()
-                {
-                    Id = 1,
-                    Name = "43",
-                    ProgramId = 1,
-                    StartDate = DateTime.Now, // Fill in a start date
-                    EndDate = DateTime.Now.AddMonths(9), // Fill in an end date
-                    Program = programs[0] // Reference to the 9-months program
-                },
-                new Intake()
-                {
-                    Id = 2,
-                    Name = "44",
-                    ProgramId = 1,
-                    StartDate = DateTime.Now, // Fill in a start date
-                    EndDate = DateTime.Now.AddMonths(4), // Fill in an end date
-                    Program = programs[0] // Reference to the 9-months program
-                }
-            };
-
-            instructors = new List<Instructor>()
-            {
-                new Instructor()
-                {
-                    Id = "2",
-                    UserName = "Aymen",
-                    Email = "aymen@example.com",
-                    Password = "password", // Fill in a password
-                    Phone = "0123456789", // Fill in a phone number
-                    Tracks = new List<Track>()
-                    {
-                        tracks[0]
-                    }
-                }
-            };
-
-
             students = new List<Student>()
             {
                 new Student()
@@ -293,7 +168,144 @@ namespace Attendance_Management_System.Data
                     Faculty = "Engineering",
                 },
             };
-     
+
+            tracks = new List<Track>()
+            {
+                new Track()
+                {
+                    Id = 1,
+                    Name = "PD",
+                    IsActive = true,
+                    ProgramId = 1,
+                    SupervisorId = "1",
+                    Schedules = new List<Schedule>()
+                    {
+                        // Add schedules for the PD track
+                    },
+                    Students = new List<Student>()
+                    {
+                        // Add students enrolled in the PD track
+                       students[0]
+                    }
+                },
+                new Track()
+                {
+                    Id = 2,
+                    Name = "SD",
+                    IsActive = false,
+                    ProgramId = 1,
+                    SupervisorId = "1",
+                    Schedules = new List<Schedule>()
+                    {
+                        // Add schedules for the SD track
+                    },
+                    Students = new List<Student>()
+                    {
+                        // Add students enrolled in the SD track
+                    }
+                }
+            };
+
+
+            // Fill in the data for each property
+
+            //supervisors.Add(new Supervisor()
+            //{
+            //    Id = "1",
+            //    UserName = "Nadia",
+            //    Email = "nadia@yahoo.com",
+            //    Password = "password", // Fill in a password
+            //    Phone = "0123456789", // Fill in a phone number
+            //    Track = tracks[0],
+
+            //});
+            intakes = new List<Intake>()
+            {
+                new Intake()
+                {
+                    Id = 1,
+                    Name = "43",
+                    ProgramId = 1,
+                    StartDate = DateTime.Now, // Fill in a start date
+                    EndDate = DateTime.Now.AddMonths(9), // Fill in an end date
+                },
+                new Intake()
+                {
+                    Id = 2,
+                    Name = "44",
+                    ProgramId = 1,
+                    StartDate = DateTime.Now, // Fill in a start date
+                    EndDate = DateTime.Now.AddMonths(4), // Fill in an end date
+                }
+            };
+
+            programs = new List<ITIProgram>()
+            {
+                new ITIProgram()
+                {
+                    Id = 1,
+                    Name = "9-months",
+                    Description = "9-months ITI Program", // Fill in a description
+                    Tracks = new List<Track>()
+                    {
+                        tracks[0],tracks[1]
+
+                    },
+                    Intakes = new List<Intake>()
+                    {
+                        intakes[0]
+                    }
+                },
+                new ITIProgram()
+                {
+                    Id = 2,
+                    Name = "4-months",
+                    Description = "4-months ITI Program", // Fill in a description
+                    Tracks = new List<Track>()
+                    {
+                        tracks[0],tracks[1]
+
+                    },
+                    Intakes = new List<Intake>()
+                    {
+                        intakes[0]
+                    }
+                }
+            };
+
+
+
+            instructors = new List<Instructor>()
+            {
+                new Instructor()
+                {
+                    Id = "2",
+                    UserName = "Aymen",
+                    Email = "aymen@example.com",
+                    Password = "password", // Fill in a password
+                    Phone = "0123456789", // Fill in a phone number
+                    Tracks = new List<Track>()
+                    {
+                        tracks[0]
+                    }
+                }
+            };
+
+            supervisors = new List<Supervisor>()
+            {
+                new Supervisor()
+                {
+                    Id = "1",
+                    UserName = "Nadia",
+                    Email = "nadia@yahoo.com",
+                    Password = "password", // Fill in a password
+                    Phone = "0123456789", // Fill in a phone number
+                    Track=tracks[0],
+
+                }
+            };
+
+
 
             // You can continue adding more data for other classes as needed
         }
