@@ -24,6 +24,7 @@ namespace Attendance_Management_System.Repos
 
 
         List<Schedule> getSchedules(int stdID);
+        List<ScheduleEvent> GetScheduleEvents(int stdID, int scheduleId);
 
 
 

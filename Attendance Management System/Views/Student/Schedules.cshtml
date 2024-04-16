@@ -3,6 +3,8 @@
 @{
     ViewData["Title"] = "Student Schedule";
     int id = ViewBag.id;
+    var sortedModel = Model.OrderByDescending(item => item.Date);
+
 }
 
 @section NavList {
@@ -11,20 +13,16 @@
 
 <div class="container">
     @* Filters Section*@
-    <div class="d-flex justify-content-center mb-3">
-        <div class="date-filter">
-            <span>
-                <i class='bx bx-calendar'></i>
-                <span>Filter By Date</span>
-            </span>
-            <input type="date" id="Date" placeholder="Search by Date" />
-            <button class="btn
-            " type="button" title="ResetDate" id="ClearDate">
-                <i class='bx bx-x'></i> Reset Date
-            </button>
+    <div class="mt-4 form-control d-flex justify-content-between">
 
-        </div>
+    <div class="mt-2 d-flex flex-wrap">
+        <label for="dateFrom">From</label>
+        <input id="dateFrom" type="date" class="form-control" />
+        <label for="dateTo">To</label>
+        <input id="dateTo" type="date" class="form-control" />
     </div>
+    </div>
+
     @* Main Table Section*@
     <table id="myTable" class="display">
         @* Table Header*@
@@ -38,10 +36,10 @@
         </thead>
         @* Table Body*@
         <tbody>
-            @foreach (var item in Model)
+            @foreach (var item in sortedModel)
             {
                 <tr>
-                    <td>@item.Date</td>
+                    <td> @item.Date &nbsp;&nbsp; @DateTime.Parse(item.Date).ToString("dddd", System.Globalization.CultureInfo.InvariantCulture)</td>
                     <td>@item.StartTime</td>
                     <td>@item.EndTime</td>
                     @* Actions *@
@@ -74,7 +72,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.30.1/moment.min.js"></script>
     <script src="https://cdn.datatables.net/2.0.3/js/dataTables.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-toast-plugin/1.3.2/jquery.toast.min.js" integrity="sha512-zlWWyZq71UMApAjih4WkaRpikgY9Bz1oXIW5G0fED4vk14JjGlQ1UmkGM392jEULP8jbNMiwLWdM8Z87Hu88Fw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="~/js/index.js"></script>
+    <script src="~/js/Schedule.js"></script>
 
 
 }

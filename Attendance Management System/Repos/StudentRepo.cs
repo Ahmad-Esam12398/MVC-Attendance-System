@@ -115,14 +115,16 @@ namespace Attendance_Management_System.Repos
         }
 
             public Permission PermissionDetails(int stdID, DateTime permissionDate)
-        {
-            return db.Permissions.Where(x => x.StudentId == stdID && x.DateCreated == permissionDate).FirstOrDefault();
+        { var studentPermissions=Get_Student_Permissions_By_Id(stdID);
+             var res=studentPermissions.FirstOrDefault(x=> x.DateCreated.Date == permissionDate.Date);
+            return res;
         }
 
 
             public void UpdatePermission(Permission permission)
         {
-            var permission_In_Data=db.Permissions.FirstOrDefault(p=>p.StudentId==permission.StudentId&&p.DateCreated==permission.DateCreated);
+            var studentPermissions = Get_Student_Permissions_By_Id(permission.StudentId);
+            var permission_In_Data = studentPermissions.FirstOrDefault(x => x.DateCreated.Date == permission.DateCreated.Date);
             if (permission_In_Data != null)
             {
                 permission_In_Data.BodyOfDescription = permission.BodyOfDescription;
@@ -142,8 +144,13 @@ namespace Attendance_Management_System.Repos
             var student=GetStudentById(stdID);
             var trackId=student.TrackID;
            
-            return db.Schedules.Where(s => s.TrackId == trackId).ToList();
+            return db.Schedules.Where(s => s.TrackId == trackId).OrderByDescending(sc => sc.Date).ToList();
 
+        }
+
+        public List<ScheduleEvent>GetScheduleEvents(int stdID, int scheduleId)
+        {
+            return getSchedules(stdID).FirstOrDefault(sc => sc.Id == scheduleId).ScheduleEvents;
         }
     }
 }
