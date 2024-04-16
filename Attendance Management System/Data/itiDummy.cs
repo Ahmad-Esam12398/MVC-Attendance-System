@@ -31,26 +31,8 @@ namespace Attendance_Management_System.Data
                     Email = "nadia@yahoo.com",
                     Password = "password", // Fill in a password
                     Phone = "0123456789", // Fill in a phone number
-                    Tracks = new List<Track>()
-                    {
-                        // Add tracks supervised by Nadia
-                        new Track()
-                {
-                    Id = 1,
-                    Name = "PD",
-                    IsActive = true,
-                    ProgramId = 1,
-                    SupervisorId = "1",
-                    Schedules = new List<Schedule>()
-                    {
-                        // Add schedules for the PD track
-                    },
-                    Students = new List<Student>()
-                    {
-                        // Add students enrolled in the PD track
-                    }
-                },
-                    },
+                    Track=tracks[0],
+
                 }
             };
 
@@ -63,11 +45,12 @@ namespace Attendance_Management_System.Data
                     Description = "9-months ITI Program", // Fill in a description
                     Tracks = new List<Track>()
                     {
-                        // Add tracks in the 9-months program
+                        tracks[0],tracks[1]
+
                     },
                     Intakes = new List<Intake>()
                     {
-                        // Add intakes for the 9-months program
+                        intakes[0]
                     }
                 },
                 new ITIProgram()
@@ -77,11 +60,12 @@ namespace Attendance_Management_System.Data
                     Description = "4-months ITI Program", // Fill in a description
                     Tracks = new List<Track>()
                     {
-                        // Add tracks in the 4-months program
+                        tracks[0],tracks[1]
+
                     },
                     Intakes = new List<Intake>()
                     {
-                        // Add intakes for the 4-months program
+                        intakes[0]
                     }
                 }
             };
@@ -102,16 +86,7 @@ namespace Attendance_Management_System.Data
                     Students = new List<Student>()
                     {
                         // Add students enrolled in the PD track
-                          new Student()
-                {
-                    Id = "1",
-                    UserName = "Ahmad",
-                    Email = "Ahmad.esam1231998@gmail.com",
-                    Phone = "01015328933",
-                    Password = "12345678",
-                    Faculty = "Engineering",
-                    TrackId = 1 // Example: Enrolled in PD track
-                },
+                       students[0]
                     }
                 },
                 new Track()
@@ -165,32 +140,13 @@ namespace Attendance_Management_System.Data
                     Phone = "0123456789", // Fill in a phone number
                     Tracks = new List<Track>()
                     {
-                        // Add tracks supervised by Aymen
+                        tracks[0]
                     }
                 }
             };
 
+
             students = new List<Student>()
-            {
-                new Student()
-                {
-                    Id = "1",
-                    UserName = "Ahmad",
-                    Email = "Ahmad.esam1231998@gmail.com",
-                    Phone = "01015328933",
-                    Password = "12345678",
-                    Faculty = "Engineering",
-                    TrackId = 1 // Example: Enrolled in PD track
-                },
-                // Add more students here
-            };
-
-            // You can continue adding more data for other classes as needed
-        }
-    }
-}
-
-     /*       students = new List<Student>()
             {
                 new Student()
                 {
@@ -337,6 +293,14 @@ namespace Attendance_Management_System.Data
                     Faculty = "Engineering",
                 },
             };
+     
+
+            // You can continue adding more data for other classes as needed
+        }
+    }
+}
+
+     /*    
         }
     }
 }*/
