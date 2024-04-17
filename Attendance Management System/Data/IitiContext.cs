@@ -1,4 +1,6 @@
 ﻿using Attendance_Management_System.Models;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace Attendance_Management_System.Data
 {
@@ -10,8 +12,10 @@ namespace Attendance_Management_System.Data
         List<Permission> Permissions { get; set; }
         List<Schedule> Schedules { get; set; }
         List<Attendance> Attendances { get; set; }
-        
-
-
+        DbSet<AttendanceDegree> AttendanceDegrees { get; set; }
+        DbSet<ScheduleEvent> ScheduleEvents { get; set; }
+        DbSet<TrackIntake> TrackIntakes { get; set; }
+        int SaveChanges();
+        EntityEntry Update(object entity);
     }
 }

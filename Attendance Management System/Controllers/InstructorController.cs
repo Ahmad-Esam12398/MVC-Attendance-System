@@ -14,30 +14,84 @@ namespace Attendance_Management_System.Controllers
         }
         public IActionResult Index()
         {
+            ViewData["IsSuperVisor"] = false;
+
+            // Get Current User
+            var user = InstructorRepo.GetCurrentUser();
+            if (user == null)
+            {
+                return Redirect("/Identity/Account/Login");
+
+            }
+            if (user is not Instructor)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            if (user is Supervisor)
+            {
+                ViewData["IsSuperVisor"] = true;
+            }
+            ViewData["Name"] = user.UserName;
             return View();
         }
-        public IActionResult Permissions()
+        public async Task<IActionResult> Permissions()
         {
+            // Add Dummy Instructors to the Database if there are no Instructors
+            await InstructorRepo.AddDummyInstructors();
+            // Get Current User
+            var user = InstructorRepo.GetCurrentUser();
+            if (user == null)
+            {
+                return Redirect("/Identity/Account/Login");
+                
+            }
+            if (user is not Supervisor)
+            {
+                return RedirectToAction("Index", "Instructor");
+            }
+            if (user is not Instructor)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            int trackID = (user as Supervisor).SupTrackId;
             // Get the list of permissions from the database
-            var Permissions = InstructorRepo.getPendingPermissions();
+            var Permissions = await InstructorRepo.GetPendingPermissionsByTrackID(trackID);
             // Convert the list of permissions to a list of PermissionDto
             List<PermissionDto> PermissionsDtos = new List<PermissionDto>();
             foreach (var permission in Permissions)
             {
                 PermissionsDtos.Add(new PermissionDto(permission));
             }
+            ViewData["Name"] = user.UserName;
             return View(PermissionsDtos);
         }
-        public IActionResult Schedule()
+        public  IActionResult Schedule()
         {
+            // Get Current User
+            var user = InstructorRepo.GetCurrentUser();
+            if (user == null)
+            {
+                return Redirect("/Identity/Account/Login");
+
+            }
+            if (user is not Supervisor)
+            {
+                return RedirectToAction("Index", "Instructor");
+            }
+            if (user is not Instructor)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            int trackID = (user as Supervisor).SupTrackId;
             // Get the list of schedules from the database
-            var Schedules = InstructorRepo.getSchedules();
+            var Schedules = InstructorRepo.getSchedulesByTrackID(trackID);
             // Convert the list of schedules to a list of ScheduleDto
             List<ScheduleDto> SchedulesDtos = new List<ScheduleDto>();
             foreach (var schedule in Schedules)
             {
                 SchedulesDtos.Add(new ScheduleDto(schedule));
             }
+            ViewData["Name"] = user.UserName;
             return View(SchedulesDtos);
         }
 

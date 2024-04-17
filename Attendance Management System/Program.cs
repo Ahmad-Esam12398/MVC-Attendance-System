@@ -1,6 +1,11 @@
 using Attendance_Management_System.Data;
+using Attendance_Management_System.Models;
 using Attendance_Management_System.Repos;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using System.Security.Claims;
 
 namespace Attendance_Management_System
 {
@@ -9,23 +14,41 @@ namespace Attendance_Management_System
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-
+            builder.Services.AddDbContext<itiContext>(options =>
+            options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
             // Add services to the container.
             builder.Services.AddControllersWithViews();
-
-            builder.Services.AddDbContext<itiContext>(options =>
-options.UseSqlServer(builder.Configuration.GetConnectionString("Ali_Connection")));
-
-            builder.Services.AddSingleton<IitiContext, itiDummy>();
-
-
-
+            //Provice HTTP Context
+            builder.Services.AddHttpContextAccessor();
             builder.Services.AddScoped<IStudentRepo, StudentRepo>();
             builder.Services.AddScoped<IInstructorRepo, InstructorRepo>();
             builder.Services.AddScoped<IAdminRepo, AdminRepo>();
             builder.Services.AddScoped<IAccountRepo, AccountRepo>();
             builder.Services.AddScoped<IEmployeeRepo, EmployeeRepo>();
+            //Provide UserManger
+            builder.Services.AddIdentity<User, IdentityRole<int>>(options =>
+            {
+                // Lockout settings
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(30);
+                options.Lockout.MaxFailedAccessAttempts = 5;
+                options.Lockout.AllowedForNewUsers = true;
 
+                // User settings
+                options.User.RequireUniqueEmail = true;
+            })
+            .AddEntityFrameworkStores<itiContext>() // Use itiContext as the DbContext for ASP.NET Core Identity
+            .AddDefaultTokenProviders()
+            .AddSignInManager<SignInManager<User>>()
+            .AddUserManager<UserManager<User>>()
+            .AddEntityFrameworkStores<itiContext>();
+
+            // Add UserManger Claims Principal
+            builder.Services.AddScoped<ClaimsPrincipal>(s =>
+            s.GetService<IHttpContextAccessor>().HttpContext.User);
+
+
+            //builder.Services.AddDbContext<itiContext>(options =>
+            //options.UseSqlServer(app.Configuration.GetConnectionString("DefaultConnection")));
 
             var app = builder.Build();
 
@@ -47,8 +70,14 @@ options.UseSqlServer(builder.Configuration.GetConnectionString("Ali_Connection")
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
+            var host = Host.CreateDefaultBuilder(args)
+                .ConfigureWebHostDefaults(webBuilder =>
+                {
+                    webBuilder.UseStartup<Startup>();
+                })
+                .Build();
 
-            app.Run();
+            host.Run();
         }
     }
 }

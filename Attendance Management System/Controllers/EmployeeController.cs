@@ -1,6 +1,5 @@
 ﻿using Attendance_Management_System.Repos;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.DotNet.Scaffolding.Shared.Messaging;
 
 namespace Attendance_Management_System.Controllers
 {
@@ -45,6 +44,13 @@ namespace Attendance_Management_System.Controllers
                     return Json(new { success = false, Message = "Check In First" });
             }
             return Json(new { success = false, Message = "Invalid Data" });
+        }
+        public IActionResult Reports()
+        {
+            var tracks = EmployeeRepo.ReadAllTracks();
+            ViewBag.Tracks = tracks;
+            var attendanceDegrees = EmployeeRepo.ReadAttendanceDegrees();
+            return View(attendanceDegrees);
         }
     }
 }

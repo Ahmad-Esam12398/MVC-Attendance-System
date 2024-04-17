@@ -9,5 +9,6 @@ namespace Attendance_Management_System.Repos
         List<Student> ReadTodaysStudents();
         int SetAttendance(int id, DateTime dateTime, string type);
         List<Schedule> ReadSchedules();
+        List<AttendanceDegree> ReadAttendanceDegrees();
     }
 }

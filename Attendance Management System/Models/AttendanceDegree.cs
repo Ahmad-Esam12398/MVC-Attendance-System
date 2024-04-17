@@ -8,7 +8,6 @@ namespace Attendance_Management_System.Models
         public DateOnly UntilDate { get; set; }
         public int AbscenceDays { get; set; }
         public int AttendanceDegrees { get; set; }
-        [ForeignKey("StudentId")]
         public Student Student { get; set; }
     }
 }

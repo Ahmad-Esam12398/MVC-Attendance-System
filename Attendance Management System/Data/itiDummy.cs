@@ -1,10 +1,15 @@
-﻿using Attendance_Management_System.Models;
+﻿/*using Attendance_Management_System.Models;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+
 
 namespace Attendance_Management_System.Data
 {
     public class itiDummy : IitiContext
     {
-        public List<Student> Students { get; set; }
+        public List<Student> students { get; set; }
         public List<Track> Tracks { get; set; }
         public List<ITIProgram> Programs { get; set; }
         
@@ -94,7 +99,7 @@ namespace Attendance_Management_System.Data
             #endregion
             #region Students
             
-            Students = new List<Student>()
+            students = new List<Student>()
             {
                 new Student()
                 {
@@ -187,7 +192,7 @@ namespace Attendance_Management_System.Data
                     }
 
                 }
-                Students.Add(new Student()
+                students.Add(new Student()
                 {
                     ID = i,
                     NationalId = new string(id),
@@ -212,7 +217,7 @@ namespace Attendance_Management_System.Data
                     Reason="Latance",
                     BodyOfDescription="متاخر فى المواصلات ",
                     DateCreated= new DateTime(2024,3,2,8,40,10),
-                    Student= Students[1],
+                    Student= students[1],
                     Status=Models.PermissionStatus.Refused
 
 
@@ -222,7 +227,7 @@ namespace Attendance_Management_System.Data
                     Reason="illness",
                     BodyOfDescription="تعبان فى البيت عندى دور برد ",
                     DateCreated= new DateTime(2024,3,5,5,11,12),
-                    Student= Students[1],
+                    Student= students[1],
                     Status=Models.PermissionStatus.Accepted
 
 
@@ -241,8 +246,7 @@ namespace Attendance_Management_System.Data
                     StartTime = TimeOnly.Parse("09:00"),
                     EndTime = TimeOnly.Parse("20:00"),
                     Track = Tracks[0],
-                    TrackId= 1,
-                    ScheduleEvents= new List<ScheduleEvent>(){new ScheduleEvent() { Id=1,Name="javaScript" } }
+                    TrackId= 1
                 },
                 new Schedule()
                 {
@@ -250,13 +254,12 @@ namespace Attendance_Management_System.Data
                     Date = DateOnly.FromDateTime(DateTime.Now.AddDays(1)),
                     StartTime = TimeOnly.Parse("11:00"),
                     EndTime = TimeOnly.Parse("20:00"),
-                    Track = Tracks[1]
-                    
+                    Track = Tracks[1],
 
                 }
             };
-            Tracks[0].Students = Students.Where(s => s.Track == Tracks[0]).ToList();
-            Tracks[1].Students = Students.Where(s => s.Track == Tracks[1]).ToList();
+            Tracks[0].Students = students.Where(s => s.Track == Tracks[0]).ToList();
+            Tracks[1].Students = students.Where(s => s.Track == Tracks[1]).ToList();
 
 
 
@@ -302,7 +305,7 @@ namespace Attendance_Management_System.Data
             #region Attendance
             Attendances = [new Attendance() {
                 StudentId = 1,
-                Student = Students[0],
+                Student = students[0],
                 Date= new DateOnly(2024, 3, 2),
                 Time_in = new TimeOnly(9, 2),
                 Time_out = new TimeOnly(20, 0)
@@ -316,7 +319,7 @@ namespace Attendance_Management_System.Data
                 {
                     
                     StudentId = 2,
-                    Student = Students[1],
+                    Student = students[1],
                     Date = item,
                     Time_in = new TimeOnly(9, 2),
                     Time_out = new TimeOnly(20, 0)
@@ -336,7 +339,7 @@ namespace Attendance_Management_System.Data
                 Status = PermissionStatus.Pending,
                 StudentId = 1,
                 DateCreated = new DateTime(2024, 4, 3),
-                Student = Students[0]
+                Student = students[0]
 
             });
             Permissions.Add(new Permission()
@@ -346,8 +349,8 @@ namespace Attendance_Management_System.Data
                 BodyOfDescription = "I was sick",
                 Status = PermissionStatus.Pending,
                 StudentId = 2,
-                DateCreated = new DateTime(2024, 4, 13),
-                Student = Students[1]
+                DateCreated = new DateTime(2024, 4, 9),
+                Student = students[1]
             });
 
             Permissions.Add(new Permission()
@@ -358,7 +361,7 @@ namespace Attendance_Management_System.Data
                 Status = PermissionStatus.Pending,
                 StudentId = 3,
                 DateCreated = new DateTime(2024, 4, 4),
-                Student = Students[2]
+                Student = students[2]
             });
             #endregion
 

@@ -1,0 +1,211 @@
+﻿@model IEnumerable<AttendanceDegree>
+@{
+    ViewData["Title"] = "Index";
+    var tracks = ViewData["Tracks"] as List<Track>;
+}
+@section styles {
+    <link rel="stylesheet" href="~/css/Employee.css" />
+}
+@section NavList {
+    @Html.Partial("navButtons")
+}
+<h1>Reports</h1>
+<div class="mt-4 form-control d-flex justify-content-between">
+    <div class="mt-3" style="width: 12% !important;">
+        <label for="Track">Track</label>
+        <select id="Track" class="form-control">
+            <option value="">All</option>
+            @foreach (var track in tracks)
+            {
+                <option value="@track.Name">@track.Name</option>
+            }
+        </select>
+    </div>
+    <div class="mt-2 d-flex flex-wrap">
+        <label for="dateFrom">From</label>
+        <input id="dateFrom" type="date" class="form-control" />
+        <label for="dateTo">To</label>
+        <input id="dateTo" type="date" class="form-control" />
+    </div>
+</div>
+<div>
+    <table id="mytable" class="table table-hover text-center table-striped">
+        <thead>
+            <tr class="text-center">
+                <th>Name</th>
+                <th>Track</th>
+                <th>until Date</th>
+                <th>Absence Days Count</th>
+                <th>Degree</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (AttendanceDegree degree in Model)
+            {
+                <tr>
+                    <td>@degree.Student.UserName</td>
+                    <td>@degree.Student.Track.Name</td>
+                    <td>@degree.UntilDate</td>
+                    <td>@degree.AbscenceDays</td>
+                    <td>@degree.AttendanceDegrees</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+@section Scripts {
+
+    <script>
+        $(document).ready(function () {
+            document.documentElement.style.setProperty('--first', $("UserColor").value);
+            $("#UserColor").on('change', function () {
+                document.documentElement.style.setProperty('--first', this.value);
+                console.log("Changed");
+                // document.documentElement.style.setProperty('--first-color', this.value);
+                // document.documentElement.style.setProperty('--first-color', this.value);
+            })
+            var table = $('#mytable').DataTable({
+                layout: {
+                    topStart: {
+                        // buttons: ['copy', 'csv', 'excel', 'pdf', 'print', 'colvis']
+                        buttons: [
+                            {
+                                extend: 'copy',
+                                exportOptions: {
+                                    rows: ':visible',
+                                    columns: ':visible'
+                                }
+                            },
+                            {
+                                extend: 'csv',
+                                exportOptions: {
+                                    rows: ':visible',
+                                    columns: ':visible'
+                                },
+                                action: function (e, dt, node, config) {
+                                    swal({
+                                        buttons: [true, "Save"],
+                                        title: "Save",
+                                        content: {
+                                            element: "input",
+                                            attributes: {
+                                                placeholder: "File Name",
+                                            },
+                                        },
+                                    })
+                                        .then(value => {
+                                            $(node).removeClass('processing');
+                                            if (value) {
+                                                config.filename = value;
+                                                $.fn.dataTable.ext.buttons.pdfHtml5.action.call(this, e, dt, node, config);
+
+                                            }
+                                        })
+                                }
+                            },
+                            {
+                                extend: 'excel',
+                                exportOptions: {
+                                    rows: ':visible',
+                                    columns: ':visible'
+                                },
+                                action: function (e, dt, node, config) {
+                                    swal({
+                                        buttons: [true, "Save"],
+                                        title: "Save",
+                                        content: {
+                                            element: "input",
+                                            attributes: {
+                                                placeholder: "File Name",
+                                            },
+                                        },
+                                    })
+                                        .then(value => {
+                                            $(node).removeClass('processing');
+                                            if (value) {
+                                                config.filename = value;
+                                                $.fn.dataTable.ext.buttons.pdfHtml5.action.call(this, e, dt, node, config);
+
+                                            }
+                                        })
+                                }
+                            },
+                            {
+                                extend: 'pdf',
+                                exportOptions: {
+                                    rows: ':visible',
+                                    columns: ':visible',
+                                },
+                                action: function (e, dt, node, config) {
+                                    swal({
+                                        buttons: [true, "Save"],
+                                        title: "Save",
+                                        content: {
+                                            element: "input",
+                                            attributes: {
+                                                placeholder: "File Name",
+                                            },
+                                        },
+                                    })
+                                        .then(value => {
+                                            $(node).removeClass('processing');
+                                            if (value) {
+                                                config.filename = value;
+                                                $.fn.dataTable.ext.buttons.pdfHtml5.action.call(this, e, dt, node, config);
+
+                                            }
+                                        })
+                                }
+                            },
+                            {
+                                extend: 'print',
+                                exportOptions: {
+                                    rows: ':visible',
+                                    columns: ':visible'
+                                }
+                            },
+                            'colvis',
+                            'pageLength'
+                        ]
+                    }
+                },
+                // dom: 'Bfrtip',
+                order: [[1, 'asc'], [0, 'asc']],
+                pageLength: 25,
+            });
+            table.buttons().container().appendTo($('.col-sm-6:eq(0)', table.table().container()));
+            // table.column(2).visible(false);
+            $("#Track").on('change', function () {
+                if (this.value == "")
+                    table.columns(1).search("").draw();
+                else
+                    table.columns(1).search(this.value).draw();
+            })
+            $("#dateFrom").attr('max', new Date().toISOString().split('T')[0]);
+            $("#dateTo").attr('max', new Date().toISOString().split('T')[0]);
+
+            $.fn.dataTable.ext.search.push(
+                function (settings, data, dataIndex) {
+                    var min = new Date($('#dateFrom').val());
+                    var max = new Date($('#dateTo').val());
+                    var date = new Date(data[7]); // use data for the date column
+
+                    if (
+                        (isNaN(min) || date >= min) &&
+                        (isNaN(max) || date <= max)
+                    ) {
+                        return true;
+                    }
+                    return false;
+                }
+            );
+            $("#dateFrom, #dateTo").on('change', function () {
+                table.draw();
+            });
+        });
+    </script>
+}
+
+
+
+

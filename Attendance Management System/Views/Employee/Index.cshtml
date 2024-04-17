@@ -53,10 +53,11 @@
             {
                 @foreach (Student student in currentSchedule.Track.Students)
                 {
+                    var studentTrack = tracks.FirstOrDefault(t => t.Id == student.TrackID);
                     <tr>
                         <td>@student.UserName</td>
-                        <td>@student.Track.Name</td>
-                        <td>@student.Track.Program.Name</td>
+                        <td>@studentTrack.Name</td>
+                        <td>@studentTrack.Program.Name</td>
                         <td>@student.University</td>
                         <td>@student.Faculty</td>
                         <td>@student.Gender</td>
@@ -75,17 +76,17 @@
                             }
                             else
                             {
-                                if (attendance?.Time_in != null && attendance?.Time_in <= currentSchedule?.StartTime.AddMinutes(tolerance))
-                                {
-                                    bgClass = "bg-primary";
-                                    TextClass = "text-primary";
-                                    status = "On Time";
-                                }
-                                else
+                                if (attendance?.Time_in != null && attendance?.Time_in > currentSchedule?.StartTime.AddMinutes(tolerance))
                                 {
                                     bgClass = "bg-warning";
                                     TextClass = "text-warning";
                                     status = "Late";
+                                }
+                                else
+                                {
+                                    bgClass = "bg-primary";
+                                    TextClass = "text-primary";
+                                    status = "On Time";
                                 }
                             }
                                     @:

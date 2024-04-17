@@ -1,0 +1,32 @@
+﻿@model Attendance_Management_System.Models.User
+
+@{
+    ViewData["Title"] = "User Profile";
+}
+
+<h2>User Profile</h2>
+
+<div>
+    <dl class="row">
+        <dt class="col-sm-2">National ID:</dt>
+        <dd class="col-sm-10">@Model.NationalId</dd>
+
+        <dt class="col-sm-2">User Name:</dt>
+        <dd class="col-sm-10">@Model.UserName</dd>
+
+        <dt class="col-sm-2">Email:</dt>
+        <dd class="col-sm-10">@Model.Email</dd>
+
+        <dt class="col-sm-2">Phone:</dt>
+        <dd class="col-sm-10">@Model.Phone</dd>
+
+        <dt class="col-sm-2">Gender:</dt>
+        <dd class="col-sm-10">@Model.Gender</dd>
+    </dl>
+    <div class="text-center">
+        <a href="@Url.Action("Edit", "Account")" class="btn btn-primary">Edit Information</a>
+</div>
+    <div class="text-center">
+        <a href="@Url.Action("ResetPassword", "Account", new { id = Model.Id })" class="btn btn-primary">Reset Password</a>
+    </div>
+</div>
