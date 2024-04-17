@@ -76,7 +76,12 @@ namespace Attendance_Management_System.Data
                 .HasMany(s => s.AttendanceDegrees)
                 .WithOne(ad => ad.Student)
                 .HasForeignKey(ad => ad.StudentId);
-
+            // 1-M relation between Student and Track
+            modelBuilder.Entity<Student>()
+                .HasOne(s => s.Track)
+                .WithMany(t => t.Students)
+                .HasForeignKey(s => s.TrackID)
+                .OnDelete(DeleteBehavior.NoAction);
             modelBuilder.Entity<Student>()
                 .HasIndex(s => s.NationalId)
                 .IsUnique();
