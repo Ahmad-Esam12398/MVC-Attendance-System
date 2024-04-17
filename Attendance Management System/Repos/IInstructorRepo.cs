@@ -8,12 +8,13 @@ namespace Attendance_Management_System.Repos
         void RefusePermission(int id);
         List<Permission> getAllPermissions();
         public void RefusePermissionsNotToday();
-        public List<Permission> getPendingPermissionsByTrackID(int TrackID);
+        public  Task<List<Permission>> GetPendingPermissionsByTrackID(int trackID);
         List<Schedule> getSchedulesByTrackID(int TrackID);
         void AddSchedule(Schedule Schedule);
         void DeleteSchedule(int id);
         void UpdateSchedule(Schedule schedule);
 
-
+        User GetCurrentUser();
+        Task AddDummyInstructors();
     }
 }

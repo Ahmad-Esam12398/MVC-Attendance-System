@@ -49,11 +49,14 @@ namespace Attendance_Management_System.Repos
             db.SaveChanges();
         }
 
-        public List<Permission> getPendingPermissionsByTrackID(int TrackID)
+        public async Task<List<Permission>> GetPendingPermissionsByTrackID(int trackID)
         {
+            // Add Dummy Instructors to the Database if there are no Instructors
+            await AddDummyInstructors();
             var user = GetCurrentUser();
+            
             RefusePermissionsNotToday();
-            return db.Permissions.Include(p => p.Student).Where(p => p.Status == PermissionStatus.Pending && p.Student.TrackID == TrackID).ToList();
+            return db.Permissions.Include(p => p.Student).Where(p => p.Status == PermissionStatus.Pending && p.Student.TrackID == trackID).ToList();
         }
 
         public List<Schedule> getSchedulesByTrackID(int TrackID)
@@ -88,5 +91,15 @@ namespace Attendance_Management_System.Repos
         {
             return _userManager.GetUserAsync(_userPrincipal).Result; // Get the current user using the user principal
         }
+        // Add Dummy Instructors to the Database if there are no Instructors using UserManager and RoleManager
+        public async Task AddDummyInstructors()
+        {
+
+            await _userManager.CreateAsync(new Instructor { UserName = "Account", NationalId = "1000", Email = "Ahmed@gmail.com" }, "123456aA!");
+            await _userManager.CreateAsync(new Supervisor { UserName = "Account2", NationalId = "1001", Email = "Ahmed2@gmail.com" , SupTrackId=1 }, "123456aA!");
+  
+        }
+
+
     }
 }
