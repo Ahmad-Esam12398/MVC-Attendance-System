@@ -113,5 +113,6 @@ namespace Attendance_Management_System.Data
 
             base.OnModelCreating(modelBuilder);
         }
+        public DbSet<Attendance_Management_System.Models.Instructor> Instructor { get; set; } = default!;
     }
 }
