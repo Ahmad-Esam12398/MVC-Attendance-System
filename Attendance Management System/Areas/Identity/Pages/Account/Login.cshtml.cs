@@ -129,12 +129,26 @@ namespace Attendance_Management_System.Areas.Identity.Pages.Account
                 //await _signInManager.UserManager.UpdateAsync(new User { UserName = Input.NationalId, NationalId = Input.NationalId, Email = Input.NationalId + "@gmail.com" });
 
                 var result = await _signInManager.PasswordSignInAsync(Input.NationalId, Input.Password, Input.RememberMe, lockoutOnFailure: false);
+
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
+                    // get Current User
+                    var user = _signInManager.UserManager.FindByNameAsync(Input.NationalId).Result;
+                    // Check if the user is an Instructor
+                    if (user is Instructor)
+                    {
+                        // Redirect to the Index action of the InstructorController
+                        returnUrl = Url.Action("Index", "Instructor");
+                    }
+                    // Check if the user is a Supervisor
+                    else if (user is Supervisor)
+                    {
+                        // Redirect to the Index action of the InstructorController
+                        returnUrl = Url.Action("Index", "Instructor");
+                    }
 
-                    // Redirect to the Index action of the AccountController
-                    returnUrl = Url.Action("Index", "Account");
+                   
 
                     return LocalRedirect(returnUrl);
                 }
