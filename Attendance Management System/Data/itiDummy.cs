@@ -1,4 +1,4 @@
-﻿using Attendance_Management_System.Models;
+﻿/*using Attendance_Management_System.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -6,9 +6,9 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace Attendance_Management_System.Data
 {
-   public class itiDummy :  IdentityDbContext<User>, IitiContext
+   public class itiDummy : IdentityDbContext<IdentityUser>, IitiContext
    {
-       public List<Student> students { get; set; }
+       public List<Student> Students { get; set; }
        public List<User> Users { get; set; }
        public List<Track> Tracks { get; set; }
        public List<ITIProgram> Programs { get; set; }
@@ -146,11 +146,11 @@ namespace Attendance_Management_System.Data
            };
            #endregion
            #region Students
-           students = new List<Student>()
+           Students = new List<Student>()
            {
                new Student()
                {
-                   ID = 1,
+                   Id = 1,
                    NationalId = "29803121600573",
                    UserName = "AhmadEsam",
                    Email = "Ahmad.esam1231998@gmail.com",
@@ -163,7 +163,7 @@ namespace Attendance_Management_System.Data
                },
                new Student()
                {
-                   ID = 2,
+                   Id = 2,
                    NationalId = "29803151800654",
                    UserName = "AliEmad",
                    Email = "ali@example.com",
@@ -176,7 +176,7 @@ namespace Attendance_Management_System.Data
                },
                new Student()
                {
-                   ID = 3,
+                   Id = 3,
                    NationalId = "32006485523654",
                    UserName = "AhmedAbdallah",
                    Email = "AhmadL3swy@example.com",
@@ -189,7 +189,7 @@ namespace Attendance_Management_System.Data
                },
                new Student()
                {
-                   ID = 4,
+                   Id = 4,
                    NationalId = "42557896652148",
                    UserName = "Raheek",
                    Email = "Raheek@gmail.com",
@@ -202,7 +202,7 @@ namespace Attendance_Management_System.Data
                },
                new Student()
                {
-                   ID = 5,
+                   Id = 5,
                    NationalId = "53665485772015",
                    UserName = "Nada",
                    Email = "Nada@yahoo.com",
@@ -214,7 +214,7 @@ namespace Attendance_Management_System.Data
                    Track = Tracks[1]
                }
            };
-           #region randomize students data
+           #region randomize Students data
            List<string> Universities = new List<string> { "Mansoura", "Tanta", "Cairo", "AinShams", "Zagazig" };
            List<string> Faculties = new List<string> { "Engineering", "CS", "IS", "Accounting" };
            List<char> Genders = new List<char> { 'M', 'F' };
@@ -235,9 +235,9 @@ namespace Attendance_Management_System.Data
                    }
 
                }
-               students.Add(new Student()
+               Students.Add(new Student()
                {
-                   ID = i,
+                   Id = i,
                    NationalId = new string(id),
                    UserName = "Student" + i,
                    Email = "Student" + i + "@example.com",
@@ -271,11 +271,12 @@ namespace Attendance_Management_System.Data
                    Track = Tracks[1],
                }
            };
-           Tracks[0].Students = students.Where(s => s.Track == Tracks[0]).ToList();
-           Tracks[1].Students = students.Where(s => s.Track == Tracks[1]).ToList();
+           Tracks[0].Students = Students.Where(s => s.Track == Tracks[0]).ToList();
+           Tracks[1].Students = Students.Where(s => s.Track == Tracks[1]).ToList();
            #endregion
            Attendances = new List<Attendance>();
        }
        #endregion
    }
 }
+*/

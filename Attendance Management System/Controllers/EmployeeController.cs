@@ -1,6 +1,5 @@
 ﻿using Attendance_Management_System.Repos;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.DotNet.Scaffolding.Shared.Messaging;
 
 namespace Attendance_Management_System.Controllers
 {

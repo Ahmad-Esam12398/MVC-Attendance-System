@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using Attendance_Management_System.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
+using System;
+using System.Security.Claims;
 
 namespace Attendance_Management_System
 {
@@ -25,7 +27,7 @@ namespace Attendance_Management_System
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             // Configure ASP.NET Core Identity to use itiContext for user and role management
-            services.AddIdentity<User, IdentityRole>(options =>
+            services.AddIdentity<User, IdentityRole<int>>(options =>
             {
                 // Lockout settings
                 options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(30);
@@ -41,9 +43,18 @@ namespace Attendance_Management_System
             .AddUserManager<UserManager<User>>()
             .AddEntityFrameworkStores<itiContext>(); // Add Entity Framework stores for user and role management
 
+            // Add UserManger Claims Principal
+            services.AddScoped<ClaimsPrincipal>(s =>
+            s.GetService<IHttpContextAccessor>().HttpContext.User);
+
             // Add Razor Pages services
             services.AddRazorPages();
             services.AddSingleton<IEmailSender, EmailSender>();
+            services.AddScoped<IStudentRepo, StudentRepo>();
+            services.AddScoped<IInstructorRepo, InstructorRepo>();
+            services.AddScoped<IAdminRepo, AdminRepo>();
+            services.AddScoped<IAccountRepo, AccountRepo>();
+            services.AddScoped<IEmployeeRepo, EmployeeRepo>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -1,5 +1,6 @@
 ﻿using Attendance_Management_System.Models;
 using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace Attendance_Management_System.Data
 {
@@ -13,6 +14,8 @@ namespace Attendance_Management_System.Data
         public static List<AttendanceDegree> AttendanceDegrees { get; set; }
         public static List<Intake> Intakes { get; set; }
         public static List<TrackIntake> TrackIntakes { get; set; }
+
+        public static List<Permission> Permissions { get; set; }
         public static void MakeLists()
         {
             #region Intakes
@@ -105,7 +108,7 @@ namespace Attendance_Management_System.Data
             {
                 new Student()
                 {
-                    ID = 1,
+                    Id = -1,
                     NationalId = "29803121600573",
                     UserName = "AhmadEsam",
                     Email = "Ahmad.esam1231998@gmail.com",
@@ -118,7 +121,7 @@ namespace Attendance_Management_System.Data
                 },
                 new Student()
                 {
-                    ID = 2,
+                    Id = -2,
                     NationalId = "29803151800654",
                     UserName = "AliEmad",
                     Email = "ali@example.com",
@@ -131,7 +134,7 @@ namespace Attendance_Management_System.Data
                 },
                 new Student()
                 {
-                    ID = 3,
+                    Id = -3,
                     NationalId = "32006485523654",
                     UserName = "AhmedAbdallah",
                     Email = "AhmadL3swy@example.com",
@@ -144,7 +147,7 @@ namespace Attendance_Management_System.Data
                 },
                 new Student()
                 {
-                    ID = 4,
+                    Id = -4,
                     NationalId = "42557896652148",
                     UserName = "Raheek",
                     Email = "Raheek@gmail.com",
@@ -157,7 +160,7 @@ namespace Attendance_Management_System.Data
                 },
                 new Student()
                 {
-                    ID = 5,
+                    Id = -5,
                     NationalId = "53665485772015",
                     UserName = "Nada",
                     Email = "Nada@yahoo.com",
@@ -192,7 +195,7 @@ namespace Attendance_Management_System.Data
                 }
                 students.Add(new Student()
                 {
-                    ID = i,
+                    Id = -i,
                     NationalId = new string(id),
                     UserName = "Student" + i,
                     Email = "Student" + i + "@example.com",
@@ -259,8 +262,22 @@ namespace Attendance_Management_System.Data
                 }
             };
             #endregion
+            #region Attendances
             Attendances = new List<Attendance>();
+            #endregion
+            #region AttendanceDegrees
             AttendanceDegrees = new List<AttendanceDegree>();
+            #endregion
+            #region Permissions
+            Permissions = new List<Permission>()
+            {
+              new Permission { ID = 1, StudentId = students[0].Id, Status = PermissionStatus.Pending ,Reason="1", BodyOfDescription="1", Date=DateOnly.FromDateTime(DateTime.Now), DateCreated=DateTime.Now},
+              new Permission { ID = 2, StudentId = students[1].Id, Status = PermissionStatus.Pending ,Reason="2", BodyOfDescription="2", Date=DateOnly.FromDateTime(DateTime.Now), DateCreated=DateTime.Now},
+              new Permission { ID = 3, StudentId = students[2].Id, Status = PermissionStatus.Pending ,Reason="3", BodyOfDescription="3", Date=DateOnly.FromDateTime(DateTime.Now), DateCreated=DateTime.Now},
+              new Permission { ID = 4, StudentId = students[3].Id, Status = PermissionStatus.Pending ,Reason="4", BodyOfDescription="4", Date=DateOnly.FromDateTime(DateTime.Now), DateCreated=DateTime.Now},
+              new Permission { ID = 5, StudentId = students[4].Id, Status = PermissionStatus.Pending ,Reason="5", BodyOfDescription="5", Date=DateOnly.FromDateTime(DateTime.Now), DateCreated=DateTime.Now},
+            };
+            #endregion
         }
         public static void Seed(this ModelBuilder modelBuilder)
         {
@@ -271,6 +288,8 @@ namespace Attendance_Management_System.Data
             modelBuilder.Entity<Student>().HasData(students);
             modelBuilder.Entity<Schedule>().HasData(Schedules);
             modelBuilder.Entity<TrackIntake>().HasData(TrackIntakes);
+            //Seed Permissions
+            modelBuilder.Entity<Permission>().HasData(Permissions);
         }
     }
 }
