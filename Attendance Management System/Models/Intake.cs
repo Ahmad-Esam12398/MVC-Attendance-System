@@ -13,6 +13,7 @@ namespace Attendance_Management_System.Models
         public DateOnly EndDate { get; set; }
         //navigation
         public ICollection<TrackIntake> Tracks { get; set; }
+        public int ProgramId { get;  set; }
         //public ICollection<Student> Students { get; set; } = new HashSet<Student>();
 
 

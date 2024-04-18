@@ -25,6 +25,7 @@ namespace Attendance_Management_System
             builder.Services.AddScoped<IAdminRepo, AdminRepo>();
             builder.Services.AddScoped<IAccountRepo, AccountRepo>();
             builder.Services.AddScoped<IEmployeeRepo, EmployeeRepo>();
+
             //Provide UserManger
             builder.Services.AddIdentity<User, IdentityRole<int>>(options =>
             {

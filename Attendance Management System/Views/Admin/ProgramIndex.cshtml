@@ -1,0 +1,29 @@
+﻿@model IEnumerable<Attendance_Management_System.Models.ITIProgram>
+    <a asp-action="CreateProgram"class="btn btn-primary">Create Program</a>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var program in Model)
+        {
+            <tr>
+                <td>@program.Id</td>
+                <td>@program.Name</td>
+                <td>@program.Description</td>
+                <td>
+                    <a asp-action="ProgramDetails" asp-route-id="@program.Id">Details</a> |
+                    <a asp-action="EditProgram" asp-route-id="@program.Id">Edit</a> |
+                    <a asp-action="DeleteProgram" asp-route-id="@program.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+

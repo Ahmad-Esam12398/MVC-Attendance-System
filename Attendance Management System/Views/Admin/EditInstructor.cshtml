@@ -1,0 +1,27 @@
+﻿@model Attendance_Management_System.Models.Instructor
+
+<h2>Edit Instructor</h2>
+<hr />
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="EditInstructor">
+            <input type="hidden" asp-for="Id" />
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="UserName" class="control-label"></label>
+                <input asp-for="UserName" class="form-control" />
+                <span asp-validation-for="UserName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+           
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+<a asp-action="InstructorIndex" class="btn btn-primary">Back to List</a>

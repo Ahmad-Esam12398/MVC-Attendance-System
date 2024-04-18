@@ -1,0 +1,37 @@
+﻿  @model IEnumerable<Attendance_Management_System.Models.Track>
+    <a asp-action="CreateTrack"class="btn btn-primary">Create Track</a>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+             
+                <th>ProgramId</th>
+                <th>SupervisorId</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var track in Model)
+                {
+            <tr>
+                
+                @if (track.IsActive == true)
+                {
+                    <td>@track.Id</td>
+                    <td>@track.Name</td>
+                    <td>@track.ProgramId</td>
+                    <td>@track.SupervisorId</td>
+                }
+                
+               
+                <td>
+                    <a asp-action="TrackDetails" asp-route-id="@track.Id">Details</a> |
+                    <a asp-action="EditTrack" asp-route-id="@track.Id">Edit</a> |
+                    <a asp-action="DeleteTrack" asp-route-id="@track.Id">Delete</a>
+                </td>
+            </tr>
+                }
+        </tbody>
+    </table>
+
