@@ -2,13 +2,12 @@
 
 @{
     ViewData["Title"] = "Student Schedule";
-    int id = ViewBag.id;
     var sortedModel = Model.OrderByDescending(item => item.Date);
 
 }
 
 @section NavList {
-    @Html.Partial("NavButtons_student", id)
+    @Html.Partial("NavButtons_student")
 }
 
 <div class="container">
@@ -45,7 +44,7 @@
                     @* Actions *@
                     <td>
 
-                        <a asp-action="ScheduleEvents" asp-controller="student" asp-route-scheduleId="@item.Id" asp-route-stdId="@id">
+                        <a asp-action="ScheduleEvents" asp-controller="student" asp-route-scheduleId="@item.Id" >
                             <i class='bx bx-search' style="transform: scale(1.7);"></i>
                             <span class="nav_name">Details</span>
 

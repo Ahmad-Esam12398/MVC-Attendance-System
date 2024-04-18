@@ -111,7 +111,7 @@ namespace Attendance_Management_System.Data
                 .IsRequired();
             #endregion
 
-            #endregion
+            
             base.OnModelCreating(modelBuilder);
         }
         public DbSet<Attendance_Management_System.Models.Instructor> Instructor { get; set; } = default!;

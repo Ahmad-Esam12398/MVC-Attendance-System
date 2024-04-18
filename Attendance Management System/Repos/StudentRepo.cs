@@ -2,19 +2,27 @@
 using Attendance_Management_System.Models;
 using Attendance_Management_System.ViewData;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NuGet.DependencyResolver;
 using System.Security;
+using System.Security.Claims;
 
 namespace Attendance_Management_System.Repos
 {
     public class StudentRepo : IStudentRepo
     {
         itiContext db;
-        public StudentRepo(itiContext _db)
+        private readonly UserManager<User> _userManager;
+        private readonly ClaimsPrincipal _userPrincipal; // Add a field to store the user principal
+
+        public StudentRepo(itiContext _db, UserManager<User> userManager, ClaimsPrincipal userPrincipal)
         {
             db = _db;
+            _userManager = userManager;
+            _userPrincipal = userPrincipal; // Assign the user principal to the field
+
         }
 
         public void CreatePermission(Permission permission)
@@ -135,7 +143,7 @@ namespace Attendance_Management_System.Repos
 
             public  Student GetStudentById(int id)
         {
-           return db.Students.FirstOrDefault(s=>s.ID==id);
+           return db.Students.FirstOrDefault(s=>s.Id==id);
 
         }
 
@@ -151,6 +159,17 @@ namespace Attendance_Management_System.Repos
         public List<ScheduleEvent>GetScheduleEvents(int stdID, int scheduleId)
         {
             return getSchedules(stdID).FirstOrDefault(sc => sc.Id == scheduleId).ScheduleEvents;
+        }
+
+        public User GetCurrentUser()
+        {
+            return _userManager.GetUserAsync(_userPrincipal).Result; // Get the current user using the user principal
+        }
+
+        public async Task AddDummyStudent()
+        {
+            await _userManager.CreateAsync(new Student { UserName = "Ali", NationalId = "1000", Email = "Ali@gmail.com" ,TrackID=1}, "123456aA!");
+            await _userManager.CreateAsync(new Student { UserName = "Ahmed", NationalId = "1001", Email = "Ahmed@gmail.com", TrackID = 1 }, "123456aA!");
         }
     }
 }

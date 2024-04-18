@@ -8,32 +8,71 @@ namespace Attendance_Management_System.Controllers
     public class StudentController : Controller
     {
         IStudentRepo StudentRepo;
+
         public StudentController(IStudentRepo _StudentRepo)
         {
             StudentRepo = _StudentRepo;
         }
-        public IActionResult Index(int id)
-        {
-            var std=StudentRepo.GetStudentById(id);
-            ViewBag.id = id;
-
-            return View("testView",std);
-        }
+       
 
 
-        public IActionResult Attendance(int id)
+        public async Task< IActionResult> Attendance()
         
         
         {
+
+
+            //await StudentRepo.AddDummyStudent();
+
+            int id;
+                var user = StudentRepo.GetCurrentUser();
+                if (user == null)
+                {
+                    return Redirect("/Identity/Account/Login");
+
+                }
+
+
+                else if (user is Student)
+                {
+                    id = StudentRepo.GetCurrentUser().Id;
+
+
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Home");
+                }
             
-            var attendList=StudentRepo.Get_Student_Attendances_By_Id(id);
+
+            var attendList =StudentRepo.Get_Student_Attendances_By_Id(id);
             ViewBag.id = id;
             return View(attendList);
 
         }
 
-        public IActionResult Permission(int id) {
-           var permissionList= StudentRepo.Get_Student_Permissions_By_Id(id);
+        public IActionResult Permission() {
+            int id;
+                var user = StudentRepo.GetCurrentUser();
+                if (user == null)
+                {
+                    return Redirect("/Identity/Account/Login");
+
+                }
+
+
+                else if (user is Student)
+                {
+                    id = StudentRepo.GetCurrentUser().Id;
+
+
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+            
+            var permissionList = StudentRepo.Get_Student_Permissions_By_Id(id);
             ViewBag.id = id;
             return View(permissionList);
         }
@@ -42,15 +81,56 @@ namespace Attendance_Management_System.Controllers
 
 
         [HttpGet]
-        public IActionResult CreatePermission(int id)
+        public IActionResult CreatePermission()
         {
+            int id;
+                var user = StudentRepo.GetCurrentUser();
+                if (user == null)
+                {
+                    return Redirect("/Identity/Account/Login");
+
+                }
+
+
+                else if (user is Student)
+                {
+                    id = StudentRepo.GetCurrentUser().Id;
+
+
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+            
             ViewBag.StudentId = id;
             return View("Create Permission");
         }
 
         [HttpPost]
-        public IActionResult CreatePermission(int id, Permission permission)
+        public IActionResult CreatePermission( Permission permission)
         {
+            int id;
+                var user = StudentRepo.GetCurrentUser();
+                if (user == null)
+                {
+                    return Redirect("/Identity/Account/Login");
+
+                }
+
+
+                else if (user is Student)
+                {
+                    id = StudentRepo.GetCurrentUser().Id;
+
+                    return RedirectToAction("Index", "Account");
+
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+            
             if (ModelState.IsValid)
             {
                 permission.StudentId = id;
@@ -66,6 +146,28 @@ namespace Attendance_Management_System.Controllers
         [HttpGet]
         public IActionResult EditPermission(int id, DateTime permissionDate)
         {
+            if (id == null || id == 0)
+            {
+                var user = StudentRepo.GetCurrentUser();
+                if (user == null)
+                {
+                    return Redirect("/Identity/Account/Login");
+
+                }
+
+
+                else if (user is Student)
+                {
+                    id = StudentRepo.GetCurrentUser().Id;
+
+                    return RedirectToAction("Index", "Account");
+
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+            }
             var permission = StudentRepo.PermissionDetails(id, permissionDate);
             if (permission == null)
             {
@@ -77,6 +179,7 @@ namespace Attendance_Management_System.Controllers
         [HttpPost]
         public IActionResult EditPermission(Permission permission)
         {
+
             if (ModelState.IsValid)
             {
                 StudentRepo.UpdatePermission(permission);
@@ -88,14 +191,55 @@ namespace Attendance_Management_System.Controllers
 
 
         // Delete a permission
-        public IActionResult DeletePermission(int id, DateTime permissionDate)
+        public IActionResult DeletePermission( DateTime permissionDate)
         {
+            int id;
+                 var user = StudentRepo.GetCurrentUser();
+                if (user == null)
+                {
+                    return Redirect("/Identity/Account/Login");
+
+                }
+
+
+                else if (user is Student)
+                {
+                    id = StudentRepo.GetCurrentUser().Id;
+
+                    return RedirectToAction("Index", "Account");
+
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+            
             StudentRepo.DeletePermission(id, permissionDate);
             return RedirectToAction("Permission", new { id });
         }
 
-        public IActionResult Schedules(int id)
+        public IActionResult Schedules()
         {
+            int id;
+                var user = StudentRepo.GetCurrentUser();
+                if (user == null)
+                {
+                    return Redirect("/Identity/Account/Login");
+
+                }
+
+
+                else if (user is Student)
+                {
+                    id = StudentRepo.GetCurrentUser().Id;
+
+
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+            
             var schedules = StudentRepo.getSchedules(id);
             ViewBag.id = id;
 
@@ -108,8 +252,28 @@ namespace Attendance_Management_System.Controllers
         }
 
 
-        public IActionResult ScheduleEvents(int stdId, int scheduleId)
+        public IActionResult ScheduleEvents( int scheduleId)
         {
+            int stdId;
+                var user = StudentRepo.GetCurrentUser();
+                if (user == null)
+                {
+                    return Redirect("/Identity/Account/Login");
+
+                }
+
+
+                else if (user is Student)
+                {
+                    stdId = StudentRepo.GetCurrentUser().Id;
+
+
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+            
             var schedulesEvents = StudentRepo.GetScheduleEvents(stdId, scheduleId);
             ViewBag.id = stdId;
             return View(schedulesEvents);

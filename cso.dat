@@ -6,3 +6,13 @@ V1
 2:DeletePermission,F
 2:id,K
 2:permissionDate,oA
+2:DataInitializer,a
+2:CreatePermission_NewPermission_SuccessAddingTrue,Y
+2:newPermission,O2
+2:PermissionsList,I
+2:m,T
+2:permissionsListAfterAdding,q
+2:Unit_Test_StudentRepo,l
+2:s857045231,z
+2:t857045231,y
+1:1,TestProject,l_,z_,y_

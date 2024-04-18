@@ -148,7 +148,13 @@ namespace Attendance_Management_System.Areas.Identity.Pages.Account
                         returnUrl = Url.Action("Index", "Instructor");
                     }
 
-                   
+                    else if (user is Student)
+                    {
+                        // Redirect to the Index action of the InstructorController
+                        returnUrl = Url.Action("Attendance", "Student");
+                    }
+
+
 
                     return LocalRedirect(returnUrl);
                 }

@@ -27,7 +27,8 @@ namespace Attendance_Management_System.Repos
         List<ScheduleEvent> GetScheduleEvents(int stdID, int scheduleId);
 
 
-
+        User GetCurrentUser();
+        Task AddDummyStudent();
 
 
     }

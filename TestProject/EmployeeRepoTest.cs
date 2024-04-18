@@ -2,7 +2,6 @@ using Attendance_Management_System.Data;
 using Attendance_Management_System.Models;
 using Attendance_Management_System.Repos;
 using Moq;
-using Moq.EntityFramework.Helpers;
 namespace TestProject
 {
     [TestClass]
@@ -25,6 +24,7 @@ namespace TestProject
             employeeRepo = new EmployeeRepo(context.Object);
         }
         [TestInitialize]
+        [AssemblyInitialize]
         public void TestInitialize()
         {
             #region Programs
