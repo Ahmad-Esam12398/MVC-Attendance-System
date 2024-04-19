@@ -37,12 +37,15 @@
                     <div class="sidebar_img"><img src="~/images/ITI.png" alt="" /></div>
                     <span class="nav_logo-name">Attendace System</span>
                 </a>
-                <div class="nav_list">
-                    <a href="#" class="nav_link">
-                        <i class="bx bx-user nav_icon"></i>
-                        <span class="nav_name">Profile</span>
-                    </a>
-                </div>
+                <a asp-action="Index" asp-controller="Account" class="nav_link" >
+
+                    <i class="bx bx-user nav_icon" title="Your account"></i>
+                    <span class="nav_name" >Profile</span>
+                </a>
+                
+
+
+
 
                 <!--Section Nav-List -->
                 @RenderSection("NavList", required: false)

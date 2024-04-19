@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
 using System.Linq;
 using Attendance_Management_System.ViewModels;
+using Attendance_Management_System.Repos;
 
 
 namespace Attendance_Management_System.Controllers
@@ -11,18 +12,19 @@ namespace Attendance_Management_System.Controllers
     public class AccountController : Controller
     {
         private readonly UserManager<User> _userManager;
+        IAccountRepo AccountRepo;
 
-        public AccountController(UserManager<User> userManager)
+        public AccountController(UserManager<User> userManager, IAccountRepo accountRepo)
         {
             _userManager = userManager;
+            AccountRepo = accountRepo;
         }
 
         public async Task<IActionResult> Index()
         {
             // Fetch user information based on the logged-in user's email
             var loggedInUserEmail = User.Identity.Name;
-            var user = await _userManager.FindByEmailAsync(loggedInUserEmail);
-
+            var user = AccountRepo.GetCurrentUser();
             if (user == null)
             {
                 return NotFound();

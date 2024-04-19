@@ -219,7 +219,19 @@ namespace Attendance_Management_System.Controllers
         public IActionResult Schedules()
         {
             int id;
-                var user = StudentRepo.GetCurrentUser();
+
+            // Get the current date
+            DateTime currentDate = DateTime.Now;
+
+            // Get the last day of the previous week (Saturday)
+            DateTime lastSaturday = currentDate.AddDays(-(int)currentDate.DayOfWeek);
+
+            // Get the first day of the current week (Saturday)
+            DateTime firstDayOfWeek = lastSaturday.AddDays(-1);
+
+           
+
+            var user = StudentRepo.GetCurrentUser();
                 if (user == null)
                 {
                     return Redirect("/Identity/Account/Login");
@@ -246,7 +258,7 @@ namespace Attendance_Management_System.Controllers
             {
                 SchedulesDtos.Add(new ScheduleDto(schedule));
             }
-            return View(SchedulesDtos);
+            return View(SchedulesDtos.OrderByDescending(item => item.Date));
         }
 
 

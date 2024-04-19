@@ -2,7 +2,6 @@
 
 @{
     ViewData["Title"] = "Student Schedule";
-    var sortedModel = Model.OrderByDescending(item => item.Date);
 
 }
 
@@ -35,7 +34,7 @@
         </thead>
         @* Table Body*@
         <tbody>
-            @foreach (var item in sortedModel)
+            @foreach (var item in Model)
             {
                 <tr>
                     <td> @item.Date &nbsp;&nbsp; @DateTime.Parse(item.Date).ToString("dddd", System.Globalization.CultureInfo.InvariantCulture)</td>
