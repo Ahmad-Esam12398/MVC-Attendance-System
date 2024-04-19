@@ -94,8 +94,60 @@ namespace Attendance_Management_System.Controllers
             ViewData["Name"] = user.UserName;
             return View(SchedulesDtos);
         }
+        public IActionResult Students()
+        {
+            //get the current user
+            var user = InstructorRepo.GetCurrentUser();
+            if (user == null)
+            {
+                return Redirect("/Identity/Account/Login");
 
+            }
+            if (user is not Supervisor)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            int trackID = (user as Supervisor).SupTrackId;
+            // get the list of students from the database
+            List<Student> students = InstructorRepo.getStudentsByTrackID(trackID);
+             
+            //ViewData["Name"] = user.UserName;
+            return View(students);
 
+        }
+        //Delete Student
+        [HttpPost]
+        public int DeleteStudent(int id)
+        {
+            try
+            {
+                InstructorRepo.DeleteStudent(id);
+
+                return 1;
+            }
+            catch (Exception)
+            {
+                return 0;
+            }
+        }
+        //Add Student
+        [HttpPost]
+        public async Task<IActionResult> AddStudent(Student student)
+        {
+            var user = InstructorRepo.GetCurrentUser();
+            int trackID = (user as Supervisor).SupTrackId;
+            await InstructorRepo.AddStudent(student, trackID);
+            return RedirectToAction("Students");
+        }
+        //Edit Student
+        [HttpPost]
+        public async Task<IActionResult> EditStudent(Student student)
+        {
+            await InstructorRepo.EditStudent(student);
+            return RedirectToAction("Students");
+        }
+
+       
 
         #region API Calls
         #region Permissions
