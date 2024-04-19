@@ -28,13 +28,14 @@ namespace Attendance_Management_System.Repos
         public void CreatePermission(Permission permission)
         {
            db.Permissions.Add(permission);
-           // db.SaveChanges();
+           db.SaveChanges();
         }
 
         public void DeletePermission(int stdID,DateTime permissionDate)
         {
             var permission=PermissionDetails(stdID,permissionDate);
             db.Permissions.Remove(permission);
+            db.SaveChanges();
         }
 
         public List<AttendanceViewData> Get_Student_Attendances_By_Id(int stdID)
@@ -138,10 +139,12 @@ namespace Attendance_Management_System.Repos
                 permission_In_Data.BodyOfDescription = permission.BodyOfDescription;
                 permission_In_Data.Reason = permission.Reason;
             }
-            
+
+            db.SaveChanges();
+
         }
 
-            public  Student GetStudentById(int id)
+        public  Student GetStudentById(int id)
         {
            return db.Students.FirstOrDefault(s=>s.Id==id);
 

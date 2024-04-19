@@ -123,7 +123,6 @@ namespace Attendance_Management_System.Controllers
                 {
                     id = StudentRepo.GetCurrentUser().Id;
 
-                    return RedirectToAction("Index", "Account");
 
                 }
                 else
@@ -183,7 +182,7 @@ namespace Attendance_Management_System.Controllers
             if (ModelState.IsValid)
             {
                 StudentRepo.UpdatePermission(permission);
-                return RedirectToAction("Permission", new { id = permission.StudentId });
+                return RedirectToAction("Permission");
             }
             return View(permission);
         }
@@ -206,7 +205,6 @@ namespace Attendance_Management_System.Controllers
                 {
                     id = StudentRepo.GetCurrentUser().Id;
 
-                    return RedirectToAction("Index", "Account");
 
                 }
                 else
