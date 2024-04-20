@@ -7,6 +7,6 @@ namespace Attendance_Management_System.Models
         public int SupTrackId { get; set; }
         //navigation
         [ForeignKey("SupTrackId")]
-        public Track Track { get; set; }
+        public Track? Track { get; set; }
     }
 }

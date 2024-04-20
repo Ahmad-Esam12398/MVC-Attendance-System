@@ -1,29 +1,59 @@
 ﻿@model IEnumerable<Attendance_Management_System.Models.ITIProgram>
-    <a asp-action="CreateProgram"class="btn btn-primary">Create Program</a>
+
+@section NavList {
+    @Html.Partial("navBar")
+}
+
+<h2>Programs</h2>
+
+<p>
+    <a asp-action="CreateProgram">Create New</a>
+</p>
+
 
 <table class="table">
     <thead>
         <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Description</th>
-            <th>Actions</th>
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsActive)
+            </th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var program in Model)
+        @foreach (var item in Model)
         {
             <tr>
-                <td>@program.Id</td>
-                <td>@program.Name</td>
-                <td>@program.Description</td>
                 <td>
-                    <a asp-action="ProgramDetails" asp-route-id="@program.Id">Details</a> |
-                    <a asp-action="EditProgram" asp-route-id="@program.Id">Edit</a> |
-                    <a asp-action="DeleteProgram" asp-route-id="@program.Id">Delete</a>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IsActive)
+                </td>
+                <td>
+                    <a asp-action="EditProgram" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="ProgramDetails" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="DeleteProgram" asp-route-id="@item.Id">Delete</a>
+
                 </td>
             </tr>
         }
     </tbody>
 </table>
+
 

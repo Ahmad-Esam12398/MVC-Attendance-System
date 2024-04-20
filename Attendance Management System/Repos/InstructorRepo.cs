@@ -97,7 +97,8 @@ namespace Attendance_Management_System.Repos
 
             await _userManager.CreateAsync(new Instructor { UserName = "Account", NationalId = "1000", Email = "Ahmed@gmail.com" }, "123456aA!");
             await _userManager.CreateAsync(new Supervisor { UserName = "Account2", NationalId = "1001", Email = "Ahmed2@gmail.com" , SupTrackId=1 }, "123456aA!");
-  
+            await _userManager.CreateAsync(new Admin { UserName = "nada", NationalId = "1011", Email = "nada@gmail.com" }, "123456aA!");
+
         }
 
 

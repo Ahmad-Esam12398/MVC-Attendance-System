@@ -19,7 +19,7 @@ namespace Attendance_Management_System.Models
         [ForeignKey("ProgramId")]
         public ITIProgram Program { get; set; }
         [ForeignKey("SupervisorId")]
-        public Supervisor Supervisor { get; set; }
+        public Supervisor? Supervisor { get; set; }
         public ICollection<Student> Students { get; set; } = new HashSet<Student>();
         public ICollection<TrackIntake> Intakes { get; set; } = new HashSet<TrackIntake>();
        

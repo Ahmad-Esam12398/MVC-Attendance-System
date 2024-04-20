@@ -27,49 +27,52 @@ namespace Attendance_Management_System.Repos
 
 
         #region program
-        public void DeleteProgram(int ProgramId)
+        public async Task<List<ITIProgram>> GetAllPrograms()
         {
-            ITIProgram program = db.Programs.FirstOrDefault(p => p.Id == ProgramId);
-
-            db.Programs.Remove(program);
-
-            db.SaveChanges();
+            return await db.Programs.Where(p => p.IsActive).ToListAsync();
         }
 
-
-
-        public ITIProgram GetProgramByID(int ProgramId)
+        public async Task<ITIProgram> GetProgramById(int id)
         {
-
-            return db.Programs.FirstOrDefault(p => p.Id == ProgramId);
+            return await db.Programs.FindAsync(id);
         }
 
-        public IEnumerable<ITIProgram> GetPrograms()
+        public async Task AddProgram(ITIProgram program)
         {
-            return db.Programs.ToList();
-        }
-
-        public void InsertProgram(ITIProgram iprogram)
-        {
-            db.Programs.Add(iprogram);
-
-            db.SaveChanges();
-        }
-
-        public void UpdateProgram(ITIProgram program)
-        {
-
-            var existingProgram = db.Programs.FirstOrDefault(p => p.Id == program.Id);
-
-            if (existingProgram != null)
+            try
             {
-
-                existingProgram.Name = program.Name;
-                existingProgram.Description = program.Description;
-
-
-                db.SaveChanges();
+                db.Programs.Add(program);
+                await db.SaveChangesAsync();
             }
+            catch (Exception ex)
+            {
+                // Log or handle the exception
+                // For debugging purposes, you can also inspect 'ex' to see the specific error message
+                throw; // Rethrow the exception to propagate it to the caller
+            }
+        }
+
+
+        public async Task UpdateProgram(ITIProgram program)
+        {
+            db.Entry(program).State = EntityState.Modified;
+            await db.SaveChangesAsync();
+        }
+
+        public async Task DeleteProgram(int id)
+        {
+            var program = await db.Programs.FindAsync(id);
+            db.Programs.Remove(program);
+            await db.SaveChangesAsync();
+        }
+        public async Task<bool> ProgramHasTracks(int programId)
+        {
+            // Check if there are any tracks associated with the program
+            return await db.Tracks.AnyAsync(t => t.ProgramId == programId);
+        }
+        public async Task<bool> ProgramExists(int id) // Implement ProgramExists method in AdminRepo
+        {
+            return await db.Programs.AnyAsync(p => p.Id == id);
         }
         #endregion
 
@@ -215,11 +218,10 @@ namespace Attendance_Management_System.Repos
         {
             return _userManager.GetUserAsync(_userPrincipal).Result; // Get the current user using the user principal
         }
-        public async Task AddDummyInstructors()
+        public async Task AddDummy()
         {
 
-            await _userManager.CreateAsync(new Admin { UserName = "nada", NationalId = "1010", Email = "nada@gmail.com" }, "123456aA!");
-            await _userManager.CreateAsync(new Supervisor { UserName = "salma", NationalId = "1011", Email = "salma@gmail.com", SupTrackId = 1 }, "123456aA!");
+            await _userManager.CreateAsync(new Admin { UserName = "nada", NationalId = "1011", Email = "nada@gmail.com" }, "123456aA!");
 
         }
 

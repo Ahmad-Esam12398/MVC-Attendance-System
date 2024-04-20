@@ -1,4 +1,11 @@
 ﻿  @model IEnumerable<Attendance_Management_System.Models.Track>
+@section NavList
+  {
+
+    @Html.Partial("navBar")
+
+
+}
     <a asp-action="CreateTrack"class="btn btn-primary">Create Track</a>
     <table class="table">
         <thead>

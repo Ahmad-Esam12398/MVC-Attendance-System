@@ -5,16 +5,13 @@ namespace Attendance_Management_System.Repos
     public interface IAdminRepo
     {
         #region program
-        void InsertProgram(ITIProgram Program); // C
-
-        IEnumerable<ITIProgram> GetPrograms(); // R
-
-        ITIProgram GetProgramByID(int ProgramId); // R
-
-        void UpdateProgram(ITIProgram Program); //U
-
-        void DeleteProgram(int ProgramId); //D
-
+        Task<List<ITIProgram>> GetAllPrograms();
+        Task<ITIProgram> GetProgramById(int id);
+        Task AddProgram(ITIProgram program);
+        Task UpdateProgram(ITIProgram program);
+        Task DeleteProgram(int id);
+        Task<bool> ProgramExists(int id);
+        Task<bool> ProgramHasTracks(int programId);
         #endregion
 
 
@@ -53,6 +50,6 @@ namespace Attendance_Management_System.Repos
         void DeleteInstructor(int id);
 
         User GetCurrentUser();
-        Task AddDummyInstructors();
+        Task AddDummy();
     }
 }

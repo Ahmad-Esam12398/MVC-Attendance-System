@@ -1,12 +1,14 @@
 ﻿using Attendance_Management_System.Models;
 using Attendance_Management_System.Repos;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Attendance_Management_System.Controllers
 {
     public class AdminController : Controller
     {
         IAdminRepo AdminRepo;
+       
         public AdminController(IAdminRepo _AdminRepo)
         {
             AdminRepo = _AdminRepo;
@@ -16,7 +18,7 @@ namespace Attendance_Management_System.Controllers
         public IActionResult Index()
         {
             ViewData["IsAdmin"] = false;
-
+            //AdminRepo.AddDummy();
             // Get Current User
             var user = AdminRepo.GetCurrentUser();
             if (user == null)
@@ -201,45 +203,54 @@ namespace Attendance_Management_System.Controllers
         }
         #endregion
         #region program
-        public IActionResult ProgramIndex()
+
+        public async Task<IActionResult> ProgramIndex()
         {
-            var programs = AdminRepo.GetPrograms();
+            var programs = await AdminRepo.GetAllPrograms();
             return View(programs);
         }
 
-
-        public IActionResult ProgramDetails(int id)
+        public async Task<IActionResult> ProgramDetails(int? id)
         {
-            var program = AdminRepo.GetProgramByID(id);
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var program = await AdminRepo.GetProgramById(id.Value);
             if (program == null)
             {
                 return NotFound();
             }
+
             return View(program);
         }
-
 
         public IActionResult CreateProgram()
         {
             return View();
         }
 
-
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult CreateProgram(ITIProgram program)
+        public async Task<IActionResult> CreateProgram([Bind("Id,Name,Description,IsActive")] ITIProgram program)
         {
             if (ModelState.IsValid)
             {
-                AdminRepo.InsertProgram(program);
+                await AdminRepo.AddProgram(program);
                 return RedirectToAction(nameof(ProgramIndex));
             }
             return View(program);
         }
 
-        public IActionResult EditProgram(int id)
+        public async Task<IActionResult> EditProgram(int? id)
         {
-            var program = AdminRepo.GetProgramByID(id);
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var program = await AdminRepo.GetProgramById(id.Value);
             if (program == null)
             {
                 return NotFound();
@@ -249,7 +260,7 @@ namespace Attendance_Management_System.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult EditProgram(int id, ITIProgram program)
+        public async Task<IActionResult> EditProgram(int id, [Bind("Id,Name,Description,IsActive")] ITIProgram program)
         {
             if (id != program.Id)
             {
@@ -258,20 +269,29 @@ namespace Attendance_Management_System.Controllers
 
             if (ModelState.IsValid)
             {
-                AdminRepo.UpdateProgram(program);
-                TempData["EditSuccessMessage"] = "Program updated successfully!";
-                return RedirectToAction("ProgramIndex");
+                try
+                {
+                    await AdminRepo.UpdateProgram(program);
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!await AdminRepo.ProgramExists(program.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(ProgramIndex));
             }
-
             return View(program);
         }
 
-
-
-
-        public IActionResult DeleteProgram(int id)
+        public async Task<IActionResult> DeleteProgram(int id)
         {
-            var program = AdminRepo.GetProgramByID(id);
+            var program = await AdminRepo.GetProgramById(id);
             if (program == null)
             {
                 return NotFound();
@@ -280,15 +300,36 @@ namespace Attendance_Management_System.Controllers
             return View(program);
         }
 
-
         [HttpPost, ActionName("DeleteProgram")]
         [ValidateAntiForgeryToken]
-        public IActionResult DeleteProgramConfirmed(int id)
+        public async Task<IActionResult> DeleteProgramConfirmed(int id)
         {
-            AdminRepo.DeleteProgram(id);
+            var program = await AdminRepo.GetProgramById(id);
+            if (program == null)
+            {
+                return NotFound();
+            }
+
+            // Check if the program has associated tracks
+            var hasTracks = program.Tracks.Any(); // Assuming Tracks is a collection navigation property in ITIProgram
+            if (hasTracks)
+            {
+                ViewBag.DeleteErrorMessage = "This program cannot be deleted because it has associated tracks.";
+                return RedirectToAction(nameof(ProgramIndex));
+            }
+
+            // Update the program IsActive property to false (inactive)
+            program.IsActive = false;
+            await AdminRepo.UpdateProgram(program);
+
             return RedirectToAction(nameof(ProgramIndex));
         }
+
+
+
         #endregion
+
+
         #region tracks
         public IActionResult TrackIndex()
         {

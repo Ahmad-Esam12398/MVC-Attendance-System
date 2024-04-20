@@ -1,5 +1,11 @@
 ﻿@model IEnumerable<Attendance_Management_System.Models.Intake>
+@section NavList
+{
 
+    @Html.Partial("navBar")
+
+
+}
 <a asp-action="CreateIntake" class="btn btn-primary">Create Intake</a>
 
 <table class="table">

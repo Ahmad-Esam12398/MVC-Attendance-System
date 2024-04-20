@@ -1,5 +1,11 @@
 ﻿@model IEnumerable<Attendance_Management_System.Models.Instructor>
+@section NavList
+{
 
+    @Html.Partial("navBar")
+
+
+}
 <a asp-action="CreateInstructor" class="btn btn-primary">Create Instructor</a>
 
 <table class="table">

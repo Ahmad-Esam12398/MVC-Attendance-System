@@ -41,7 +41,7 @@ namespace Attendance_Management_System.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Seed();
+         //   modelBuilder.Seed();
             // Congifure inheritance To Table Per Hierarchy
             modelBuilder.Entity<User>()
                 .HasDiscriminator<string>("UserType")
