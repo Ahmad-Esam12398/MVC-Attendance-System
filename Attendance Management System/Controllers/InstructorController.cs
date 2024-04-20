@@ -23,60 +23,23 @@ namespace Attendance_Management_System.Controllers
             InstructorRepo = _InstructorRepo;
             _userManager = userManager;
         }
-        // Allow Instructor to access the Index Page
         public IActionResult Index()
         {
-            ViewData["IsSuperVisor"] = true;
-
-            // Get Current User
-            var user = InstructorRepo.GetCurrentUser();
-            //if (user == null)
-            //{
-            //    return Redirect("/Identity/Account/Login");
-
-            //}
-            //if (user is not Instructor)
-            //{
-            //    return RedirectToAction("Index", "Home");
-            //}
-            //if (user is Supervisor)
-            //{
-            //    ViewData["IsSuperVisor"] = true;
-            //}
-            ViewData["Name"] = user.UserName ?? "Instructor";
+           
             return View();
         }
         [Authorize(Roles = RolesValues.SuperVisorRole)]
 
         public async Task<IActionResult> Permissions()
         {
-            // Add Dummy Instructors to the Database if there are no Instructors
-            await InstructorRepo.AddDummyInstructors();
-            // Get Current User
             var user = InstructorRepo.GetCurrentUser();
-            //if (user == null)
-            //{
-            //    return Redirect("/Identity/Account/Login");
-                
-            //}
-            //if (user is not Supervisor)
-            //{
-            //    return RedirectToAction("Index", "Instructor");
-            //}
-            //if (user is not Instructor)
-            //{
-            //    return RedirectToAction("Index", "Home");
-            //}
-            int trackID = (user as Supervisor).SupTrackId;
-            // Get the list of permissions from the database
+            int trackID = InstructorRepo.GetTrackIdByInstructorId(user.Id);   
             var Permissions = await InstructorRepo.GetPendingPermissionsByTrackID(trackID);
-            // Convert the list of permissions to a list of PermissionDto
             List<PermissionDto> PermissionsDtos = new List<PermissionDto>();
             foreach (var permission in Permissions)
             {
                 PermissionsDtos.Add(new PermissionDto(permission));
             }
-            ViewData["Name"] = user.UserName ?? "Instructor";
             return View(PermissionsDtos);
         }
         [HttpGet("Instructor/Schedule")]
@@ -84,12 +47,9 @@ namespace Attendance_Management_System.Controllers
 
         public IActionResult Schedule()
         {
-            // Get Current User
             var user = InstructorRepo.GetCurrentUser();
-            int trackID = (user as Supervisor)?.SupTrackId ?? 1; // If the trackID is null, use 1 as the default value for testing purposes to be removed
-            // Get the list of schedules from the database
+            int trackID = InstructorRepo.GetTrackIdByInstructorId(user.Id);
             var Schedules = InstructorRepo.getSchedulesByTrackID(trackID);
-            // Convert the list of schedules to a list of ScheduleDto
             List<ScheduleDto> SchedulesDtos = new List<ScheduleDto>();
             foreach (var schedule in Schedules)
             {
@@ -120,14 +80,9 @@ namespace Attendance_Management_System.Controllers
 
         public IActionResult Students()
         {
-            //get the current user
             var user = InstructorRepo.GetCurrentUser();
-
-            int trackID = (user as Supervisor)?.SupTrackId ?? 1; // If the trackID is null, use 1 as the default value for testing purposes to be removed
-            // get the list of students from the database
-            List<Student> students = InstructorRepo.getStudentsByTrackID(trackID);
-             
-            //ViewData["Name"] = user.UserName;
+            int trackID = InstructorRepo.GetTrackIdByInstructorId(user.Id);
+            List<Student> students = InstructorRepo.getStudentsByTrackID(trackID);      
             return View(students);
 
         }
