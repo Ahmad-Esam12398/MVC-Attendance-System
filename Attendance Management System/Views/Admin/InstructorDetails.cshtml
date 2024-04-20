@@ -1,0 +1,22 @@
+﻿@model Attendance_Management_System.Models.Instructor
+
+@section NavList {
+    @Html.Partial("navBar")
+}
+
+<h2>Instructor Details</h2>
+
+<div>
+   
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">ID</dt>
+        <dd class="col-sm-10">@Model.Id</dd>
+        <dt class="col-sm-2">National ID</dt>
+        <dd class="col-sm-10">@Model.NationalId</dd>
+        <dt class="col-sm-2">Phone</dt>
+        <dd class="col-sm-10">@Model.PhoneNumber</dd>
+        <dt class="col-sm-2">Gender</dt>
+        <dd class="col-sm-10">@Model.Gender</dd>
+    </dl>
+</div>

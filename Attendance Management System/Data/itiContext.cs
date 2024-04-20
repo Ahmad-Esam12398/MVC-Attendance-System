@@ -16,6 +16,10 @@ namespace Attendance_Management_System.Data
         public DbSet<Schedule> Schedules { get; set; }
         public DbSet<ScheduleEvent> ScheduleEvents { get; set; }
         public DbSet<Track> Tracks { get; set; }
+        public DbSet<Supervisor> Supervisors { get; set; }
+        public DbSet<Instructor> Instructors { get; set; }
+
+        public DbSet<Intake> Intake { get; set; }
         public DbSet<ITIProgram> Programs { get; set; }
         public DbSet<Permission> Permissions { get; set; }
         public DbSet<TrackIntake> TrackIntakes { get; set; }
@@ -50,7 +54,6 @@ namespace Attendance_Management_System.Data
                 .ToTable("Roles");
 
             modelBuilder.Seed();
-
             // Congifure inheritance To Table Per Hierarchy
             //modelBuilder.Entity<User>()
             //    .HasDiscriminator<string>("UserType")

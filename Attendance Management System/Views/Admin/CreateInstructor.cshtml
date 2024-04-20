@@ -1,0 +1,35 @@
+﻿@model Attendance_Management_System.Models.Instructor
+
+@section NavList {
+    @Html.Partial("navBar")
+}
+
+<h2>Create Instructor</h2>
+
+<form asp-action="CreateInstructor" method="post">
+    <!-- Include input fields for all properties -->
+    <div class="form-group">
+        <label asp-for="NationalId" class="control-label"></label>
+        <input asp-for="NationalId" class="form-control" />
+        <span asp-validation-for="NationalId" class="text-danger"></span>
+@*     </div>
+    <div class="form-group">
+        <label asp-for="Password" class="control-label"></label>
+        <input asp-for="Password" class="form-control" />
+        <span asp-validation-for="Password" class="text-danger"></span>
+    </div>
+ *@    <div class="form-group">
+        <label asp-for="PhoneNumber" class="control-label"></label>
+            <input asp-for="PhoneNumber" class="form-control" />
+            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Gender" class="control-label"></label>
+        <input asp-for="Gender" class="form-control" />
+        <span asp-validation-for="Gender" class="text-danger"></span>
+    </div>
+    <!-- Add other input fields as needed -->
+    <div class="form-group">
+        <input type="submit" value="Save" class="btn btn-primary" />
+    </div>
+</form>

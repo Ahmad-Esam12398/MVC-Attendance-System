@@ -1,0 +1,41 @@
+﻿@model IEnumerable<Attendance_Management_System.Models.Intake>
+@section NavList
+{
+
+    @Html.Partial("navBar")
+
+
+}
+
+<p>
+    <a asp-action="CreateIntake">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Number</th>
+           
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var intake in Model)
+        {
+            <tr>
+                <td>@intake.Id</td>
+                <td>@intake.Number</td>
+                
+                <td>@intake.StartDate.ToShortDateString()</td>
+                <td>@intake.EndDate.ToShortDateString()</td>
+                <td>
+                    <a asp-action="IntakeDetails" asp-route-id="@intake.Id">Details</a> |
+                    <a asp-action="EditIntake" asp-route-id="@intake.Id">Edit</a> |
+                    <a asp-action="DeleteIntake" asp-route-id="@intake.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

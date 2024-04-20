@@ -87,16 +87,25 @@ $(".btn").click(function () {
                 });
                 clickedButton.closest("tr").hide("slow");
             }
+            else if (action == "/Instructor/DeleteStudent") {
+                $.toast({
+                    heading: 'Student Deleted',
+                    text: 'You have successfully Kicked the Student.',
+                    showHideTransition: 'slide',
+                    icon: 'success'
+                });
+                clickedButton.closest("tr").hide("slow");
+            }
 
 
             },
             error: function (data) {
-                $.toast({
-                    heading: 'Error',
-                    text: 'An error occurred while processing your request.',
-                    showHideTransition: 'slide',
-                    icon: 'error'
-                })
+                //$.toast({
+                //    heading: 'Error',
+                //    text: 'An error occurred while processing your request.',
+                //    showHideTransition: 'slide',
+                //    icon: 'error'
+                //})
             }
         });
 });
@@ -126,6 +135,8 @@ $('.edit').click(function (event) {
     var date = button.data('date');
     var startTime = button.data('start-time');
     var endTime = button.data('end-time');
+    var name = button.data('name');
+    var email = button.data('email');
 
     // Parse time strings using Moment.js
     var startTimeMoment = moment(startTime, 'hh:mm A');
@@ -140,6 +151,8 @@ $('.edit').click(function (event) {
     $('#EditDate').val(date);
     $('#EditStartTime').val(formattedStartTime);
     $('#EditEndTime').val(formattedEndTime);
+    $('#EditName').val(name);
+    $('#EditEmail').val(email);
 });
 
 

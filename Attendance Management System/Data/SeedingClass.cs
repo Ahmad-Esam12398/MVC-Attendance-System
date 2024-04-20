@@ -280,7 +280,7 @@ namespace Attendance_Management_System.Data
             modelBuilder.Entity<Schedule>().HasData(Schedules);
             modelBuilder.Entity<TrackIntake>().HasData(TrackIntakes);
             //Seed Permissions
-            modelBuilder.Entity<Permission>().HasData(Permissions);
+            //modelBuilder.Entity<Permission>().HasData(Permissions);
         }
     }
 }
