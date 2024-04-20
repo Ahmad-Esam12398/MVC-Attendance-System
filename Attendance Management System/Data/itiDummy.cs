@@ -1,6 +1,5 @@
 ﻿/*using Attendance_Management_System.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
@@ -19,6 +18,13 @@ namespace Attendance_Management_System.Data
         public DbSet<AttendanceDegree> AttendanceDegrees { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public DbSet<ScheduleEvent> ScheduleEvents { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public DbSet<TrackIntake> TrackIntakes { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public List<Student> Students { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        DbSet<Student> IitiContext.Students { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        DbSet<Track> IitiContext.Tracks { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        DbSet<ITIProgram> IitiContext.Programs { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        DbSet<Permission> IitiContext.Permissions { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        DbSet<Schedule> IitiContext.Schedules { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        DbSet<Attendance> IitiContext.Attendances { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         public itiDummy(DbContextOptions<itiDummy> options) : base(options)
        {
@@ -50,7 +56,7 @@ namespace Attendance_Management_System.Data
                },
                new User
                {
-                   Id = 1,
+                   Id = 2,
                    UserName = "student@example.com",
                    NormalizedUserName = "STUDENT@EXAMPLE.COM",
                    Email = "student@example.com",
@@ -148,7 +154,7 @@ namespace Attendance_Management_System.Data
                    NationalId = "29803121600573",
                    UserName = "AhmadEsam",
                    Email = "Ahmad.esam1231998@gmail.com",
-                   Phone = "01015328933",
+                   PhoneNumber = "01015328933",
                    Gender = 'M',
                    Password = "12345678",
                    University = "Mansoura",
@@ -161,7 +167,7 @@ namespace Attendance_Management_System.Data
                    NationalId = "29803151800654",
                    UserName = "AliEmad",
                    Email = "ali@example.com",
-                   Phone = "01115328933",
+                   PhoneNumber = "01115328933",
                    Gender = 'M',
                    Password = "12345678",
                    University = "Mansoura",
@@ -174,7 +180,7 @@ namespace Attendance_Management_System.Data
                    NationalId = "32006485523654",
                    UserName = "AhmedAbdallah",
                    Email = "AhmadL3swy@example.com",
-                   Phone = "01215328933",
+                   PhoneNumber = "01215328933",
                    Gender = 'M',
                    Password = "12345678",
                    University = "Cairo",
@@ -187,7 +193,7 @@ namespace Attendance_Management_System.Data
                    NationalId = "42557896652148",
                    UserName = "Raheek",
                    Email = "Raheek@gmail.com",
-                   Phone = "01015328933",
+                   PhoneNumber = "01015328933",
                    Gender = 'F',
                    Password = "12345678",
                    University = "AinShams",
@@ -200,7 +206,7 @@ namespace Attendance_Management_System.Data
                    NationalId = "53665485772015",
                    UserName = "Nada",
                    Email = "Nada@yahoo.com",
-                   Phone = "01015328933",
+                   PhoneNumber = "01015328933",
                    Gender = 'F',
                    Password = "12345678",
                    University = "Tanta",
@@ -235,7 +241,7 @@ namespace Attendance_Management_System.Data
                    NationalId = new string(id),
                    UserName = "Student" + i,
                    Email = "Student" + i + "@example.com",
-                   Phone = "01015328933",
+                   PhoneNumber = "01015328933",
                    Gender = Genders[random.Next(Genders.Count)],
                    Password = "12345678",
                    University = Universities[random.Next(Universities.Count)],

@@ -27,7 +27,6 @@ namespace Attendance_Management_System.Data
         #endregion
 
         public readonly IConfiguration Configuration;
-
         public itiContext(DbContextOptions<itiContext> options, IConfiguration _configuration) : base(options)
         {
             Configuration = _configuration;
@@ -41,19 +40,33 @@ namespace Attendance_Management_System.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-         //   modelBuilder.Seed();
-            // Congifure inheritance To Table Per Hierarchy
-            modelBuilder.Entity<User>()
-                .HasDiscriminator<string>("UserType")
-                .HasValue<Student>("Student");
-            modelBuilder.Entity<User>()
-                .HasDiscriminator<string>("UserType")
-                .HasValue<Instructor>("Instructor");
-            modelBuilder.Entity<User>()
-                .HasDiscriminator<string>("UserType")
-                .HasValue<Admin>("Admin");
+            base.OnModelCreating(modelBuilder);
 
-               
+            modelBuilder.Entity<User>()
+                .ToTable("Users");
+            modelBuilder.Entity<Student>()
+                .ToTable("Students");
+            modelBuilder.Entity<Instructor>()
+                .ToTable("Instructors");
+            modelBuilder.Entity<IdentityUserRole<int>>()
+                .ToTable("UsersRoles");
+            modelBuilder.Entity<IdentityRole<int>>()
+                .ToTable("Roles");
+
+            modelBuilder.Seed();
+            // Congifure inheritance To Table Per Hierarchy
+            //modelBuilder.Entity<User>()
+            //    .HasDiscriminator<string>("UserType")
+            //    .HasValue<Student>("Student");
+            //modelBuilder.Entity<User>()
+            //    .HasDiscriminator<string>("UserType")
+            //    .HasValue<Instructor>("Instructor");
+            //modelBuilder.Entity<User>()
+            //    .HasDiscriminator<string>("UserType")
+            //    .HasValue<Admin>("Admin");
+
+
+
 
             #region Permissions
             modelBuilder.Entity<Permission>()
@@ -97,7 +110,7 @@ namespace Attendance_Management_System.Data
             #endregion
 
             #region ScheduleEvent Relations and Validations
-            // Configure the relationship between Track and Instructor
+            // Define primary key for Attendance entity
             modelBuilder.Entity<Attendance>()
                 .HasKey(a => a.Id);
 
@@ -115,7 +128,6 @@ namespace Attendance_Management_System.Data
                 .IsRequired();
             #endregion
 
-            base.OnModelCreating(modelBuilder);
         }
         public DbSet<Attendance_Management_System.Models.Instructor> Instructor { get; set; } = default!;
     }

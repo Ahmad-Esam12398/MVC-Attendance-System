@@ -1,0 +1,60 @@
+﻿@model IEnumerable<ScheduleEvent>
+
+@{
+    ViewData["Title"] = "Student Schedule";
+}
+
+@section NavList {
+    @Html.Partial("NavButtons_student")
+}
+<div class="container">
+  
+    @* Main Table Section*@
+    <table id="myTable" class="display">
+        @* Table Header*@
+        <thead>
+            <tr>
+                <th>Event Name</th>
+                <th>StartTime</th>
+                <th>EndTime</th>
+            </tr>
+        </thead>
+        @* Table Body*@
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Name</td>
+                    <td>@item.StartTime</td>
+                    <td>@item.EndTime</td>
+                    @* Actions *@
+                   
+                </tr>
+            }
+
+
+
+        </tbody>
+    </table>
+
+
+</div>
+
+
+@section Scripts
+{
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.30.1/moment.min.js"></script>
+    <script src="https://cdn.datatables.net/2.0.3/js/dataTables.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-toast-plugin/1.3.2/jquery.toast.min.js" integrity="sha512-zlWWyZq71UMApAjih4WkaRpikgY9Bz1oXIW5G0fED4vk14JjGlQ1UmkGM392jEULP8jbNMiwLWdM8Z87Hu88Fw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="~/js/index.js"></script>
+
+
+}
+@section Styles
+{
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-toast-plugin/1.3.2/jquery.toast.min.css" integrity="sha512-wJgJNTBBkLit7ymC6vvzM1EcSWeM9mmOu+1USHaRBbHkm6W9EgM0HY27+UtUaprntaYQJF75rc8gjxllKs5OIQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.0.3/css/dataTables.dataTables.css" />
+}
+
+

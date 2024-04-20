@@ -6,16 +6,16 @@ namespace Attendance_Management_System.Data
 {
     public interface IitiContext
     {
-        List<Student> Students { get; set; }
-        List<Track> Tracks { get; set; }
-        List<ITIProgram> Programs { get; set; }
-        List<Permission> Permissions { get; set; }
-        List<Schedule> Schedules { get; set; }
-        List<Attendance> Attendances { get; set; }
         List<Supervisor> Supervisors { get; set; }
         List<Instructor> Instructors { get; set; }
-
         List<Intake> Intakes { get; set; }
+      
+        DbSet<Student> Students { get; set; }
+        DbSet<Track> Tracks { get; set; }
+        DbSet<ITIProgram> Programs { get; set; }
+        DbSet<Permission> Permissions { get; set; }
+        DbSet<Schedule> Schedules { get; set; }
+        DbSet<Attendance> Attendances { get; set; }
         DbSet<AttendanceDegree> AttendanceDegrees { get; set; }
         DbSet<ScheduleEvent> ScheduleEvents { get; set; }
         DbSet<TrackIntake> TrackIntakes { get; set; }

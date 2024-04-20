@@ -14,6 +14,7 @@ namespace Attendance_Management_System.Repos
         }
         public List<Student> ReadAllStudents()
         {
+            
             return db.Students.ToList();
         }
         public List<Track> ReadAllTracks()

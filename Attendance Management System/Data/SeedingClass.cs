@@ -1,4 +1,5 @@
 ﻿using Attendance_Management_System.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
 
@@ -14,8 +15,11 @@ namespace Attendance_Management_System.Data
         public static List<AttendanceDegree> AttendanceDegrees { get; set; }
         public static List<Intake> Intakes { get; set; }
         public static List<TrackIntake> TrackIntakes { get; set; }
-
         public static List<Permission> Permissions { get; set; }
+        static SeedingClass()
+        {
+            MakeLists();
+        }
         public static void MakeLists()
         {
             #region Intakes
@@ -108,65 +112,55 @@ namespace Attendance_Management_System.Data
             {
                 new Student()
                 {
-                    Id = -1,
                     NationalId = "29803121600573",
                     UserName = "AhmadEsam",
                     Email = "Ahmad.esam1231998@gmail.com",
-                    Phone = "01015328933",
+                    PhoneNumber = "01015328933",
                     Gender = 'M',
-                    Password = "12345678",
                     University = "Mansoura",
                     Faculty = "Engineering",
                     TrackID = Tracks[0].Id
                 },
                 new Student()
                 {
-                    Id = -2,
                     NationalId = "29803151800654",
                     UserName = "AliEmad",
                     Email = "ali@example.com",
-                    Phone = "01115328933",
+                    PhoneNumber = "01115328933",
                     Gender = 'M',
-                    Password = "12345678",
                     University = "Mansoura",
                     Faculty = "CS",
                     TrackID = Tracks[0].Id
                 },
                 new Student()
                 {
-                    Id = -3,
                     NationalId = "32006485523654",
                     UserName = "AhmedAbdallah",
                     Email = "AhmadL3swy@example.com",
-                    Phone = "01215328933",
+                    PhoneNumber = "01215328933",
                     Gender = 'M',
-                    Password = "12345678",
                     University = "Cairo",
                     Faculty = "Engineering",
                     TrackID = Tracks[1].Id
                 },
                 new Student()
                 {
-                    Id = -4,
                     NationalId = "42557896652148",
                     UserName = "Raheek",
                     Email = "Raheek@gmail.com",
-                    Phone = "01015328933",
+                    PhoneNumber = "01015328933",
                     Gender = 'F',
-                    Password = "12345678",
                     University = "AinShams",
                     Faculty = "Engineering",
                     TrackID = Tracks[1].Id
                 },
                 new Student()
                 {
-                    Id = -5,
                     NationalId = "53665485772015",
                     UserName = "Nada",
                     Email = "Nada@yahoo.com",
-                    Phone = "01015328933",
+                    PhoneNumber = "01015328933",
                     Gender = 'F',
-                    Password = "12345678",
                     University = "Tanta",
                     Faculty = "CS",
                     TrackID = Tracks[2].Id
@@ -195,13 +189,11 @@ namespace Attendance_Management_System.Data
                 }
                 students.Add(new Student()
                 {
-                    Id = -i,
                     NationalId = new string(id),
-                    UserName = "Student" + i,
-                    Email = "Student" + i + "@example.com",
-                    Phone = "01015328933",
+                    UserName = "AboEsam" + i,
+                    Email = "AboEsam" + i + "@example.com",
+                    PhoneNumber = "01015328933",
                     Gender = Genders[random.Next(Genders.Count)],
-                    Password = "12345678",
                     University = Universities[random.Next(Universities.Count)],
                     Faculty = Faculties[random.Next(Faculties.Count)],
                     TrackID = Tracks[random.Next(Tracks.Count)].Id
@@ -271,21 +263,20 @@ namespace Attendance_Management_System.Data
             #region Permissions
             Permissions = new List<Permission>()
             {
-              new Permission { ID = 1, StudentId = students[0].Id, Status = PermissionStatus.Pending ,Reason="1", BodyOfDescription="1", Date=DateOnly.FromDateTime(DateTime.Now), DateCreated=DateTime.Now},
-              new Permission { ID = 2, StudentId = students[1].Id, Status = PermissionStatus.Pending ,Reason="2", BodyOfDescription="2", Date=DateOnly.FromDateTime(DateTime.Now), DateCreated=DateTime.Now},
-              new Permission { ID = 3, StudentId = students[2].Id, Status = PermissionStatus.Pending ,Reason="3", BodyOfDescription="3", Date=DateOnly.FromDateTime(DateTime.Now), DateCreated=DateTime.Now},
-              new Permission { ID = 4, StudentId = students[3].Id, Status = PermissionStatus.Pending ,Reason="4", BodyOfDescription="4", Date=DateOnly.FromDateTime(DateTime.Now), DateCreated=DateTime.Now},
-              new Permission { ID = 5, StudentId = students[4].Id, Status = PermissionStatus.Pending ,Reason="5", BodyOfDescription="5", Date=DateOnly.FromDateTime(DateTime.Now), DateCreated=DateTime.Now},
+              new Permission { ID = 1, StudentId = 1, Status = PermissionStatus.Pending ,Reason="1", BodyOfDescription="1", Date=DateOnly.FromDateTime(DateTime.Now), DateCreated=DateTime.Now},
+              new Permission { ID = 2, StudentId = 2, Status = PermissionStatus.Pending ,Reason="2", BodyOfDescription="2", Date=DateOnly.FromDateTime(DateTime.Now), DateCreated=DateTime.Now},
+              new Permission { ID = 3, StudentId = 3, Status = PermissionStatus.Pending ,Reason="3", BodyOfDescription="3", Date=DateOnly.FromDateTime(DateTime.Now), DateCreated=DateTime.Now},
+              new Permission { ID = 4, StudentId = 4, Status = PermissionStatus.Pending ,Reason="4", BodyOfDescription="4", Date=DateOnly.FromDateTime(DateTime.Now), DateCreated=DateTime.Now},
+              new Permission { ID = 5, StudentId = 5, Status = PermissionStatus.Pending ,Reason="5", BodyOfDescription="5", Date=DateOnly.FromDateTime(DateTime.Now), DateCreated=DateTime.Now},
             };
             #endregion
         }
-        public static void Seed(this ModelBuilder modelBuilder)
+        public async static Task Seed(this ModelBuilder modelBuilder)
         {
-            MakeLists();
             modelBuilder.Entity<Intake>().HasData(Intakes);
             modelBuilder.Entity<ITIProgram>().HasData(Programs);
             modelBuilder.Entity<Track>().HasData(Tracks);
-            modelBuilder.Entity<Student>().HasData(students);
+            //modelBuilder.Entity<Student>().HasData(students);
             modelBuilder.Entity<Schedule>().HasData(Schedules);
             modelBuilder.Entity<TrackIntake>().HasData(TrackIntakes);
             //Seed Permissions

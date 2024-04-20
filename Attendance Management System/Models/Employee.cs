@@ -2,13 +2,13 @@
 
 namespace Attendance_Management_System.Models
 {
-    public enum JobTitle
-    {
-        Security,
-        StudentsAffairs,
-    }
+    //public enum JobTitle
+    //{
+    //    Security,
+    //    StudentsAffairs,
+    //}
     public class Employee : User
     {
-        public JobTitle JobTitle { get; set; }
+        //public JobTitle JobTitle { get; set; }
     }
 }

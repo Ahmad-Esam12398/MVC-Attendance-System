@@ -2,30 +2,40 @@
 using Attendance_Management_System.Models;
 using Attendance_Management_System.ViewData;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using NuGet.DependencyResolver;
 using System.Security;
+using System.Security.Claims;
 
 namespace Attendance_Management_System.Repos
 {
     public class StudentRepo : IStudentRepo
     {
         itiContext db;
-        public StudentRepo(itiContext _db)
+        private readonly UserManager<User> _userManager;
+        private readonly ClaimsPrincipal _userPrincipal; // Add a field to store the user principal
+
+        public StudentRepo(itiContext _db, UserManager<User> userManager, ClaimsPrincipal userPrincipal)
         {
             db = _db;
+            _userManager = userManager;
+            _userPrincipal = userPrincipal; // Assign the user principal to the field
+
         }
 
         public void CreatePermission(Permission permission)
         {
            db.Permissions.Add(permission);
-           // db.SaveChanges();
+           db.SaveChanges();
         }
 
         public void DeletePermission(int stdID,DateTime permissionDate)
         {
             var permission=PermissionDetails(stdID,permissionDate);
             db.Permissions.Remove(permission);
+            db.SaveChanges();
         }
 
         public List<AttendanceViewData> Get_Student_Attendances_By_Id(int stdID)
@@ -35,8 +45,6 @@ namespace Attendance_Management_System.Repos
 
             if (student!=null)
             {
-
-
                 var track_Schedule = db.Schedules.Where(sc => sc.TrackId == student.TrackID).ToHashSet();
                 var attendances=db.Attendances.Where(at=>at.StudentId==stdID).ToHashSet();
                 var permissions=db.Permissions.Where(p=>p.StudentId==stdID).ToHashSet();
@@ -114,26 +122,55 @@ namespace Attendance_Management_System.Repos
         }
 
             public Permission PermissionDetails(int stdID, DateTime permissionDate)
-        {
-            return db.Permissions.Where(x => x.StudentId == stdID && x.DateCreated == permissionDate).FirstOrDefault();
+        { var studentPermissions=Get_Student_Permissions_By_Id(stdID);
+             var res=studentPermissions.FirstOrDefault(x=> x.DateCreated.Date == permissionDate.Date);
+            return res;
         }
 
 
-            public void UpdatePermission(Permission permission)
+        public void UpdatePermission(Permission permission)
         {
-            var permission_In_Data=db.Permissions.FirstOrDefault(p=>p.StudentId==permission.StudentId&&p.DateCreated==permission.DateCreated);
+            var studentPermissions = Get_Student_Permissions_By_Id(permission.StudentId);
+            var permission_In_Data = studentPermissions.FirstOrDefault(x => x.DateCreated.Date == permission.DateCreated.Date);
             if (permission_In_Data != null)
             {
                 permission_In_Data.BodyOfDescription = permission.BodyOfDescription;
                 permission_In_Data.Reason = permission.Reason;
             }
-            
+
+            db.SaveChanges();
+
         }
 
-            public  Student GetStudentById(int id)
+        public  Student GetStudentById(int id)
         {
            return db.Students.FirstOrDefault(s=>s.Id==id);
 
+        }
+
+        public List<Schedule> getSchedules(int stdID)
+        {
+            var student=GetStudentById(stdID);
+            var trackId=student.TrackID;
+           
+            return db.Schedules.Where(s => s.TrackId == trackId).OrderByDescending(sc => sc.Date).ToList();
+
+        }
+
+        public List<ScheduleEvent>GetScheduleEvents(int stdID, int scheduleId)
+        {
+            return getSchedules(stdID).FirstOrDefault(sc => sc.Id == scheduleId).ScheduleEvents;
+        }
+
+        public User GetCurrentUser()
+        {
+            return _userManager.GetUserAsync(_userPrincipal).Result; // Get the current user using the user principal
+        }
+
+        public async Task AddDummyStudent()
+        {
+            await _userManager.CreateAsync(new Student { UserName = "Ali", NationalId = "1000", Email = "Ali@gmail.com" ,TrackID=1}, "123456aA!");
+            await _userManager.CreateAsync(new Student { UserName = "Ahmed", NationalId = "1001", Email = "Ahmed@gmail.com", TrackID = 1 }, "123456aA!");
         }
     }
 }

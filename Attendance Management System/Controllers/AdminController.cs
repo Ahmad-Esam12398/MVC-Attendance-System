@@ -1,17 +1,22 @@
-﻿using Attendance_Management_System.Models;
+using Attendance_Management_System.Data;
+using Attendance_Management_System.Models;
 using Attendance_Management_System.Repos;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace Attendance_Management_System.Controllers
 {
+    [Authorize(Roles = RolesValues.AdminRole)]
     public class AdminController : Controller
     {
         IAdminRepo AdminRepo;
-
-        public AdminController(IAdminRepo _AdminRepo)
+        private readonly UserManager<User> _userManager;
+        public AdminController(IAdminRepo _AdminRepo, UserManager<User> userManager)
         {
             AdminRepo = _AdminRepo;
+            _userManager = userManager;
         }
 
 
@@ -548,7 +553,6 @@ public async Task<IActionResult> TrackIndex()
         }
 
         #endregion
-
 
     }
 }

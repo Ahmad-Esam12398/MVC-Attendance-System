@@ -4,14 +4,16 @@ using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
 using System.Linq;
 using Attendance_Management_System.ViewModels;
+using Microsoft.AspNetCore.Authorization;
+using Attendance_Management_System.Repos;
 
 
 namespace Attendance_Management_System.Controllers
 {
+    [Authorize]
     public class AccountController : Controller
     {
         private readonly UserManager<User> _userManager;
-
         public AccountController(UserManager<User> userManager)
         {
             _userManager = userManager;
@@ -20,14 +22,7 @@ namespace Attendance_Management_System.Controllers
         public async Task<IActionResult> Index()
         {
             // Fetch user information based on the logged-in user's email
-            var loggedInUserEmail = User.Identity.Name;
-            var user = await _userManager.FindByEmailAsync(loggedInUserEmail);
-
-            if (user == null)
-            {
-                return NotFound();
-            }
-
+            var user = await GetCurrentUser();
             return View(user);
         }
 
@@ -45,7 +40,7 @@ namespace Attendance_Management_System.Controllers
 
                 // Update user information
                 user.UserName = model.UserName;
-                user.Phone = model.Phone;
+                user.PhoneNumber = model.PhoneNumber;
                 user.Gender = model.Gender;
 
                 // Save changes to the database
@@ -115,6 +110,10 @@ namespace Attendance_Management_System.Controllers
                 }
                 return View(model);
             }
+        }
+        private async Task<User> GetCurrentUser()
+        {
+            return await _userManager.GetUserAsync(User);
         }
     }
 }
