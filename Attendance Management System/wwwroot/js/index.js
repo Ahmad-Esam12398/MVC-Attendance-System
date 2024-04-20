@@ -100,12 +100,12 @@ $(".btn").click(function () {
 
             },
             error: function (data) {
-                $.toast({
-                    heading: 'Error',
-                    text: 'An error occurred while processing your request.',
-                    showHideTransition: 'slide',
-                    icon: 'error'
-                })
+                //$.toast({
+                //    heading: 'Error',
+                //    text: 'An error occurred while processing your request.',
+                //    showHideTransition: 'slide',
+                //    icon: 'error'
+                //})
             }
         });
 });
