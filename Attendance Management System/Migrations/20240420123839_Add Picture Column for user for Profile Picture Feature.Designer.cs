@@ -4,6 +4,7 @@ using Attendance_Management_System.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Attendance_Management_System.Migrations
 {
     [DbContext(typeof(itiContext))]
-    partial class itiContextModelSnapshot : ModelSnapshot
+    [Migration("20240420123839_Add Picture Column for user for Profile Picture Feature")]
+    partial class AddPictureColumnforuserforProfilePictureFeature
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

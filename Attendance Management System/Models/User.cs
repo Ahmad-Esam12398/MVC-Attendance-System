@@ -11,5 +11,6 @@ namespace Attendance_Management_System.Models
         public override int Id { get; set; }
         public string NationalId { get; set; }
         public char? Gender { get; set; }
+        public byte[]? Picture { get; set; }
     }
 }
