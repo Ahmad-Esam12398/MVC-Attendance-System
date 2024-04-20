@@ -1,15 +1,23 @@
-﻿using Attendance_Management_System.Models;
+﻿using Attendance_Management_System.Data;
+using Attendance_Management_System.Models;
 using Attendance_Management_System.Repos;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Attendance_Management_System.Controllers
 {
+    [Authorize(Roles = RolesValues.Student)]
     public class StudentController : Controller
     {
         IStudentRepo StudentRepo;
-        public StudentController(IStudentRepo _StudentRepo)
+        private readonly UserManager<User> _userManager;
+        User currentUser;
+        public StudentController(IStudentRepo _StudentRepo, UserManager<User> userManager)
         {
             StudentRepo = _StudentRepo;
+            _userManager = userManager;
+            currentUser = _userManager.GetUserAsync(User).Result;
         }
         public IActionResult Index(int id)
         {

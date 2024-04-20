@@ -1,15 +1,24 @@
-﻿using Attendance_Management_System.Repos;
+﻿using Attendance_Management_System.Data;
+using Attendance_Management_System.Models;
+using Attendance_Management_System.Repos;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Attendance_Management_System.Controllers
 {
+    [Authorize(Roles = RolesValues.SecurityRole + "," + RolesValues.StudentsAffairs)]
     public class EmployeeController : Controller
     {
         public int Tolerance = 15;
         IEmployeeRepo EmployeeRepo;
-        public EmployeeController(IEmployeeRepo _EmployeeRepo)
+        UserManager<User> _userManager;
+        //User currentUser;
+        public EmployeeController(IEmployeeRepo _EmployeeRepo, UserManager<User> userManager)
         {
             EmployeeRepo = _EmployeeRepo;
+            _userManager = userManager;
+            //currentUser = _userManager.GetUserAsync(User).Result;
         }
         public IActionResult Index()
         {

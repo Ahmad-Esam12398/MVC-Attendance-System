@@ -1,7 +1,7 @@
 ###################
 # compiled source #
 ###################
-Attendance Management System/Migrations/*
+#Attendance Management System/Migrations/*#
 Attendance Management System/appsettings.json
 .json
 .vs/*

@@ -4,6 +4,7 @@ using Attendance_Management_System.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Attendance_Management_System.Migrations
 {
     [DbContext(typeof(itiContext))]
-    partial class itiContextModelSnapshot : ModelSnapshot
+    [Migration("20240419170124_first one for identity mapping")]
+    partial class firstoneforidentitymapping
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -92,36 +95,6 @@ namespace Attendance_Management_System.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Programs");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Description = "Professional Training Program",
-                            IsActive = true,
-                            Name = "PTP"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Description = "Intensive Training Program",
-                            IsActive = true,
-                            Name = "ITP"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Description = "Leadership Development Program",
-                            IsActive = true,
-                            Name = "LDP"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Description = "Summer Training",
-                            IsActive = true,
-                            Name = "ST"
-                        });
                 });
 
             modelBuilder.Entity("Attendance_Management_System.Models.Intake", b =>
@@ -144,15 +117,6 @@ namespace Attendance_Management_System.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Intake");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            EndDate = new DateOnly(2024, 9, 1),
-                            Number = (byte)44,
-                            StartDate = new DateOnly(2023, 9, 1)
-                        });
                 });
 
             modelBuilder.Entity("Attendance_Management_System.Models.Permission", b =>
@@ -185,58 +149,6 @@ namespace Attendance_Management_System.Migrations
                     b.HasKey("StudentId", "Date");
 
                     b.ToTable("Permissions");
-
-                    b.HasData(
-                        new
-                        {
-                            StudentId = 1,
-                            Date = new DateOnly(2024, 4, 20),
-                            BodyOfDescription = "1",
-                            DateCreated = new DateTime(2024, 4, 20, 6, 0, 17, 135, DateTimeKind.Local).AddTicks(3763),
-                            ID = 1,
-                            Reason = "1",
-                            Status = 0
-                        },
-                        new
-                        {
-                            StudentId = 2,
-                            Date = new DateOnly(2024, 4, 20),
-                            BodyOfDescription = "2",
-                            DateCreated = new DateTime(2024, 4, 20, 6, 0, 17, 135, DateTimeKind.Local).AddTicks(4051),
-                            ID = 2,
-                            Reason = "2",
-                            Status = 0
-                        },
-                        new
-                        {
-                            StudentId = 3,
-                            Date = new DateOnly(2024, 4, 20),
-                            BodyOfDescription = "3",
-                            DateCreated = new DateTime(2024, 4, 20, 6, 0, 17, 135, DateTimeKind.Local).AddTicks(4056),
-                            ID = 3,
-                            Reason = "3",
-                            Status = 0
-                        },
-                        new
-                        {
-                            StudentId = 4,
-                            Date = new DateOnly(2024, 4, 20),
-                            BodyOfDescription = "4",
-                            DateCreated = new DateTime(2024, 4, 20, 6, 0, 17, 135, DateTimeKind.Local).AddTicks(4062),
-                            ID = 4,
-                            Reason = "4",
-                            Status = 0
-                        },
-                        new
-                        {
-                            StudentId = 5,
-                            Date = new DateOnly(2024, 4, 20),
-                            BodyOfDescription = "5",
-                            DateCreated = new DateTime(2024, 4, 20, 6, 0, 17, 135, DateTimeKind.Local).AddTicks(4067),
-                            ID = 5,
-                            Reason = "5",
-                            Status = 0
-                        });
                 });
 
             modelBuilder.Entity("Attendance_Management_System.Models.Schedule", b =>
@@ -264,24 +176,6 @@ namespace Attendance_Management_System.Migrations
                     b.HasIndex("TrackId");
 
                     b.ToTable("Schedules");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Date = new DateOnly(2024, 4, 20),
-                            EndTime = new TimeOnly(22, 0, 0),
-                            StartTime = new TimeOnly(9, 0, 0),
-                            TrackId = 1
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Date = new DateOnly(2024, 4, 21),
-                            EndTime = new TimeOnly(22, 0, 0),
-                            StartTime = new TimeOnly(11, 0, 0),
-                            TrackId = 2
-                        });
                 });
 
             modelBuilder.Entity("Attendance_Management_System.Models.ScheduleEvent", b =>
@@ -337,43 +231,6 @@ namespace Attendance_Management_System.Migrations
                     b.HasIndex("ProgramId");
 
                     b.ToTable("Tracks");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            IsActive = true,
-                            Name = "PD",
-                            ProgramId = 1
-                        },
-                        new
-                        {
-                            Id = 2,
-                            IsActive = true,
-                            Name = "OS",
-                            ProgramId = 1
-                        },
-                        new
-                        {
-                            Id = 3,
-                            IsActive = true,
-                            Name = "AI",
-                            ProgramId = 2
-                        },
-                        new
-                        {
-                            Id = 4,
-                            IsActive = true,
-                            Name = "MERN",
-                            ProgramId = 2
-                        },
-                        new
-                        {
-                            Id = 5,
-                            IsActive = true,
-                            Name = "MEAN",
-                            ProgramId = 2
-                        });
                 });
 
             modelBuilder.Entity("Attendance_Management_System.Models.TrackIntake", b =>
@@ -389,33 +246,6 @@ namespace Attendance_Management_System.Migrations
                     b.HasIndex("IntakeId");
 
                     b.ToTable("TrackIntakes");
-
-                    b.HasData(
-                        new
-                        {
-                            TrackId = 1,
-                            IntakeId = 1
-                        },
-                        new
-                        {
-                            TrackId = 2,
-                            IntakeId = 1
-                        },
-                        new
-                        {
-                            TrackId = 3,
-                            IntakeId = 1
-                        },
-                        new
-                        {
-                            TrackId = 4,
-                            IntakeId = 1
-                        },
-                        new
-                        {
-                            TrackId = 5,
-                            IntakeId = 1
-                        });
                 });
 
             modelBuilder.Entity("Attendance_Management_System.Models.User", b =>
@@ -522,7 +352,7 @@ namespace Attendance_Management_System.Migrations
                         .HasDatabaseName("RoleNameIndex")
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
-                    b.ToTable("Roles", (string)null);
+                    b.ToTable("AspNetRoles", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
@@ -606,7 +436,7 @@ namespace Attendance_Management_System.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("UsersRoles", (string)null);
+                    b.ToTable("AspNetUserRoles", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<int>", b =>
