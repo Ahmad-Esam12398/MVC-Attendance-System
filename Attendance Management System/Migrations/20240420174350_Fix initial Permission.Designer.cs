@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Attendance_Management_System.Migrations
 {
     [DbContext(typeof(itiContext))]
-    [Migration("20240420130214_m1")]
-    partial class m1
+    [Migration("20240420174350_Fix initial Permission")]
+    partial class FixinitialPermission
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -61,6 +61,9 @@ namespace Attendance_Management_System.Migrations
                         .HasColumnType("date");
 
                     b.Property<int>("AbscenceDays")
+                        .HasColumnType("int");
+
+                    b.Property<int>("AbsenceWithPermission")
                         .HasColumnType("int");
 
                     b.Property<int>("AttendanceDegrees")
@@ -188,58 +191,6 @@ namespace Attendance_Management_System.Migrations
                     b.HasKey("StudentId", "Date");
 
                     b.ToTable("Permissions");
-
-                    b.HasData(
-                        new
-                        {
-                            StudentId = 1,
-                            Date = new DateOnly(2024, 4, 20),
-                            BodyOfDescription = "1",
-                            DateCreated = new DateTime(2024, 4, 20, 14, 38, 33, 445, DateTimeKind.Local).AddTicks(7088),
-                            ID = 1,
-                            Reason = "1",
-                            Status = 0
-                        },
-                        new
-                        {
-                            StudentId = 2,
-                            Date = new DateOnly(2024, 4, 20),
-                            BodyOfDescription = "2",
-                            DateCreated = new DateTime(2024, 4, 20, 14, 38, 33, 445, DateTimeKind.Local).AddTicks(7333),
-                            ID = 2,
-                            Reason = "2",
-                            Status = 0
-                        },
-                        new
-                        {
-                            StudentId = 3,
-                            Date = new DateOnly(2024, 4, 20),
-                            BodyOfDescription = "3",
-                            DateCreated = new DateTime(2024, 4, 20, 14, 38, 33, 445, DateTimeKind.Local).AddTicks(7338),
-                            ID = 3,
-                            Reason = "3",
-                            Status = 0
-                        },
-                        new
-                        {
-                            StudentId = 4,
-                            Date = new DateOnly(2024, 4, 20),
-                            BodyOfDescription = "4",
-                            DateCreated = new DateTime(2024, 4, 20, 14, 38, 33, 445, DateTimeKind.Local).AddTicks(7344),
-                            ID = 4,
-                            Reason = "4",
-                            Status = 0
-                        },
-                        new
-                        {
-                            StudentId = 5,
-                            Date = new DateOnly(2024, 4, 20),
-                            BodyOfDescription = "5",
-                            DateCreated = new DateTime(2024, 4, 20, 14, 38, 33, 445, DateTimeKind.Local).AddTicks(7349),
-                            ID = 5,
-                            Reason = "5",
-                            Status = 0
-                        });
                 });
 
             modelBuilder.Entity("Attendance_Management_System.Models.Schedule", b =>
@@ -684,7 +635,7 @@ namespace Attendance_Management_System.Migrations
                         .IsUnique()
                         .HasFilter("[SupTrackId] IS NOT NULL");
 
-                    b.ToTable("Supervisor");
+                    b.ToTable("Supervisors");
                 });
 
             modelBuilder.Entity("Attendance_Management_System.Models.Attendance", b =>
