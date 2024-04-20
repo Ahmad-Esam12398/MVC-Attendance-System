@@ -30,3 +30,9 @@
         <a href="@Url.Action("ResetPassword", "Account", new { id = Model.Id })" class="btn btn-primary">Reset Password</a>
     </div>
 </div>
+@if (User.IsInRole("Student")) // Check if the user is a student
+{
+    @section NavList {
+    @Html.Partial("~/Views/Student/NavButtons_student.cshtml")
+    }
+}
