@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="~/css/Employee.css" />
 }
 @section NavList {
-    @Html.Partial("navButtons")
+    @Html.Partial("_navButtons")
 }
 <h1>Reports</h1>
 <div class="mt-4 form-control d-flex justify-content-between">
@@ -36,6 +36,8 @@
                 <th>Track</th>
                 <th>until Date</th>
                 <th>Absence Days Count</th>
+                <th>Absence Days With Perm.</th>
+                <th>Absence Days without Perm.</th>
                 <th>Degree</th>
             </tr>
         </thead>
@@ -47,6 +49,8 @@
                     <td>@degree.Student.Track.Name</td>
                     <td>@degree.UntilDate</td>
                     <td>@degree.AbscenceDays</td>
+                    <td>@degree.AbsenceWithPermission</td>
+                    <td>@(degree.AbscenceDays - degree.AbsenceWithPermission)</td>
                     <td>@degree.AttendanceDegrees</td>
                 </tr>
             }
@@ -57,13 +61,13 @@
 
     <script>
         $(document).ready(function () {
-            document.documentElement.style.setProperty('--first', $("UserColor").value);
-            $("#UserColor").on('change', function () {
-                document.documentElement.style.setProperty('--first', this.value);
-                console.log("Changed");
-                // document.documentElement.style.setProperty('--first-color', this.value);
-                // document.documentElement.style.setProperty('--first-color', this.value);
-            })
+            // document.documentElement.style.setProperty('--first', $("UserColor").value);
+            // $("#UserColor").on('change', function () {
+            //     document.documentElement.style.setProperty('--first', this.value);
+            //     console.log("Changed");
+            //     // document.documentElement.style.setProperty('--first-color', this.value);
+            //     // document.documentElement.style.setProperty('--first-color', this.value);
+            // })
             var table = $('#mytable').DataTable({
                 layout: {
                     topStart: {
