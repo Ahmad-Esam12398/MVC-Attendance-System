@@ -23,5 +23,7 @@ namespace Attendance_Management_System.Repos
         Task AddStudent(Student student, int trackID);
         Task EditStudent(Student student);
         List<ScheduleEvent> getSchedulesEventsByScheduleId(int id);
+
+        int GetTrackIdByInstructorId(int id);
     }
 }

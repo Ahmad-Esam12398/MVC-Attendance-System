@@ -51,10 +51,6 @@ namespace Attendance_Management_System.Repos
 
         public async Task<List<Permission>> GetPendingPermissionsByTrackID(int trackID)
         {
-            // Add Dummy Instructors to the Database if there are no Instructors
-            await AddDummyInstructors();
-            var user = GetCurrentUser();
-            
             RefusePermissionsNotToday();
             return db.Permissions.Include(p => p.Student).Where(p => p.Status == PermissionStatus.Pending && p.Student.TrackID == trackID).ToList();
         }
@@ -69,6 +65,10 @@ namespace Attendance_Management_System.Repos
             Schedule.TrackId = trackId;
             db.Schedules.Add(Schedule);
             db.SaveChanges();
+        }
+        public int GetTrackIdByInstructorId(int id)
+        {
+            return db.Supervisors.FirstOrDefault(s => s.Id == id).SupTrackId;
         }
 
         public void DeleteSchedule(int id)
