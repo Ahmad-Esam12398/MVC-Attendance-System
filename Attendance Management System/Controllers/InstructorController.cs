@@ -13,7 +13,7 @@ using System.Text;
 
 namespace Attendance_Management_System.Controllers
 {
-    [Authorize(Roles = RolesValues.SuperVisorRole)]
+    [Authorize(Roles = RolesValues.InstructorRole)]
     public class InstructorController : Controller
     {
         IInstructorRepo InstructorRepo;
@@ -24,7 +24,6 @@ namespace Attendance_Management_System.Controllers
             _userManager = userManager;
         }
         // Allow Instructor to access the Index Page
-        [Authorize(Roles = RolesValues.InstructorRole)]
         public IActionResult Index()
         {
             ViewData["IsSuperVisor"] = true;
@@ -47,6 +46,8 @@ namespace Attendance_Management_System.Controllers
             ViewData["Name"] = user.UserName ?? "Instructor";
             return View();
         }
+        [Authorize(Roles = RolesValues.SuperVisorRole)]
+
         public async Task<IActionResult> Permissions()
         {
             // Add Dummy Instructors to the Database if there are no Instructors
@@ -79,7 +80,9 @@ namespace Attendance_Management_System.Controllers
             return View(PermissionsDtos);
         }
         [HttpGet("Instructor/Schedule")]
-        public  IActionResult Schedule()
+        [Authorize(Roles = RolesValues.SuperVisorRole)]
+
+        public IActionResult Schedule()
         {
             // Get Current User
             var user = InstructorRepo.GetCurrentUser();
@@ -96,6 +99,8 @@ namespace Attendance_Management_System.Controllers
             return View(SchedulesDtos);
         }
         [HttpGet("Instructor/Schedule/{Id}")]
+        [Authorize(Roles = RolesValues.SuperVisorRole)]
+
         public IActionResult Schedule(int Id)
         {
             
@@ -111,6 +116,8 @@ namespace Attendance_Management_System.Controllers
 
             return View("ScheduleEvents",scheduleEventDtos);
         }
+        [Authorize(Roles = RolesValues.SuperVisorRole)]
+
         public IActionResult Students()
         {
             //get the current user
@@ -124,6 +131,8 @@ namespace Attendance_Management_System.Controllers
             return View(students);
 
         }
+        [Authorize(Roles = RolesValues.SuperVisorRole)]
+
         //Delete Student
         [HttpPost]
         public int DeleteStudent(int id)
@@ -141,6 +150,8 @@ namespace Attendance_Management_System.Controllers
         }
         //Add Student
         [HttpPost]
+        [Authorize(Roles = RolesValues.SuperVisorRole)]
+
         public async Task<IActionResult> AddStudent(Student student)
         {
             var user = InstructorRepo.GetCurrentUser();
@@ -150,21 +161,29 @@ namespace Attendance_Management_System.Controllers
         }
         //Edit Student
         [HttpPost]
+        [Authorize(Roles = RolesValues.SuperVisorRole)]
+
         public async Task<IActionResult> EditStudent(Student student)
         {
             await InstructorRepo.EditStudent(student);
             return RedirectToAction("Students");
         }
+        [Authorize(Roles = RolesValues.SuperVisorRole)]
+
         private async Task<User> GetCurrentUser()
         {
             return await _userManager.GetUserAsync(User);
         }
+        [Authorize(Roles = RolesValues.SuperVisorRole)]
+
         public IActionResult UploadExcel()
         {
             return View();
         }
         // Upload Excel File
         [HttpPost]
+        [Authorize(Roles = RolesValues.SuperVisorRole)]
+
         public async Task<IActionResult> UploadExcel(IFormFile file)
         {
             var user = InstructorRepo.GetCurrentUser();
@@ -235,6 +254,8 @@ namespace Attendance_Management_System.Controllers
         #region API Calls
         #region Permissions
         [HttpPost]
+        [Authorize(Roles = RolesValues.SuperVisorRole)]
+
         public int Accept(int id)
         {
             try
@@ -249,6 +270,7 @@ namespace Attendance_Management_System.Controllers
             }
         }
         [HttpPost]
+        [Authorize(Roles = RolesValues.SuperVisorRole)]
         public int Reject(int id)
         {
             try
@@ -265,6 +287,8 @@ namespace Attendance_Management_System.Controllers
         #endregion
         #region Schedule
         [HttpPost]
+        [Authorize(Roles = RolesValues.SuperVisorRole)]
+
         public IActionResult AddSchedule(Schedule Schedule)
         {
             var user = InstructorRepo.GetCurrentUser();
@@ -274,6 +298,8 @@ namespace Attendance_Management_System.Controllers
 
         }
         [HttpPost]
+        [Authorize(Roles = RolesValues.SuperVisorRole)]
+
         public int Delete(int id)
         {
             try
@@ -288,6 +314,8 @@ namespace Attendance_Management_System.Controllers
             }
         }
         [HttpPost]
+        [Authorize(Roles = RolesValues.SuperVisorRole)]
+
         public IActionResult UpdateSchedule(Schedule Schedule)
         {
           InstructorRepo.UpdateSchedule(Schedule);
@@ -297,6 +325,8 @@ namespace Attendance_Management_System.Controllers
         #endregion
         #region ScheduleEvent
         [HttpPost]
+        [Authorize(Roles = RolesValues.SuperVisorRole)]
+
         public IActionResult DeleteScheduleEvent(int id)
         {
             int Id = int.Parse(Request.Path.Value.Split("/").Last());
@@ -304,6 +334,8 @@ namespace Attendance_Management_System.Controllers
             return Redirect($"/Instructor/Schedule/{Id}");
         }
         [HttpPost]
+        [Authorize(Roles = RolesValues.SuperVisorRole)]
+
         public IActionResult AddScheduleEvent(ScheduleEvent scheduleEvent)
         {
             // Get Id from the URL not the request Path
@@ -322,6 +354,8 @@ namespace Attendance_Management_System.Controllers
 
         }
         [HttpPost]
+        [Authorize(Roles = RolesValues.SuperVisorRole)]
+
         public IActionResult UpdateScheduleEvent(ScheduleEvent scheduleEvent)
         {
             int Id = int.Parse(Request.Path.Value.Split("/").Last());
