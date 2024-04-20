@@ -12,12 +12,10 @@ namespace Attendance_Management_System.Controllers
     {
         IStudentRepo StudentRepo;
         private readonly UserManager<User> _userManager;
-        User currentUser;
         public StudentController(IStudentRepo _StudentRepo, UserManager<User> userManager)
         {
             StudentRepo = _StudentRepo;
             _userManager = userManager;
-            currentUser = _userManager.GetUserAsync(User).Result;
         }
         public IActionResult Index(int id)
         {
@@ -89,11 +87,9 @@ namespace Attendance_Management_System.Controllers
             }
             return View(permission);
         }
-
-
-
-
-
-
+        private async Task<User> GetCurrentUser()
+        {
+            return await _userManager.GetUserAsync(User);
+        }
     }
 }

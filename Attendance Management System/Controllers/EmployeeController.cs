@@ -13,13 +13,12 @@ namespace Attendance_Management_System.Controllers
         public int Tolerance = 15;
         IEmployeeRepo EmployeeRepo;
         UserManager<User> _userManager;
-        //User currentUser;
         public EmployeeController(IEmployeeRepo _EmployeeRepo, UserManager<User> userManager)
         {
             EmployeeRepo = _EmployeeRepo;
             _userManager = userManager;
-            //currentUser = _userManager.GetUserAsync(User).Result;
         }
+        [Authorize(Roles = RolesValues.StudentsAffairs)]
         public IActionResult Index()
         {
             var students = EmployeeRepo.ReadAllStudents();
@@ -31,6 +30,7 @@ namespace Attendance_Management_System.Controllers
             ViewBag.Schedules = schedules;
             return View(students);
         }
+        [Authorize(Roles = RolesValues.SecurityRole)]
         public IActionResult SetAttendance()
         {
             var tracks = EmployeeRepo.ReadAllTracks();
@@ -38,6 +38,7 @@ namespace Attendance_Management_System.Controllers
             ViewBag.Tracks = tracks;
             return View(todaysStudents);
         }
+        [Authorize(Roles = RolesValues.SecurityRole)]
         [HttpPost]
         public IActionResult SetAttendance(int id, string type)
         {
@@ -54,12 +55,17 @@ namespace Attendance_Management_System.Controllers
             }
             return Json(new { success = false, Message = "Invalid Data" });
         }
+        [Authorize(Roles = RolesValues.StudentsAffairs)]
         public IActionResult Reports()
         {
             var tracks = EmployeeRepo.ReadAllTracks();
             ViewBag.Tracks = tracks;
             var attendanceDegrees = EmployeeRepo.ReadAttendanceDegrees();
             return View(attendanceDegrees);
+        }
+        private async Task<User> GetCurrentUser()
+        {
+            return await _userManager.GetUserAsync(User);
         }
     }
 }

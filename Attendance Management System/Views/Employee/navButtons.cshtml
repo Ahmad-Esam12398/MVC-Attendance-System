@@ -1,13 +1,21 @@
-﻿<a asp-action="Index" asp-controller="Employee" class="nav_link">
-    <i class="bx bx-home nav_icon"></i>
-    <span class="nav_name">Home</span>
-</a>
-<a asp-action="SetAttendance" asp-controller="Employee" class="nav_link">
-    <i class="bx bx-home nav_icon"></i>
-    <span class="nav_name">Set Attendance</span>
-</a>
-<a asp-action="Reports" asp-controller="Employee" class="nav_link">
-    <i class="bx bx-home nav_icon"></i>
-    <span class="nav_name">Set Attendance</span>
-</a>
+﻿@if (User.IsInRole(RolesValues.StudentsAffairs))
+{
+    <a asp-action="Index" asp-controller="Employee" class="nav_link">
+        <i class="bx bx-home nav_icon"></i>
+        <span class="nav_name">Home</span>
+    </a>
+    <a asp-action="Reports" asp-controller="Employee" class="nav_link">
+        <i class="bx bx-home nav_icon"></i>
+        <span class="nav_name">Set Attendance</span>
+    </a>
+}
+else
+{
+    <a asp-action="SetAttendance" asp-controller="Employee" class="nav_link">
+        <i class="bx bx-home nav_icon"></i>
+        <span class="nav_name">Set Attendance</span>
+    </a>
+}
+
+
 @* <input type="color" class="form-control form-control-color nav_link" id="UserColor" value="#0d6efd" title="Choose your color"> *@

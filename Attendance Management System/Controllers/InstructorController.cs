@@ -13,12 +13,10 @@ namespace Attendance_Management_System.Controllers
     {
         IInstructorRepo InstructorRepo;
         private readonly UserManager<User> _userManager;
-        User currentUser;
         public InstructorController(IInstructorRepo _InstructorRepo, UserManager<User> userManager)
         {
             InstructorRepo = _InstructorRepo;
             _userManager = userManager;
-            currentUser = _userManager.GetUserAsync(User).Result;
         }
         public IActionResult Index()
         {
@@ -102,7 +100,10 @@ namespace Attendance_Management_System.Controllers
             ViewData["Name"] = user.UserName;
             return View(SchedulesDtos);
         }
-
+        private async Task<User> GetCurrentUser()
+        {
+            return await _userManager.GetUserAsync(User);
+        }
 
 
         #region API Calls

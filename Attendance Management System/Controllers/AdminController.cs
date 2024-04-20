@@ -12,16 +12,18 @@ namespace Attendance_Management_System.Controllers
     {
         IAdminRepo AdminRepo;
         private readonly UserManager<User> _userManager;
-        User currentUser;
         public AdminController(IAdminRepo _AdminRepo, UserManager<User> userManager)
         {
             AdminRepo = _AdminRepo;
             _userManager = userManager;
-            currentUser = _userManager.GetUserAsync(User).Result;
         }
         public IActionResult Index()
         {
             return View();
+        }
+        private async Task<User> GetCurrentUser()
+        {
+            return await _userManager.GetUserAsync(User);
         }
     }
 }

@@ -191,7 +191,11 @@ namespace Attendance_Management_System.Areas.Identity.Pages.Account
             //    // Redirect to the Index action of the InstructorController
             //    returnUrl = Url.Action("Index", "Instructor");
             //}
-            else if (await _userManager.IsInRoleAsync(user, RolesValues.SecurityRole) || await _userManager.IsInRoleAsync(user, RolesValues.StudentsAffairs))
+            else if (await _userManager.IsInRoleAsync(user, RolesValues.SecurityRole))
+            {
+                returnUrl = Url.Action("SetAttendance", "Employee");
+            }            
+            else if (await _userManager.IsInRoleAsync(user, RolesValues.StudentsAffairs))
             {
                 returnUrl = Url.Action("Index", "Employee");
             }

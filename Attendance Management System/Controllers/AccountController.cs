@@ -13,17 +13,15 @@ namespace Attendance_Management_System.Controllers
     public class AccountController : Controller
     {
         private readonly UserManager<User> _userManager;
-        User currentUser;
         public AccountController(UserManager<User> userManager)
         {
             _userManager = userManager;
-            currentUser = _userManager.GetUserAsync(User).Result; 
         }
 
         public async Task<IActionResult> Index()
         {
             // Fetch user information based on the logged-in user's email
-            var user = await _userManager.GetUserAsync(User);
+            var user = await GetCurrentUser();
             return View(user);
         }
 
@@ -111,6 +109,10 @@ namespace Attendance_Management_System.Controllers
                 }
                 return View(model);
             }
+        }
+        private async Task<User> GetCurrentUser()
+        {
+            return await _userManager.GetUserAsync(User);
         }
     }
 }
