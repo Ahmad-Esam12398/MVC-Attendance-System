@@ -97,10 +97,32 @@ namespace Attendance_Management_System.Repos
 
             await _userManager.CreateAsync(new Instructor { UserName = "Account", NationalId = "1000", Email = "Ahmed@gmail.com" }, "123456aA!");
             await _userManager.CreateAsync(new Supervisor { UserName = "Account2", NationalId = "1001", Email = "Ahmed2@gmail.com" , SupTrackId=1 }, "123456aA!");
-            await _userManager.CreateAsync(new Admin { UserName = "nada", NationalId = "1011", Email = "nada@gmail.com" }, "123456aA!");
-
+  
         }
 
+        public List<Student> getStudentsByTrackID(int trackID)
+        {
+            return db.Students.Where(s => s.TrackID == trackID).ToList();
+        }
+
+        public void DeleteStudent(int id)
+        {
+            var student = db.Students.FirstOrDefault(s => s.Id == id);
+            db.Students.Remove(student);
+            db.SaveChanges();
+        }
+        public async Task AddStudent(Student student , int trackID)
+        {
+            var user = new Student { UserName = student.UserName, NationalId = student.NationalId, Email = student.Email, TrackID = trackID , University = student.University, Faculty = student.Faculty };
+            await _userManager.CreateAsync(user, "123456aA!");
+        }
+        public async Task EditStudent(Student student)
+        {
+            var user = db.Students.FirstOrDefault(s => s.Id == student.Id);
+            user.UserName = student.UserName;
+            user.Email = student.Email;
+            await _userManager.UpdateAsync(user);
+        }
 
     }
 }
