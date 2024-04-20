@@ -39,17 +39,11 @@ namespace Attendance_Management_System.Repos
 
         public async Task AddProgram(ITIProgram program)
         {
-            try
-            {
+            
                 db.Programs.Add(program);
                 await db.SaveChangesAsync();
-            }
-            catch (Exception ex)
-            {
-                // Log or handle the exception
-                // For debugging purposes, you can also inspect 'ex' to see the specific error message
-                throw; // Rethrow the exception to propagate it to the caller
-            }
+            
+          
         }
 
 
@@ -67,10 +61,10 @@ namespace Attendance_Management_System.Repos
         }
         public async Task<bool> ProgramHasTracks(int programId)
         {
-            // Check if there are any tracks associated with the program
+           
             return await db.Tracks.AnyAsync(t => t.ProgramId == programId);
         }
-        public async Task<bool> ProgramExists(int id) // Implement ProgramExists method in AdminRepo
+        public async Task<bool> ProgramExists(int id) 
         {
             return await db.Programs.AnyAsync(p => p.Id == id);
         }

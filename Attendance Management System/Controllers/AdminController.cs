@@ -302,6 +302,7 @@ namespace Attendance_Management_System.Controllers
 
         [HttpPost, ActionName("DeleteProgram")]
         [ValidateAntiForgeryToken]
+
         public async Task<IActionResult> DeleteProgramConfirmed(int id)
         {
             var program = await AdminRepo.GetProgramById(id);
@@ -311,10 +312,10 @@ namespace Attendance_Management_System.Controllers
             }
 
             // Check if the program has associated tracks
-            var hasTracks = program.Tracks.Any(); // Assuming Tracks is a collection navigation property in ITIProgram
+            bool hasTracks = await AdminRepo.ProgramHasTracks(id);
             if (hasTracks)
             {
-                ViewBag.DeleteErrorMessage = "This program cannot be deleted because it has associated tracks.";
+                TempData["DeleteErrorMessage"] = "This program cannot be deleted because it has associated tracks.";
                 return RedirectToAction(nameof(ProgramIndex));
             }
 
