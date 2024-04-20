@@ -13,7 +13,7 @@ using System.Text;
 
 namespace Attendance_Management_System.Controllers
 {
-    //[Authorize(Roles = RolesValues.InstructorRole)]
+    [Authorize(Roles = RolesValues.SuperVisorRole)]
     public class InstructorController : Controller
     {
         IInstructorRepo InstructorRepo;
@@ -23,26 +23,28 @@ namespace Attendance_Management_System.Controllers
             InstructorRepo = _InstructorRepo;
             _userManager = userManager;
         }
+        // Allow Instructor to access the Index Page
+        [Authorize(Roles = RolesValues.InstructorRole)]
         public IActionResult Index()
         {
-            ViewData["IsSuperVisor"] = false;
+            ViewData["IsSuperVisor"] = true;
 
             // Get Current User
             var user = InstructorRepo.GetCurrentUser();
-            if (user == null)
-            {
-                return Redirect("/Identity/Account/Login");
+            //if (user == null)
+            //{
+            //    return Redirect("/Identity/Account/Login");
 
-            }
-            if (user is not Instructor)
-            {
-                return RedirectToAction("Index", "Home");
-            }
-            if (user is Supervisor)
-            {
-                ViewData["IsSuperVisor"] = true;
-            }
-            ViewData["Name"] = user.UserName;
+            //}
+            //if (user is not Instructor)
+            //{
+            //    return RedirectToAction("Index", "Home");
+            //}
+            //if (user is Supervisor)
+            //{
+            //    ViewData["IsSuperVisor"] = true;
+            //}
+            ViewData["Name"] = user.UserName ?? "Instructor";
             return View();
         }
         public async Task<IActionResult> Permissions()
@@ -51,19 +53,19 @@ namespace Attendance_Management_System.Controllers
             await InstructorRepo.AddDummyInstructors();
             // Get Current User
             var user = InstructorRepo.GetCurrentUser();
-            if (user == null)
-            {
-                return Redirect("/Identity/Account/Login");
+            //if (user == null)
+            //{
+            //    return Redirect("/Identity/Account/Login");
                 
-            }
-            if (user is not Supervisor)
-            {
-                return RedirectToAction("Index", "Instructor");
-            }
-            if (user is not Instructor)
-            {
-                return RedirectToAction("Index", "Home");
-            }
+            //}
+            //if (user is not Supervisor)
+            //{
+            //    return RedirectToAction("Index", "Instructor");
+            //}
+            //if (user is not Instructor)
+            //{
+            //    return RedirectToAction("Index", "Home");
+            //}
             int trackID = (user as Supervisor).SupTrackId;
             // Get the list of permissions from the database
             var Permissions = await InstructorRepo.GetPendingPermissionsByTrackID(trackID);
@@ -73,27 +75,15 @@ namespace Attendance_Management_System.Controllers
             {
                 PermissionsDtos.Add(new PermissionDto(permission));
             }
-            ViewData["Name"] = user.UserName;
+            ViewData["Name"] = user.UserName ?? "Instructor";
             return View(PermissionsDtos);
         }
+        [HttpGet("Instructor/Schedule")]
         public  IActionResult Schedule()
         {
             // Get Current User
             var user = InstructorRepo.GetCurrentUser();
-            if (user == null)
-            {
-                return Redirect("/Identity/Account/Login");
-
-            }
-            if (user is not Supervisor)
-            {
-                return RedirectToAction("Index", "Instructor");
-            }
-            if (user is not Instructor)
-            {
-                return RedirectToAction("Index", "Home");
-            }
-            int trackID = (user as Supervisor).SupTrackId;
+            int trackID = (user as Supervisor)?.SupTrackId ?? 1; // If the trackID is null, use 1 as the default value for testing purposes to be removed
             // Get the list of schedules from the database
             var Schedules = InstructorRepo.getSchedulesByTrackID(trackID);
             // Convert the list of schedules to a list of ScheduleDto
@@ -102,23 +92,31 @@ namespace Attendance_Management_System.Controllers
             {
                 SchedulesDtos.Add(new ScheduleDto(schedule));
             }
-            ViewData["Name"] = user.UserName;
+            ViewData["Name"] = user.UserName ?? "Instructor";
             return View(SchedulesDtos);
+        }
+        [HttpGet("Instructor/Schedule/{Id}")]
+        public IActionResult Schedule(int Id)
+        {
+            
+            var scheduleEvents = InstructorRepo.getSchedulesEventsByScheduleId(Id);
+            List<ScheduleEventDto> scheduleEventDtos = new List<ScheduleEventDto>();
+            foreach (var scheduleEvent in scheduleEvents)
+            {
+                scheduleEventDtos.Add(new ScheduleEventDto(scheduleEvent));
+            }
+
+            // add the schedule id to the view data
+            ViewData["ScheduleId"] = Id;
+
+            return View("ScheduleEvents",scheduleEventDtos);
         }
         public IActionResult Students()
         {
             //get the current user
             var user = InstructorRepo.GetCurrentUser();
-            if (user == null)
-            {
-                return Redirect("/Identity/Account/Login");
 
-            }
-            if (user is not Supervisor)
-            {
-                return RedirectToAction("Index", "Home");
-            }
-            int trackID = (user as Supervisor).SupTrackId;
+            int trackID = (user as Supervisor)?.SupTrackId ?? 1; // If the trackID is null, use 1 as the default value for testing purposes to be removed
             // get the list of students from the database
             List<Student> students = InstructorRepo.getStudentsByTrackID(trackID);
              
@@ -146,7 +144,7 @@ namespace Attendance_Management_System.Controllers
         public async Task<IActionResult> AddStudent(Student student)
         {
             var user = InstructorRepo.GetCurrentUser();
-            int trackID = (user as Supervisor).SupTrackId;
+            int trackID = (user as Supervisor)?.SupTrackId ?? 1; // If the trackID is null, use 1 as the default value for testing purposes to be removed
             await InstructorRepo.AddStudent(student, trackID);
             return RedirectToAction("Students");
         }
@@ -269,7 +267,9 @@ namespace Attendance_Management_System.Controllers
         [HttpPost]
         public IActionResult AddSchedule(Schedule Schedule)
         {
-             InstructorRepo.AddSchedule(Schedule);
+            var user = InstructorRepo.GetCurrentUser();
+            int trackID = (user as Supervisor)?.SupTrackId ?? 1; // If the trackID is null, use 1 as the default value for testing purposes to be removed
+            InstructorRepo.AddSchedule(Schedule, trackID);
              return RedirectToAction("Schedule");
 
         }
@@ -294,6 +294,42 @@ namespace Attendance_Management_System.Controllers
           return RedirectToAction("Schedule");
 
          }
+        #endregion
+        #region ScheduleEvent
+        [HttpPost]
+        public IActionResult DeleteScheduleEvent(int id)
+        {
+            int Id = int.Parse(Request.Path.Value.Split("/").Last());
+            InstructorRepo.DeleteScheduleEvent(id);
+            return Redirect($"/Instructor/Schedule/{Id}");
+        }
+        [HttpPost]
+        public IActionResult AddScheduleEvent(ScheduleEvent scheduleEvent)
+        {
+            // Get Id from the URL not the request Path
+            int Id = int.Parse(Request.Path.Value.Split("/").Last());
+            ScheduleEvent scheduleEventN = new ScheduleEvent()
+            {
+                Name = scheduleEvent.Name,
+                StartTime = scheduleEvent.StartTime,
+                EndTime = scheduleEvent.EndTime,
+                ScheduleId = Id
+
+            };             
+            scheduleEvent.ScheduleId = Id;
+            InstructorRepo.AddScheduleEvent(scheduleEventN);
+            return Redirect($"/Instructor/Schedule/{Id}");
+
+        }
+        [HttpPost]
+        public IActionResult UpdateScheduleEvent(ScheduleEvent scheduleEvent)
+        {
+            int Id = int.Parse(Request.Path.Value.Split("/").Last());
+
+            InstructorRepo.UpdateScheduleEvent(scheduleEvent);
+            return Redirect($"/Instructor/Schedule/{Id}");
+
+        }
         #endregion
         #endregion
     }
