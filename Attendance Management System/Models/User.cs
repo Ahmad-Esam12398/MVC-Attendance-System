@@ -9,15 +9,7 @@ namespace Attendance_Management_System.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public override int Id { get; set; }
-
         public string NationalId { get; set; }
-
-        public string? Password { get; set; }
-
-        public string? Phone { get; set; }
-
         public char? Gender { get; set; }
-
-        public User() { }
     }
 }

@@ -2,6 +2,7 @@
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
+    string userName = User.Identity.Name;
 }
 <!DOCTYPE html>
 <html lang="en">
@@ -21,6 +22,7 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/2.0.3/css/dataTables.bootstrap5.css" />
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/3.0.1/css/buttons.bootstrap5.css" />
 
+    
     @RenderSection("Styles", required: false)
     <!-- End Styles -->
     <title>Document</title>
@@ -31,7 +33,7 @@
         <div class="header_toggle">
             <i class="bx bx-menu" id="header-toggle"></i>
         </div>
-        <div class="header_username">Welcome, <span>@ViewData["Name"]</span> <img src="~/images/user.png" alt="" /></div>
+        <div class="header_username">Welcome, @userName <span>@ViewData["Name"]</span> <img src="~/images/user.png" alt="" /></div>
         <!-- <div class="header_img"><img src="user.png" alt="" /></div> -->
     </header>
     <div class="l-navbar" id="nav-bar">
@@ -42,18 +44,20 @@
                     <span class="nav_logo-name">Attendace System</span>
                 </a>
                 <div class="nav_list">
-                    <a href="#" class="nav_link">
-                        <i class="bx bx-user nav_icon"></i>
-                        <span class="nav_name">Profile</span>
-                    </a>
                     <!--Section Nav-List -->
                     @RenderSection("NavList", required: false)
                 </div>
             </div>
-            <a href="#" class="nav_link nav_last">
-                <i class="bx bx-log-out nav_icon"></i>
-                <span class="nav_name">SignOut</span>
-            </a>
+            <div class="nav_last">
+                <a asp-action="Index" asp-controller="Account" class="nav_link text-decoration-none">
+                    <i class="bx bx-user nav_icon"></i>
+                    <span class="nav_name">Profile</span>
+                </a>
+                <a asp-area="Identity" asp-page="/Account/Logout" class="nav_link text-decoration-none">
+                    <i class="bx bx-log-out nav_icon"></i>
+                    <span class="nav_name">SignOut</span>
+                </a>
+            </div>
         </nav>
     </div>
     <!--Body -->
@@ -78,15 +82,15 @@
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     @* <script src=""></script> *@
     <script>
-        $(document).ready(function () {
-            document.documentElement.style.setProperty('--first-color', $("UserColor").value);
-            $("#UserColor").on('change', function(){
-                document.documentElement.style.setProperty('--first-color', this.value);
-                console.log("Changed");
-                // document.documentElement.style.setProperty('--first-color', this.value);
-                // document.documentElement.style.setProperty('--first-color', this.value);
-            })
-        });
+        // $(document).ready(function () {
+        //     document.documentElement.style.setProperty('--first-color', $("UserColor").value);
+        //     $("#UserColor").on('change', function(){
+        //         document.documentElement.style.setProperty('--first-color', this.value);
+        //         console.log("Changed");
+        //         // document.documentElement.style.setProperty('--first-color', this.value);
+        //         // document.documentElement.style.setProperty('--first-color', this.value);
+        //     })
+        // });
     </script>
     <!-- End Scripts -->
     <script src="~/js/layout.js" type="module"></script>

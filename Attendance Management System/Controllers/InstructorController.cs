@@ -1,16 +1,22 @@
-﻿using Attendance_Management_System.Dtos;
+﻿using Attendance_Management_System.Data;
+using Attendance_Management_System.Dtos;
 using Attendance_Management_System.Models;
 using Attendance_Management_System.Repos;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Attendance_Management_System.Controllers
 {
+    [Authorize(Roles = RolesValues.InstructorRole)]
     public class InstructorController : Controller
     {
         IInstructorRepo InstructorRepo;
-        public InstructorController(IInstructorRepo _InstructorRepo)
+        private readonly UserManager<User> _userManager;
+        public InstructorController(IInstructorRepo _InstructorRepo, UserManager<User> userManager)
         {
             InstructorRepo = _InstructorRepo;
+            _userManager = userManager;
         }
         public IActionResult Index()
         {
@@ -94,7 +100,10 @@ namespace Attendance_Management_System.Controllers
             ViewData["Name"] = user.UserName;
             return View(SchedulesDtos);
         }
-
+        private async Task<User> GetCurrentUser()
+        {
+            return await _userManager.GetUserAsync(User);
+        }
 
 
         #region API Calls
