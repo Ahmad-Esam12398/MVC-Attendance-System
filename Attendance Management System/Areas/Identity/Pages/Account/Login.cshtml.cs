@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using Attendance_Management_System.Data;
 
 namespace Attendance_Management_System.Areas.Identity.Pages.Account
 {
@@ -22,11 +23,12 @@ namespace Attendance_Management_System.Areas.Identity.Pages.Account
     {
         private readonly SignInManager<User> _signInManager;
         private readonly ILogger<LoginModel> _logger;
-
-        public LoginModel(SignInManager<User> signInManager, ILogger<LoginModel> logger)
+        private readonly UserManager<User> _userManager;
+        public LoginModel(SignInManager<User> signInManager, ILogger<LoginModel> logger, UserManager<User> userManager)
         {
             _signInManager = signInManager;
             _logger = logger;
+            _userManager = userManager;
         }
 
         /// <summary>
@@ -84,7 +86,7 @@ namespace Attendance_Management_System.Areas.Identity.Pages.Account
             public bool RememberMe { get; set; }
         }
 
-        public async Task OnGetAsync(string returnUrl = null)
+        public async Task<IActionResult> OnGetAsync(string returnUrl = null)
         {
             if (!string.IsNullOrEmpty(ErrorMessage))
             {
@@ -97,8 +99,13 @@ namespace Attendance_Management_System.Areas.Identity.Pages.Account
             await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
 
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
-
-            ReturnUrl = returnUrl;
+            var currentUser = await _userManager.GetUserAsync(User);
+            if(currentUser != null)
+            {
+                returnUrl = await MapUserToPage(currentUser);
+                return LocalRedirect(returnUrl);
+            }
+            return Page();
         }
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
@@ -128,28 +135,20 @@ namespace Attendance_Management_System.Areas.Identity.Pages.Account
                 //Save Changes
                 //await _signInManager.UserManager.UpdateAsync(new User { UserName = Input.NationalId, NationalId = Input.NationalId, Email = Input.NationalId + "@gmail.com" });
 
-                var result = await _signInManager.PasswordSignInAsync(Input.NationalId, Input.Password, Input.RememberMe, lockoutOnFailure: false);
+                var user = _userManager.Users.FirstOrDefault(u => u.NationalId == Input.NationalId);
+
+                if(user == null)
+                {
+                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                    return Page();
+                }
+                var result = await _signInManager.PasswordSignInAsync(user.UserName, Input.Password, Input.RememberMe, lockoutOnFailure: false);
 
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
                     // get Current User
-                    var user = _signInManager.UserManager.FindByNameAsync(Input.NationalId).Result;
-                    // Check if the user is an Instructor
-                    if (user is Instructor)
-                    {
-                        // Redirect to the Index action of the InstructorController
-                        returnUrl = Url.Action("Index", "Instructor");
-                    }
-                    // Check if the user is a Supervisor
-                    else if (user is Supervisor)
-                    {
-                        // Redirect to the Index action of the InstructorController
-                        returnUrl = Url.Action("Index", "Instructor");
-                    }
-
-                   
-
+                    returnUrl = await MapUserToPage(user);
                     return LocalRedirect(returnUrl);
                 }
                 if (result.RequiresTwoFactor)
@@ -170,6 +169,41 @@ namespace Attendance_Management_System.Areas.Identity.Pages.Account
 
             // If we got this far, something failed, redisplay form
             return Page();
+        }
+        private async Task<string> MapUserToPage(User user)
+        {
+            string returnUrl;
+
+            //Redirect User According to his Role
+            if (await _userManager.IsInRoleAsync(user, RolesValues.AdminRole))
+            {
+                returnUrl = Url.Action("Index", "Admin");
+            }
+            // Check if the user is an Instructor
+            else if (await _userManager.IsInRoleAsync(user, RolesValues.InstructorRole) || await _userManager.IsInRoleAsync(user, RolesValues.SuperVisorRole))
+            {
+                // Redirect to the Index action of the InstructorController
+                returnUrl = Url.Action("Index", "Instructor");
+            }
+            //// Check if the user is a Supervisor
+            //else if (await _userManager.IsInRoleAsync(user, RolesValues.SuperVisorRole))
+            //{
+            //    // Redirect to the Index action of the InstructorController
+            //    returnUrl = Url.Action("Index", "Instructor");
+            //}
+            else if (await _userManager.IsInRoleAsync(user, RolesValues.SecurityRole))
+            {
+                returnUrl = Url.Action("SetAttendance", "Employee");
+            }            
+            else if (await _userManager.IsInRoleAsync(user, RolesValues.StudentsAffairs))
+            {
+                returnUrl = Url.Action("Index", "Employee");
+            }
+            else
+            {
+                returnUrl = Url.Action("Index", "Student");
+            }
+            return returnUrl;
         }
     }
 }

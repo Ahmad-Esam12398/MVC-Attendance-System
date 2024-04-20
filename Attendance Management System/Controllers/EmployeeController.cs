@@ -1,16 +1,24 @@
-﻿using Attendance_Management_System.Repos;
+﻿using Attendance_Management_System.Data;
+using Attendance_Management_System.Models;
+using Attendance_Management_System.Repos;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Attendance_Management_System.Controllers
 {
+    [Authorize(Roles = RolesValues.SecurityRole + "," + RolesValues.StudentsAffairs)]
     public class EmployeeController : Controller
     {
         public int Tolerance = 15;
         IEmployeeRepo EmployeeRepo;
-        public EmployeeController(IEmployeeRepo _EmployeeRepo)
+        UserManager<User> _userManager;
+        public EmployeeController(IEmployeeRepo _EmployeeRepo, UserManager<User> userManager)
         {
             EmployeeRepo = _EmployeeRepo;
+            _userManager = userManager;
         }
+        [Authorize(Roles = RolesValues.StudentsAffairs)]
         public IActionResult Index()
         {
             var students = EmployeeRepo.ReadAllStudents();
@@ -22,6 +30,7 @@ namespace Attendance_Management_System.Controllers
             ViewBag.Schedules = schedules;
             return View(students);
         }
+        [Authorize(Roles = RolesValues.SecurityRole)]
         public IActionResult SetAttendance()
         {
             var tracks = EmployeeRepo.ReadAllTracks();
@@ -29,6 +38,7 @@ namespace Attendance_Management_System.Controllers
             ViewBag.Tracks = tracks;
             return View(todaysStudents);
         }
+        [Authorize(Roles = RolesValues.SecurityRole)]
         [HttpPost]
         public IActionResult SetAttendance(int id, string type)
         {
@@ -45,12 +55,17 @@ namespace Attendance_Management_System.Controllers
             }
             return Json(new { success = false, Message = "Invalid Data" });
         }
+        [Authorize(Roles = RolesValues.StudentsAffairs)]
         public IActionResult Reports()
         {
             var tracks = EmployeeRepo.ReadAllTracks();
             ViewBag.Tracks = tracks;
             var attendanceDegrees = EmployeeRepo.ReadAttendanceDegrees();
             return View(attendanceDegrees);
+        }
+        private async Task<User> GetCurrentUser()
+        {
+            return await _userManager.GetUserAsync(User);
         }
     }
 }

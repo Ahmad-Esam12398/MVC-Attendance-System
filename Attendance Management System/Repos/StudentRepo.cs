@@ -35,8 +35,6 @@ namespace Attendance_Management_System.Repos
 
             if (student!=null)
             {
-
-
                 var track_Schedule = db.Schedules.Where(sc => sc.TrackId == student.TrackID).ToHashSet();
                 var attendances=db.Attendances.Where(at=>at.StudentId==stdID).ToHashSet();
                 var permissions=db.Permissions.Where(p=>p.StudentId==stdID).ToHashSet();
@@ -113,13 +111,13 @@ namespace Attendance_Management_System.Repos
             return db.Permissions.Where(x=>x.StudentId==StdID).OrderByDescending(per=>per.DateCreated).ToList();
         }
 
-            public Permission PermissionDetails(int stdID, DateTime permissionDate)
+        public Permission PermissionDetails(int stdID, DateTime permissionDate)
         {
             return db.Permissions.Where(x => x.StudentId == stdID && x.DateCreated == permissionDate).FirstOrDefault();
         }
 
 
-            public void UpdatePermission(Permission permission)
+        public void UpdatePermission(Permission permission)
         {
             var permission_In_Data=db.Permissions.FirstOrDefault(p=>p.StudentId==permission.StudentId&&p.DateCreated==permission.DateCreated);
             if (permission_In_Data != null)
@@ -130,7 +128,7 @@ namespace Attendance_Management_System.Repos
             
         }
 
-            public  Student GetStudentById(int id)
+        public  Student GetStudentById(int id)
         {
            return db.Students.FirstOrDefault(s=>s.Id==id);
 

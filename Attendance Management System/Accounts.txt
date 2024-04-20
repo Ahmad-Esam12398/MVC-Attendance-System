@@ -1,0 +1,7 @@
+NationalId			Password			Roles
+
+53665485772015		AboEsam@123			Admin
+32006485523654		AboEsam@123			Instructor, SuperVisor
+13188023050757		AboEsam@123			Security
+29803121600573		AboEsam@123			StudentsAffairs
+29803151800654		AboEsam@123			Student

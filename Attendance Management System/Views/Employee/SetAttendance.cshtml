@@ -29,7 +29,7 @@
                 <th>Track</th>
                 <th>Program</th>
                 <th>Gender</th>
-                <th>Phone</th>
+                <th>PhoneNumber</th>
                 <th>Arrival Time</th>
                 <th>Leaving Time</th>
             </tr>
@@ -42,7 +42,7 @@
                     <td>@student.Track.Name</td>
                     <td>@student.Track.Program.Name</td>
                     <td>@student.Gender</td>
-                    <td>@student.Phone</td>
+                    <td>@student.PhoneNumber</td>
                         @{
                             @:<td>
                             var attendance = student.Attendances.FirstOrDefault(a => a.Date == DateOnly.FromDateTime(DateTime.Now));
