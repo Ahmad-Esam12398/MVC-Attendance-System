@@ -1,0 +1,35 @@
+﻿@model Attendance_Management_System.Models.Track
+
+@section NavList {
+    @Html.Partial("navBar")
+}
+
+<h2>Edit Track</h2>
+
+<form asp-action="EditTrack" method="post">
+    <input type="hidden" asp-for="Id" />
+    <div class="form-group">
+        <label asp-for="Name" class="control-label"></label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="ProgramId" class="control-label"></label>
+        <input asp-for="ProgramId" class="form-control" />
+        <span asp-validation-for="ProgramId" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="SupervisorId" class="control-label"></label>
+        <input asp-for="SupervisorId" class="form-control" />
+        <span asp-validation-for="SupervisorId" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" asp-for="IsActive" />
+            <label class="form-check-label" asp-for="IsActive">Is Active</label>
+        </div>
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Save" class="btn btn-primary" />
+    </div>
+</form>

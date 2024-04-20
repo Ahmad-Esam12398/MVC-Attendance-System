@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Linq;
 using Attendance_Management_System.ViewModels;
 using Microsoft.AspNetCore.Authorization;
+using Attendance_Management_System.Repos;
 
 
 namespace Attendance_Management_System.Controllers

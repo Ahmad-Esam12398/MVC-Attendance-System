@@ -1,0 +1,29 @@
+﻿@model Attendance_Management_System.Models.Intake
+@section NavList
+{
+
+    @Html.Partial("navBar")
+
+
+}
+<h2>Delete Intake</h2>
+<hr />
+<h3>Are you sure you want to delete this intake?</h3>
+<dl class="row">
+    <dt class="col-sm-2">ID:</dt>
+    <dd class="col-sm-10">@Model.Id</dd>
+    <dt class="col-sm-2">Name:</dt>
+    <dd class="col-sm-10">@Model.Number</dd>
+
+    <dt class="col-sm-2">Start Date:</dt>
+    <dd class="col-sm-10">@Model.StartDate.ToShortDateString()</dd>
+    <dt class="col-sm-2">End Date:</dt>
+    <dd class="col-sm-10">@Model.EndDate.ToShortDateString()</dd>
+</dl>
+
+<form id="deleteForm" asp-action="DeleteIntake" method="post">
+    <input type="hidden" asp-for="Id" />
+
+    <input type="submit" value="Delete" class="btn btn-danger"  /> |
+    <a asp-action="IntakeIndex" class="btn btn-secondary">Back to List</a>
+</form>

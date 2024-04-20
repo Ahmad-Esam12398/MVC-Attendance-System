@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Attendance_Management_System.Migrations
 {
     [DbContext(typeof(itiContext))]
-    [Migration("20240420033616_seeding initial data compatible with identity")]
-    partial class seedinginitialdatacompatiblewithidentity
+    [Migration("20240420130214_m1")]
+    partial class m1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -195,7 +195,7 @@ namespace Attendance_Management_System.Migrations
                             StudentId = 1,
                             Date = new DateOnly(2024, 4, 20),
                             BodyOfDescription = "1",
-                            DateCreated = new DateTime(2024, 4, 20, 5, 36, 14, 735, DateTimeKind.Local).AddTicks(9381),
+                            DateCreated = new DateTime(2024, 4, 20, 14, 38, 33, 445, DateTimeKind.Local).AddTicks(7088),
                             ID = 1,
                             Reason = "1",
                             Status = 0
@@ -205,7 +205,7 @@ namespace Attendance_Management_System.Migrations
                             StudentId = 2,
                             Date = new DateOnly(2024, 4, 20),
                             BodyOfDescription = "2",
-                            DateCreated = new DateTime(2024, 4, 20, 5, 36, 14, 735, DateTimeKind.Local).AddTicks(9692),
+                            DateCreated = new DateTime(2024, 4, 20, 14, 38, 33, 445, DateTimeKind.Local).AddTicks(7333),
                             ID = 2,
                             Reason = "2",
                             Status = 0
@@ -215,7 +215,7 @@ namespace Attendance_Management_System.Migrations
                             StudentId = 3,
                             Date = new DateOnly(2024, 4, 20),
                             BodyOfDescription = "3",
-                            DateCreated = new DateTime(2024, 4, 20, 5, 36, 14, 735, DateTimeKind.Local).AddTicks(9699),
+                            DateCreated = new DateTime(2024, 4, 20, 14, 38, 33, 445, DateTimeKind.Local).AddTicks(7338),
                             ID = 3,
                             Reason = "3",
                             Status = 0
@@ -225,7 +225,7 @@ namespace Attendance_Management_System.Migrations
                             StudentId = 4,
                             Date = new DateOnly(2024, 4, 20),
                             BodyOfDescription = "4",
-                            DateCreated = new DateTime(2024, 4, 20, 5, 36, 14, 735, DateTimeKind.Local).AddTicks(9707),
+                            DateCreated = new DateTime(2024, 4, 20, 14, 38, 33, 445, DateTimeKind.Local).AddTicks(7344),
                             ID = 4,
                             Reason = "4",
                             Status = 0
@@ -235,7 +235,7 @@ namespace Attendance_Management_System.Migrations
                             StudentId = 5,
                             Date = new DateOnly(2024, 4, 20),
                             BodyOfDescription = "5",
-                            DateCreated = new DateTime(2024, 4, 20, 5, 36, 14, 735, DateTimeKind.Local).AddTicks(9715),
+                            DateCreated = new DateTime(2024, 4, 20, 14, 38, 33, 445, DateTimeKind.Local).AddTicks(7349),
                             ID = 5,
                             Reason = "5",
                             Status = 0
@@ -473,6 +473,9 @@ namespace Attendance_Management_System.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
 
+                    b.Property<byte[]>("Picture")
+                        .HasColumnType("varbinary(max)");
+
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
@@ -686,11 +689,13 @@ namespace Attendance_Management_System.Migrations
 
             modelBuilder.Entity("Attendance_Management_System.Models.Attendance", b =>
                 {
-                    b.HasOne("Attendance_Management_System.Models.Student", null)
+                    b.HasOne("Attendance_Management_System.Models.Student", "Student")
                         .WithMany("Attendances")
                         .HasForeignKey("StudentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Student");
                 });
 
             modelBuilder.Entity("Attendance_Management_System.Models.AttendanceDegree", b =>

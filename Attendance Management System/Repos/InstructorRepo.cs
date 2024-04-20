@@ -100,6 +100,29 @@ namespace Attendance_Management_System.Repos
   
         }
 
+        public List<Student> getStudentsByTrackID(int trackID)
+        {
+            return db.Students.Where(s => s.TrackID == trackID).ToList();
+        }
+
+        public void DeleteStudent(int id)
+        {
+            var student = db.Students.FirstOrDefault(s => s.Id == id);
+            db.Students.Remove(student);
+            db.SaveChanges();
+        }
+        public async Task AddStudent(Student student , int trackID)
+        {
+            var user = new Student { UserName = student.UserName, NationalId = student.NationalId, Email = student.Email, TrackID = trackID , University = student.University, Faculty = student.Faculty };
+            await _userManager.CreateAsync(user, "123456aA!");
+        }
+        public async Task EditStudent(Student student)
+        {
+            var user = db.Students.FirstOrDefault(s => s.Id == student.Id);
+            user.UserName = student.UserName;
+            user.Email = student.Email;
+            await _userManager.UpdateAsync(user);
+        }
 
     }
 }

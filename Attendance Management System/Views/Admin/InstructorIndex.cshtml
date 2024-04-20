@@ -1,0 +1,39 @@
+﻿@model IEnumerable<Attendance_Management_System.Models.Instructor>
+
+@section NavList {
+    @Html.Partial("navBar")
+}
+
+<h2>Instructors</h2>
+
+<p>
+    <a asp-action="CreateInstructor">Create New</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>National ID</th>
+            <th>Phone</th>
+            <th>Gender</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var instructor in Model)
+        {
+            <tr>
+                <td>@instructor.Id</td>
+                <td>@instructor.NationalId</td>
+                <td>@instructor.Phone</td>
+                <td>@instructor.Gender</td>
+                <td>
+                    <a asp-action="InstructorDetails" asp-route-id="@instructor.Id">Details</a> |
+                    <a asp-action="EditInstructor" asp-route-id="@instructor.Id">Edit</a> |
+                    <a asp-action="DeleteInstructor" asp-route-id="@instructor.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

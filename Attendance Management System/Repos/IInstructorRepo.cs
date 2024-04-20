@@ -16,5 +16,10 @@ namespace Attendance_Management_System.Repos
 
         User GetCurrentUser();
         Task AddDummyInstructors();
+        List<Student> getStudentsByTrackID(int trackID);
+        void DeleteStudent(int id);
+        public  Task AddStudent(Student student, int trackID);
+        public Task EditStudent(Student student);
+
     }
 }

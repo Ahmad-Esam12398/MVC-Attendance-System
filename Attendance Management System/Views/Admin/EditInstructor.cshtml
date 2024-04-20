@@ -1,0 +1,37 @@
+﻿@model Attendance_Management_System.Models.Instructor
+
+@section NavList {
+    @Html.Partial("navBar")
+}
+
+<h2>Edit Instructor</h2>
+
+<form asp-action="EditInstructor" method="post">
+    <input type="hidden" asp-for="Id" />
+
+    <div class="form-group">
+        <label asp-for="NationalId" class="control-label"></label>
+        <input asp-for="NationalId" class="form-control" />
+        <span asp-validation-for="NationalId" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Password" class="control-label"></label>
+        <input asp-for="Password" class="form-control" />
+        <span asp-validation-for="Password" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Phone" class="control-label"></label>
+        <input asp-for="Phone" class="form-control" />
+        <span asp-validation-for="Phone" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Gender" class="control-label"></label>
+        <input asp-for="Gender" class="form-control" />
+        <span asp-validation-for="Gender" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <!-- Add a hidden field for Password -->
+        <input type="hidden" asp-for="Password" />
+        <input type="submit" value="Save" class="btn btn-primary" />
+    </div>
+</form>
