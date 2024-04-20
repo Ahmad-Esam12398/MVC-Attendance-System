@@ -2,13 +2,18 @@
 using Attendance_Management_System.Dtos;
 using Attendance_Management_System.Models;
 using Attendance_Management_System.Repos;
+using ExcelDataReader;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using NuGet.DependencyResolver;
+using NuGet.Protocol.Plugins;
+using System.Text;
 
 namespace Attendance_Management_System.Controllers
 {
-    [Authorize(Roles = RolesValues.InstructorRole)]
+    //[Authorize(Roles = RolesValues.InstructorRole)]
     public class InstructorController : Controller
     {
         IInstructorRepo InstructorRepo;
@@ -155,6 +160,76 @@ namespace Attendance_Management_System.Controllers
         private async Task<User> GetCurrentUser()
         {
             return await _userManager.GetUserAsync(User);
+        }
+        public IActionResult UploadExcel()
+        {
+            return View();
+        }
+        // Upload Excel File
+        [HttpPost]
+        public async Task<IActionResult> UploadExcel(IFormFile file)
+        {
+            var user = InstructorRepo.GetCurrentUser();
+            int trackID = (user as Supervisor)?.SupTrackId ?? 1; // If the trackID is null, use 1 as the default value for testing purposes to be removed
+            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+
+            if (file != null && file.Length > 0)
+            {
+                var uploadsFolder = $"{Directory.GetCurrentDirectory()}\\wwwroot\\Uploads\\";
+
+                if (!Directory.Exists(uploadsFolder))
+                {
+                    Directory.CreateDirectory(uploadsFolder);
+                }
+
+                var timeStamp = DateTime.Now.ToString("yyyyMMddHHmmss");
+                var fileName = Path.GetFileNameWithoutExtension(file.FileName) + timeStamp + Path.GetExtension(file.FileName);
+
+
+                var filePath = Path.Combine(uploadsFolder, fileName);
+
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await file.CopyToAsync(stream);
+                }
+
+                using (var stream = System.IO.File.Open(filePath, FileMode.Open, FileAccess.Read))
+                {
+                    using (var reader = ExcelReaderFactory.CreateReader(stream))
+                    {
+                        do
+                        {
+                            bool isHeaderSkipped = false;
+
+                            while (reader.Read())
+                            {
+                                if (!isHeaderSkipped)
+                                {
+                                    isHeaderSkipped = true;
+                                    continue;
+                                }
+
+                                Student student = new Student
+                                {
+                                    UserName = reader.GetValue(0).ToString(),
+                                    NationalId = reader.GetValue(1).ToString(),
+                                    Email = reader.GetValue(2).ToString(),
+                                    University = reader.GetValue(3).ToString(),
+                                    Faculty = reader.GetValue(4).ToString(),
+                                    TrackID = trackID,
+                                };
+
+                                await InstructorRepo.AddStudent(student, trackID);
+                            }
+                        } while (reader.NextResult());
+
+                        ViewBag.Message = "success";
+                    }
+                }
+            }
+            else
+                ViewBag.Message = "empty";
+            return View();
         }
 
        
