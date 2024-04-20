@@ -1,18 +1,19 @@
 ﻿@if (User.IsInRole(RolesValues.StudentsAffairs))
 {
     <a asp-action="Index" asp-controller="Employee" class="nav_link">
-        <i class="bx bx-home nav_icon"></i>
-        <span class="nav_name">Home</span>
+        <i class='bx bx-info-circle nav_icon'></i>
+        <span class="nav_name">Today's Status'</span>
     </a>
     <a asp-action="Reports" asp-controller="Employee" class="nav_link">
-        <i class="bx bx-home nav_icon"></i>
-        <span class="nav_name">Set Attendance</span>
+        <i class='bx bx-file nav_icon'></i>
+        <span class="nav_name">Reports</span>
     </a>
 }
 else
 {
     <a asp-action="SetAttendance" asp-controller="Employee" class="nav_link">
-        <i class="bx bx-home nav_icon"></i>
+        @* <i class="bx bx-home "></i> *@
+        <i class='bx bx-edit-alt nav_icon'></i>
         <span class="nav_name">Set Attendance</span>
     </a>
 }

@@ -8,6 +8,7 @@ namespace Attendance_Management_System.Repos
     {
         itiContext db;
         int initialAbsenceDegrees = 500;
+        public Dictionary<int, int> AbsenceDayswithPermission { get; set; }
         public EmployeeRepo(itiContext _db)
         {
             db = _db;
@@ -15,7 +16,7 @@ namespace Attendance_Management_System.Repos
         public List<Student> ReadAllStudents()
         {
             
-            return db.Students.ToList();
+            return db.Students.Include(s => s.Attendances).ToList();
         }
         public List<Track> ReadAllTracks()
         {
@@ -25,7 +26,7 @@ namespace Attendance_Management_System.Repos
         {
             var todayDate = DateTime.Now;
             var todaysTracks = db.Schedules.Where(s => s.Date == DateOnly.FromDateTime(todayDate)).Select(s=> s.Track).ToList();
-            var todaysStudents = db.Students.Where(s => todaysTracks.Contains(s.Track)).ToList();
+            var todaysStudents = db.Students.Include(s => s.Attendances).Where(s => todaysTracks.Contains(s.Track)).ToList();
             return todaysStudents;
         }
         public List<Schedule> ReadSchedules()
@@ -70,19 +71,66 @@ namespace Attendance_Management_System.Repos
             var students = db.Students.Include(s=> s.AttendanceDegrees).Where(s => s.AttendanceDegrees.Max(ad => ad.UntilDate) != DateOnly.FromDateTime(DateTime.Now)).ToList();
             foreach(var student in students)
             {
-                var totalDays = db.Schedules.Where(s => s.Track == student.Track).Select(s=> s.Date).Distinct();
+                var totalDays = db.Schedules.Where(s => s.Track == student.Track && s.Date < DateOnly.FromDateTime(DateTime.Now)).Select(s=> s.Date).Distinct();
                 var totalStudentsdays = db.Attendances.Where(a => a.StudentId == student.Id).Select(a=> a.Date).Distinct();
-                int absentDays = totalDays.Except(totalStudentsdays).Count();
+                List<DateOnly> absentDates = totalDays.Except(totalStudentsdays).Distinct().ToList();
+                List<DateOnly> approvedPermissions = db.Permissions.Where(p => p.StudentId == student.Id && p.Status == PermissionStatus.Accepted).Select(p => p.Date).Distinct().ToList();
+                List<DateOnly> absentWithPermissions = absentDates.Intersect(approvedPermissions).Distinct().ToList();
+                List<DateOnly> absentWithoutPermission = absentDates.Except(absentWithPermissions).Distinct().ToList();
                 var attendanceDegree = new AttendanceDegree()
                 {
                     StudentId = student.Id,
-                    AbscenceDays = absentDays,
-                    AttendanceDegrees = initialAbsenceDegrees - absentDays * 10,
+                    AbscenceDays = absentDates.Count,
+                    AttendanceDegrees = initialAbsenceDegrees 
+                    - CalculateReducedScoreForAbscenceWithoutPermission(absentWithoutPermission.Count) 
+                    - CalculateReducedScoreForAbscenceWithPermission(absentWithPermissions.Count, 3),
+                    AbsenceWithPermission = absentWithPermissions.Count,
                     UntilDate = DateOnly.FromDateTime(DateTime.Now)
                 };
                 db.AttendanceDegrees.Add(attendanceDegree);
                 db.SaveChanges();
             }
+        }
+        private int  CalculateReducedScoreForAbscenceWithoutPermission(int n)
+        {
+            return n * 25;
+        }
+        private int CalculateReducedScoreForAbscenceWithPermission(int n, int repetitions)
+        {
+            int sum = 0;
+            if (n > 0)
+                n -= 1;
+            if (n > 1)
+                if (n <= repetitions)
+                    sum += n * 5; 
+                else
+                    sum += repetitions * 5;
+            if(n > repetitions)
+            {
+                if(n <= repetitions * 2)
+                    sum += (n - repetitions) * 10;
+                else
+                    sum += repetitions * 10;
+            }
+            if(n > repetitions * 2)
+            {
+                if(n <= repetitions * 3)
+                    sum += (n - repetitions * 2) * 15;
+                else
+                    sum += repetitions * 15;
+            }
+            if(n > repetitions * 3)
+            {
+                if(n <= repetitions * 4)
+                    sum += (n - repetitions * 3) * 20;
+                else
+                    sum += repetitions * 20;
+            }
+            if(n > repetitions * 4)
+            {
+                sum += (n - repetitions * 4) * 25;
+            }
+            return sum;
         }
         public List<AttendanceDegree> ReadAttendanceDegrees()
         {
