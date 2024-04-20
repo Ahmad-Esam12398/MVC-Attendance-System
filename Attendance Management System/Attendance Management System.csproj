@@ -26,7 +26,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Views\Admin\" />
     <Folder Include="Views\Student\" />
     <Folder Include="Views\Instructor\" />
   </ItemGroup>
