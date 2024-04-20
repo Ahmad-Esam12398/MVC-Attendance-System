@@ -192,7 +192,7 @@ namespace Attendance_Management_System.Migrations
                             StudentId = 1,
                             Date = new DateOnly(2024, 4, 20),
                             BodyOfDescription = "1",
-                            DateCreated = new DateTime(2024, 4, 20, 6, 0, 17, 135, DateTimeKind.Local).AddTicks(3763),
+                            DateCreated = new DateTime(2024, 4, 20, 15, 2, 13, 761, DateTimeKind.Local).AddTicks(8046),
                             ID = 1,
                             Reason = "1",
                             Status = 0
@@ -202,7 +202,7 @@ namespace Attendance_Management_System.Migrations
                             StudentId = 2,
                             Date = new DateOnly(2024, 4, 20),
                             BodyOfDescription = "2",
-                            DateCreated = new DateTime(2024, 4, 20, 6, 0, 17, 135, DateTimeKind.Local).AddTicks(4051),
+                            DateCreated = new DateTime(2024, 4, 20, 15, 2, 13, 761, DateTimeKind.Local).AddTicks(8312),
                             ID = 2,
                             Reason = "2",
                             Status = 0
@@ -212,7 +212,7 @@ namespace Attendance_Management_System.Migrations
                             StudentId = 3,
                             Date = new DateOnly(2024, 4, 20),
                             BodyOfDescription = "3",
-                            DateCreated = new DateTime(2024, 4, 20, 6, 0, 17, 135, DateTimeKind.Local).AddTicks(4056),
+                            DateCreated = new DateTime(2024, 4, 20, 15, 2, 13, 761, DateTimeKind.Local).AddTicks(8314),
                             ID = 3,
                             Reason = "3",
                             Status = 0
@@ -222,7 +222,7 @@ namespace Attendance_Management_System.Migrations
                             StudentId = 4,
                             Date = new DateOnly(2024, 4, 20),
                             BodyOfDescription = "4",
-                            DateCreated = new DateTime(2024, 4, 20, 6, 0, 17, 135, DateTimeKind.Local).AddTicks(4062),
+                            DateCreated = new DateTime(2024, 4, 20, 15, 2, 13, 761, DateTimeKind.Local).AddTicks(8317),
                             ID = 4,
                             Reason = "4",
                             Status = 0
@@ -232,7 +232,7 @@ namespace Attendance_Management_System.Migrations
                             StudentId = 5,
                             Date = new DateOnly(2024, 4, 20),
                             BodyOfDescription = "5",
-                            DateCreated = new DateTime(2024, 4, 20, 6, 0, 17, 135, DateTimeKind.Local).AddTicks(4067),
+                            DateCreated = new DateTime(2024, 4, 20, 15, 2, 13, 761, DateTimeKind.Local).AddTicks(8319),
                             ID = 5,
                             Reason = "5",
                             Status = 0
@@ -683,11 +683,13 @@ namespace Attendance_Management_System.Migrations
 
             modelBuilder.Entity("Attendance_Management_System.Models.Attendance", b =>
                 {
-                    b.HasOne("Attendance_Management_System.Models.Student", null)
+                    b.HasOne("Attendance_Management_System.Models.Student", "Student")
                         .WithMany("Attendances")
                         .HasForeignKey("StudentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Student");
                 });
 
             modelBuilder.Entity("Attendance_Management_System.Models.AttendanceDegree", b =>

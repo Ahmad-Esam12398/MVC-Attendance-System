@@ -17,7 +17,6 @@ namespace Attendance_Management_System.Controllers
         public AccountController(UserManager<User> userManager)
         {
             _userManager = userManager;
-            AccountRepo = accountRepo;
         }
 
         public async Task<IActionResult> Index()

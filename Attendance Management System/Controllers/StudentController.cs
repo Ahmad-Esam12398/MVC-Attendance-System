@@ -18,7 +18,10 @@ namespace Attendance_Management_System.Controllers
             StudentRepo = _StudentRepo;
             _userManager = userManager;
         }
-       
+       public IActionResult Index()
+        {
+            return RedirectToAction("Index", "Account");
+        }
 
 
         public async Task< IActionResult> Attendance()
