@@ -28,6 +28,10 @@ namespace Attendance_Management_System.Controllers
            
             return View();
         }
+        public IActionResult Home()
+        {
+            return RedirectToAction("Index");
+        }
         [Authorize(Roles = RolesValues.SuperVisorRole)]
 
         public async Task<IActionResult> Permissions()
