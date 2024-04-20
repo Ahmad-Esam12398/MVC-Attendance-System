@@ -1,57 +1,48 @@
 ﻿@model Attendance_Management_System.Models.Track
 
-@section NavList
-{
-
+@section NavList {
     @Html.Partial("navBar")
-
-
 }
 
-<div>
+<h2>Track Details</h2>
 
+<div>
+    <h4>Track</h4>
+    <hr />
     <dl class="row">
         <dt class="col-sm-2">
-          Track ID : 
+            @Html.DisplayNameFor(model => model.Id)
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Id)
         </dd>
         <dt class="col-sm-2">
-           Name : 
+            @Html.DisplayNameFor(model => model.Name)
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Name)
         </dd>
         <dt class="col-sm-2">
-           Status : 
-        </dt>
-      
-            @if (Model.IsActive == true)
-            {
-            <dd class="col-sm-10">
-                Active
-            </dd>
-            }
-            else
-            {
-            <dd class="col-sm-10">
-                Inactive
-            </dd>
-            }
-       
-        <dt class="col-sm-2">
-           Program : 
+            @Html.DisplayNameFor(model => model.ProgramId)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Program.Name)
+            @Html.DisplayFor(model => model.ProgramId)
         </dd>
         <dt class="col-sm-2">
-          Supervisor : 
+            @Html.DisplayNameFor(model => model.SupervisorId)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Supervisor.UserName)
+            @Html.DisplayFor(model => model.SupervisorId)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.IsActive)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.IsActive)
         </dd>
     </dl>
-      
-    </div>
+</div>
+
+<p>
+    <a asp-action="TrackIndex">Back to Index</a>
+</p>

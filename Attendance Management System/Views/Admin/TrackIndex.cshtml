@@ -1,44 +1,61 @@
-﻿  @model IEnumerable<Attendance_Management_System.Models.Track>
-@section NavList
-  {
+﻿@model IEnumerable<Attendance_Management_System.Models.Track>
 
+@section NavList {
     @Html.Partial("navBar")
-
-
 }
-    <a asp-action="CreateTrack"class="btn btn-primary">Create Track</a>
-    <table class="table">
-        <thead>
+
+<h2>Tracks</h2>
+
+<p>
+    <a asp-action="CreateTrack">Create New</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ProgramId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SupervisorId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsActive)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
             <tr>
-                <th>ID</th>
-                <th>Name</th>
-             
-                <th>ProgramId</th>
-                <th>SupervisorId</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var track in Model)
-                {
-            <tr>
-                
-                @if (track.IsActive == true)
-                {
-                    <td>@track.Id</td>
-                    <td>@track.Name</td>
-                    <td>@track.ProgramId</td>
-                    <td>@track.SupervisorId</td>
-                }
-                
-               
                 <td>
-                    <a asp-action="TrackDetails" asp-route-id="@track.Id">Details</a> |
-                    <a asp-action="EditTrack" asp-route-id="@track.Id">Edit</a> |
-                    <a asp-action="DeleteTrack" asp-route-id="@track.Id">Delete</a>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProgramId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SupervisorId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IsActive)
+                </td>
+                <td>
+                    <a asp-action="EditTrack" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="TrackDetails" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="DeleteTrack" asp-route-id="@item.Id">Delete</a>
                 </td>
             </tr>
-                }
-        </tbody>
-    </table>
-
+        }
+    </tbody>
+</table>

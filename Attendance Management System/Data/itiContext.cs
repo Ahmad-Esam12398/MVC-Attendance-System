@@ -19,7 +19,7 @@ namespace Attendance_Management_System.Data
         public DbSet<Supervisor> Supervisors { get; set; }
         public DbSet<Instructor> Instructors { get; set; }
 
-        public DbSet<Intake> Intakes { get; set; }
+        public DbSet<Intake> Intake { get; set; }
         public DbSet<ITIProgram> Programs { get; set; }
         public DbSet<Permission> Permissions { get; set; }
         public DbSet<TrackIntake> TrackIntakes { get; set; }

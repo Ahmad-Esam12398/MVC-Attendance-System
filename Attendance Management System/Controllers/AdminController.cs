@@ -8,7 +8,7 @@ namespace Attendance_Management_System.Controllers
     public class AdminController : Controller
     {
         IAdminRepo AdminRepo;
-       
+
         public AdminController(IAdminRepo _AdminRepo)
         {
             AdminRepo = _AdminRepo;
@@ -37,14 +37,14 @@ namespace Attendance_Management_System.Controllers
             ViewData["Name"] = user.UserName;
             return View();
         }
-
+        #region instructor
         public IActionResult InstructorIndex()
         {
             var instructors = AdminRepo.GetInstructors();
             return View(instructors);
         }
 
-      
+
         public IActionResult InstructorDetails(int id)
         {
             var instructor = AdminRepo.GetInstructorById(id);
@@ -55,13 +55,13 @@ namespace Attendance_Management_System.Controllers
             return View(instructor);
         }
 
-       
+
         public IActionResult CreateInstructor()
         {
             return View();
         }
 
-       
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult CreateInstructor(Instructor instructor)
@@ -74,7 +74,7 @@ namespace Attendance_Management_System.Controllers
             return View(instructor);
         }
 
-      
+
         public IActionResult EditInstructor(int id)
         {
             var instructor = AdminRepo.GetInstructorById(id);
@@ -85,7 +85,7 @@ namespace Attendance_Management_System.Controllers
             return View(instructor);
         }
 
-       
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult EditInstructor(int id, Instructor instructor)
@@ -104,7 +104,7 @@ namespace Attendance_Management_System.Controllers
             return View(instructor);
         }
 
-       
+
         public IActionResult DeleteInstructor(int id)
         {
             var instructor = AdminRepo.GetInstructorById(id);
@@ -116,7 +116,7 @@ namespace Attendance_Management_System.Controllers
             return View(instructor);
         }
 
-       
+
         [HttpPost, ActionName("DeleteInstructor")]
         [ValidateAntiForgeryToken]
         public IActionResult DeleteConfirmed(int id)
@@ -124,40 +124,55 @@ namespace Attendance_Management_System.Controllers
             AdminRepo.DeleteInstructor(id);
             return RedirectToAction(nameof(InstructorIndex));
         }
+        #endregion
         #region intake
-        public IActionResult IntakeIndex()
+        public async Task<IActionResult> IntakeIndex()
         {
-            var intakes = AdminRepo.GetIntakes();
+            var intakes = await AdminRepo.GetAllIntakes();
             return View(intakes);
         }
-        public IActionResult IntakeDetails(int id)
+
+        public async Task<IActionResult> IntakeDetails(int? id)
         {
-            var intake = AdminRepo.GetIntakeByID(id);
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var intake = await AdminRepo.GetIntakeById(id.Value);
             if (intake == null)
             {
                 return NotFound();
             }
+
             return View(intake);
         }
+
         public IActionResult CreateIntake()
         {
             return View();
         }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult CreateIntake(Intake intake)
+        public async Task<IActionResult> CreateIntake([Bind("Id,Number,StartDate,EndDate")] Intake intake)
         {
             if (ModelState.IsValid)
             {
-                AdminRepo.InsertIntake(intake);
+                await AdminRepo.AddIntake(intake);
                 return RedirectToAction(nameof(IntakeIndex));
             }
             return View(intake);
         }
 
-        public IActionResult EditIntake(int id)
+        public async Task<IActionResult> EditIntake(int? id)
         {
-            var intake = AdminRepo.GetIntakeByID(id);
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var intake = await AdminRepo.GetIntakeById(id.Value);
             if (intake == null)
             {
                 return NotFound();
@@ -167,7 +182,7 @@ namespace Attendance_Management_System.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult EditIntake(int id, Intake intake)
+        public async Task<IActionResult> EditIntake(int id, [Bind("Id,Number,StartDate,EndDate")] Intake intake)
         {
             if (id != intake.Id)
             {
@@ -176,16 +191,29 @@ namespace Attendance_Management_System.Controllers
 
             if (ModelState.IsValid)
             {
-                AdminRepo.UpdateIntake(intake);
-                TempData["EditSuccessMessage"] = "Intake updated successfully!";
-                return RedirectToAction("IntakeIndex");
+                try
+                {
+                    await AdminRepo.UpdateIntake(intake);
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!await AdminRepo.IntakeExists(intake.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(IntakeIndex));
             }
-
             return View(intake);
         }
-        public IActionResult DeleteIntake(int id)
+
+        public async Task<IActionResult> DeleteIntake(int id)
         {
-            var intake = AdminRepo.GetIntakeByID(id);
+            var intake = await AdminRepo.GetIntakeById(id);
             if (intake == null)
             {
                 return NotFound();
@@ -196,11 +224,27 @@ namespace Attendance_Management_System.Controllers
 
         [HttpPost, ActionName("DeleteIntake")]
         [ValidateAntiForgeryToken]
-        public IActionResult DeleteIntakeConfirmed(int id)
+        public async Task<IActionResult> DeleteIntakeConfirmed(int id)
         {
-            AdminRepo.DeleteIntake(id);
+            var intake = await AdminRepo.GetIntakeById(id);
+            if (intake == null)
+            {
+                return NotFound();
+            }
+
+            bool hasTracks = await AdminRepo.IntakeHasTracks(id);
+            if (hasTracks)
+            {
+                TempData["DeleteErrorMessage"] = "This intake cannot be deleted because it has associated tracks.";
+                return RedirectToAction(nameof(IntakeIndex));
+            }
+
+            // Remove the intake from the database
+            await AdminRepo.DeleteIntake(id);
+
             return RedirectToAction(nameof(IntakeIndex));
         }
+
         #endregion
         #region program
 
@@ -311,7 +355,7 @@ namespace Attendance_Management_System.Controllers
                 return NotFound();
             }
 
-            // Check if the program has associated tracks
+
             bool hasTracks = await AdminRepo.ProgramHasTracks(id);
             if (hasTracks)
             {
@@ -319,7 +363,6 @@ namespace Attendance_Management_System.Controllers
                 return RedirectToAction(nameof(ProgramIndex));
             }
 
-            // Update the program IsActive property to false (inactive)
             program.IsActive = false;
             await AdminRepo.UpdateProgram(program);
 
@@ -332,16 +375,20 @@ namespace Attendance_Management_System.Controllers
 
 
         #region tracks
-        public IActionResult TrackIndex()
+        public async Task<IActionResult> TrackIndex()
         {
-            var tracks = AdminRepo.GetTracks();
+            var tracks = await AdminRepo.GetAllTracks();
             return View(tracks);
         }
 
-       
-        public IActionResult TrackDetails(int id)
+        public async Task<IActionResult> TrackDetails(int? id)
         {
-            var track = AdminRepo.GetTrackById(id);
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var track = await AdminRepo.GetTrackById(id.Value);
             if (track == null)
             {
                 return NotFound();
@@ -350,29 +397,40 @@ namespace Attendance_Management_System.Controllers
             return View(track);
         }
 
-       
         public IActionResult CreateTrack()
         {
             return View();
         }
 
-      
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult CreateTrack(Track track)
+        public async Task<IActionResult> CreateTrack([Bind("Id,Name,ProgramId,SupervisorId,IsActive")] Track track)
         {
             if (ModelState.IsValid)
             {
-                AdminRepo.InsertTrack(track);
-                return RedirectToAction(nameof(TrackIndex));
+                try
+                {
+                    await AdminRepo.AddTrack(track);
+                    return RedirectToAction(nameof(TrackIndex));
+                }
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError("", "An error occurred while saving the track. Please try again.");
+                    // Log the exception for debugging purposes
+                    // logger.LogError(ex, "Error occurred while saving track");
+                }
             }
             return View(track);
         }
 
-     
-        public IActionResult EditTrack(int id)
+        public async Task<IActionResult> EditTrack(int? id)
         {
-            var track = AdminRepo.GetTrackById(id);
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var track = await AdminRepo.GetTrackById(id.Value);
             if (track == null)
             {
                 return NotFound();
@@ -380,10 +438,9 @@ namespace Attendance_Management_System.Controllers
             return View(track);
         }
 
-      
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult EditTrack(int id, Track track)
+        public async Task<IActionResult> EditTrack(int id, [Bind("Id,Name,ProgramId,SupervisorId,IsActive")] Track track)
         {
             if (id != track.Id)
             {
@@ -392,16 +449,29 @@ namespace Attendance_Management_System.Controllers
 
             if (ModelState.IsValid)
             {
-                AdminRepo.UpdateTrack(track);
+                try
+                {
+                    await AdminRepo.UpdateTrack(track);
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!await AdminRepo.TrackExists(track.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
                 return RedirectToAction(nameof(TrackIndex));
             }
             return View(track);
         }
 
-      
-       public IActionResult DeleteTrack(int id)
+        public async Task<IActionResult> DeleteTrack(int id)
         {
-            var track = AdminRepo.GetTrackById(id);
+            var track = await AdminRepo.GetTrackById(id);
             if (track == null)
             {
                 return NotFound();
@@ -410,37 +480,33 @@ namespace Attendance_Management_System.Controllers
             return View(track);
         }
 
-        
         [HttpPost, ActionName("DeleteTrack")]
         [ValidateAntiForgeryToken]
-        public IActionResult DeleteTrackConfirmed(int id)
+        public async Task<IActionResult> DeleteTrackConfirmed(int id)
         {
-           var track = AdminRepo.GetTrackById(id);
-          if (track == null)
+            var track = await AdminRepo.GetTrackById(id);
+            if (track == null)
             {
                 return NotFound();
             }
 
-       
-            bool hasStudents = track.Students.Any();
-
+            bool hasStudents = await AdminRepo.TrackHasStudents(id);
             if (hasStudents)
             {
-                
-                TempData["ErrorMessage"] = "Cannot delete the track because it has students.";
+                TempData["DeleteErrorMessage"] = "This track cannot be deleted because it has associated students.";
                 return RedirectToAction(nameof(TrackIndex));
             }
-            else
-            {
-                
-                AdminRepo.DeleteTrack(id);
-                return RedirectToAction(nameof(TrackIndex));
-            }
+
+            track.IsActive = false;
+            await AdminRepo.UpdateTrack(track);
+
+            return RedirectToAction(nameof(TrackIndex));
         }
+
+        #endregion
+
+
     }
-    #endregion
-
-
 }
 
 

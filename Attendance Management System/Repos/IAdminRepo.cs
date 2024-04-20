@@ -16,30 +16,23 @@ namespace Attendance_Management_System.Repos
 
 
         #region track
-        IEnumerable<Track> GetTracks();
-
-     
-        Track GetTrackById(int id);
-
-        
-        void InsertTrack(Track track);
-
-      
-        void UpdateTrack(Track track);
-
-        void DeleteTrack(int id);
+        Task<List<Track>> GetAllTracks();
+        Task<Track> GetTrackById(int id);
+        Task AddTrack(Track track);
+        Task UpdateTrack(Track track);
+        Task DeleteTrack(int id);
+        Task<bool> TrackExists(int id);
+        Task<bool> TrackHasStudents(int trackId);
         #endregion
 
         #region intake
-        void InsertIntake(Intake intake); // C
-
-        IEnumerable<Intake> GetIntakes(); // R
-
-        Intake GetIntakeByID(int IntakeId); // R
-
-        void UpdateIntake(Intake intake); //U
-
-        void DeleteIntake(int IntakeId); //D
+        Task<List<Intake>> GetAllIntakes();
+        Task<Intake> GetIntakeById(int id);
+        Task AddIntake(Intake intake);
+        Task UpdateIntake(Intake intake);
+        Task DeleteIntake(int id);
+        Task<bool> IntakeExists(int id);
+        Task<bool> IntakeHasTracks(int intakeId);
         #endregion
 
 

@@ -1,48 +1,34 @@
 ﻿@model Attendance_Management_System.Models.Track
-@section NavList
-{
 
+@section NavList {
     @Html.Partial("navBar")
-
-
 }
+
 <h2>Edit Track</h2>
 
-<form asp-action="EditTrack" method="post">
+<form asp-action="EditTrack">
     <input type="hidden" asp-for="Id" />
     <div class="form-group">
-        <label asp-for="Name"></label>
+        <label asp-for="Name" class="control-label"></label>
         <input asp-for="Name" class="form-control" />
         <span asp-validation-for="Name" class="text-danger"></span>
     </div>
- 
-
     <div class="form-group">
-        <label asp-for="IsActive"></label>
-        <input asp-for="IsActive" class="form-control" />
-        <span asp-validation-for="IsActive" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <label asp-for="ProgramId"></label>
+        <label asp-for="ProgramId" class="control-label"></label>
         <input asp-for="ProgramId" class="form-control" />
         <span asp-validation-for="ProgramId" class="text-danger"></span>
     </div>
-
     <div class="form-group">
-        <label asp-for="SupervisorId"></label>
+        <label asp-for="SupervisorId" class="control-label"></label>
         <input asp-for="SupervisorId" class="form-control" />
         <span asp-validation-for="SupervisorId" class="text-danger"></span>
     </div>
-
-    <button type="submit" class="btn btn-primary">Save</button>
-    <a asp-action="TrackIndex" class="btn btn-secondary">Back to List</a>
-</form>
-
-@if (ViewBag.EditSuccessMessage != null)
-{
-    <div class="alert alert-success mt-3">
-        @ViewBag.EditSuccessMessage
+    <div class="form-group">
+        <label asp-for="IsActive" class="control-label"></label>
+        <input asp-for="IsActive" class="form-control" />
+        <span asp-validation-for="IsActive" class="text-danger"></span>
     </div>
-}
-
+    <div class="form-group">
+        <input type="submit" value="Save" class="btn btn-primary" />
+    </div>
+</form>

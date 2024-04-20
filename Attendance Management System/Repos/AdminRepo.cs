@@ -71,100 +71,89 @@ namespace Attendance_Management_System.Repos
         #endregion
 
         #region track
-        public void InsertTrack(Track track)
+
+        public async Task<List<Track>> GetAllTracks()
+        {
+            return await db.Tracks.Where(t => t.IsActive).ToListAsync();
+        }
+
+        public async Task<Track> GetTrackById(int id)
+        {
+            return await db.Tracks.FindAsync(id);
+        }
+
+        public async Task AddTrack(Track track)
         {
             db.Tracks.Add(track);
+            await db.SaveChangesAsync();
         }
-        public Track GetTrackById(int id)
+
+        public async Task UpdateTrack(Track track)
         {
-            #region test
-            var trackRes = db.Tracks.FirstOrDefault(tr => tr.Id == id);
-            var programm = db.Programs.FirstOrDefault(p => p.Id == trackRes.ProgramId);
-            var supervisorr = db.Supervisors.FirstOrDefault(i => i.Id == trackRes.SupervisorId);
-            trackRes.Program = programm;
-            trackRes.Supervisor = supervisorr;
-            return trackRes;
-            #endregion
-         //return db.Tracks.Include(track => track.Program).FirstOrDefault(p => p.Id == id);
+            db.Entry(track).State = EntityState.Modified;
+            await db.SaveChangesAsync();
         }
 
-        public IEnumerable<Track> GetTracks()
+        public async Task DeleteTrack(int id)
         {
-            return db.Tracks.Where(t => t.IsActive).ToList();
+            var track = await db.Tracks.FindAsync(id);
+            db.Tracks.Remove(track);
+            await db.SaveChangesAsync();
         }
-        
 
-        public void UpdateTrack(Track track)
+        public async Task<bool> TrackExists(int id)
         {
-            var existingTrack = db.Tracks.FirstOrDefault(t => t.Id == track.Id);
-
-            if (existingTrack != null)
-            {
-
-                existingTrack.Name = track.Name;
-                existingTrack.ProgramId = track.ProgramId;
-                existingTrack.IsActive = track.IsActive;
-                existingTrack.SupervisorId = track.SupervisorId;
-
-
-                 db.SaveChanges();
-            }
+            return await db.Tracks.AnyAsync(t => t.Id == id);
         }
-        public void DeleteTrack(int id)
+
+        public async Task<bool> TrackHasStudents(int trackId)
         {
-            
-            Track track = db.Tracks.FirstOrDefault(p => p.Id == id);
-
-            if (track != null)
-            {
-                track.IsActive = false;
-               db.SaveChanges();
-            }
+            return await db.Students.AnyAsync(s => s.TrackID == trackId);
         }
-
-
-
 
         #endregion
-
-        public void InsertIntake(Intake intake)
+        #region intake
+        public async Task<List<Intake>> GetAllIntakes()
         {
-            db.Intakes.Add(intake);
+            return await db.Intake.ToListAsync();
         }
 
-        public IEnumerable<Intake> GetIntakes()
+        public async Task<Intake> GetIntakeById(int id)
         {
-            return db.Intakes.ToList();
+            return await db.Intake.FindAsync(id);
         }
 
-        public Intake GetIntakeByID(int IntakeId)
+        public async Task AddIntake(Intake intake)
         {
-            return db.Intakes.FirstOrDefault(i => i.Id == IntakeId);
+            db.Intake.Add(intake);
+            await db.SaveChangesAsync();
         }
 
-        public void UpdateIntake(Intake intake)
+        public async Task UpdateIntake(Intake intake)
         {
-            var existingIntake = db.Intakes.FirstOrDefault(i => i.Id == intake.Id);
-
-            if (existingIntake != null)
-            {
-
-                existingIntake.Number = intake.Number;
-                existingIntake.ProgramId = intake.ProgramId;
-                existingIntake.StartDate = intake.StartDate;
-                existingIntake.EndDate = intake.EndDate;
-
-            }
+            db.Entry(intake).State = EntityState.Modified;
+            await db.SaveChangesAsync();
         }
-            
-        
 
-        public void DeleteIntake(int IntakeId)
+        public async Task DeleteIntake(int id)
         {
-            Intake intake = db.Intakes.FirstOrDefault(i => i.Id == IntakeId) ;
-
-            db.Intakes.Remove(intake);
+            var intake = await db.Intake.FindAsync(id);
+            db.Intake.Remove(intake);
+            await db.SaveChangesAsync();
         }
+
+        public async Task<bool> IntakeExists(int id)
+        {
+            return await db.Intake.AnyAsync(i => i.Id == id);
+        }
+
+        public async Task<bool> IntakeHasTracks(int intakeId)
+        {
+            return await db.TrackIntakes.AnyAsync(ti => ti.IntakeId == intakeId);
+        }
+        #endregion
+
+
 
         public IEnumerable<Instructor> GetInstructors()
         {
