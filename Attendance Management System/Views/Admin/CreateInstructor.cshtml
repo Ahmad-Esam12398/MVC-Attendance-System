@@ -1,32 +1,35 @@
 ﻿@model Attendance_Management_System.Models.Instructor
-@section NavList
-{
 
+@section NavList {
     @Html.Partial("navBar")
-
-
 }
+
 <h2>Create Instructor</h2>
-<hr />
-<div class="row">
-    <div class="col-md-6">
-        <form asp-action="CreateInstructor">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="UserName" class="control-label"></label>
-                <input asp-for="UserName" class="form-control" />
-                <span asp-validation-for="UserName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" />
-                <span asp-validation-for="Email" class="text-danger"></span>
-            </div>
-           
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+
+<form asp-action="CreateInstructor" method="post">
+    <!-- Include input fields for all properties -->
+    <div class="form-group">
+        <label asp-for="NationalId" class="control-label"></label>
+        <input asp-for="NationalId" class="form-control" />
+        <span asp-validation-for="NationalId" class="text-danger"></span>
     </div>
-</div>
-<a asp-action="InstructorIndex" class="btn btn-primary">Back to List</a>
+    <div class="form-group">
+        <label asp-for="Password" class="control-label"></label>
+        <input asp-for="Password" class="form-control" />
+        <span asp-validation-for="Password" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Phone" class="control-label"></label>
+        <input asp-for="Phone" class="form-control" />
+        <span asp-validation-for="Phone" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Gender" class="control-label"></label>
+        <input asp-for="Gender" class="form-control" />
+        <span asp-validation-for="Gender" class="text-danger"></span>
+    </div>
+    <!-- Add other input fields as needed -->
+    <div class="form-group">
+        <input type="submit" value="Save" class="btn btn-primary" />
+    </div>
+</form>

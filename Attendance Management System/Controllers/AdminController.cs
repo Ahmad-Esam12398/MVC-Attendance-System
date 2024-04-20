@@ -38,46 +38,53 @@ namespace Attendance_Management_System.Controllers
             return View();
         }
         #region instructor
-        public IActionResult InstructorIndex()
+        public async Task<IActionResult> InstructorIndex()
         {
-            var instructors = AdminRepo.GetInstructors();
+            var instructors = await AdminRepo.GetAllInstructors();
             return View(instructors);
         }
 
-
-        public IActionResult InstructorDetails(int id)
+        public async Task<IActionResult> InstructorDetails(int? id)
         {
-            var instructor = AdminRepo.GetInstructorById(id);
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var instructor = await AdminRepo.GetInstructorById(id.Value);
             if (instructor == null)
             {
                 return NotFound();
             }
+
             return View(instructor);
         }
-
 
         public IActionResult CreateInstructor()
         {
             return View();
         }
 
-
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult CreateInstructor(Instructor instructor)
+        public async Task<IActionResult> CreateInstructor([Bind("Id,NationalId,Password,Phone,Gender")] Instructor instructor)
         {
             if (ModelState.IsValid)
             {
-                AdminRepo.InsertInstructor(instructor);
+                await AdminRepo.AddInstructor(instructor);
                 return RedirectToAction(nameof(InstructorIndex));
             }
             return View(instructor);
         }
 
-
-        public IActionResult EditInstructor(int id)
+        public async Task<IActionResult> EditInstructor(int? id)
         {
-            var instructor = AdminRepo.GetInstructorById(id);
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var instructor = await AdminRepo.GetInstructorById(id.Value);
             if (instructor == null)
             {
                 return NotFound();
@@ -85,10 +92,9 @@ namespace Attendance_Management_System.Controllers
             return View(instructor);
         }
 
-
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult EditInstructor(int id, Instructor instructor)
+        public async Task<IActionResult> EditInstructor(int id, [Bind("Id,NationalId,Password,Phone,Gender")] Instructor instructor)
         {
             if (id != instructor.Id)
             {
@@ -97,17 +103,29 @@ namespace Attendance_Management_System.Controllers
 
             if (ModelState.IsValid)
             {
-                AdminRepo.UpdateInstructor(instructor);
+                try
+                {
+                    await AdminRepo.UpdateInstructor(instructor);
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!await AdminRepo.InstructorExists(instructor.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
                 return RedirectToAction(nameof(InstructorIndex));
             }
-
             return View(instructor);
         }
 
-
-        public IActionResult DeleteInstructor(int id)
+        public async Task<IActionResult> DeleteInstructor(int id)
         {
-            var instructor = AdminRepo.GetInstructorById(id);
+            var instructor = await AdminRepo.GetInstructorById(id);
             if (instructor == null)
             {
                 return NotFound();
@@ -116,17 +134,25 @@ namespace Attendance_Management_System.Controllers
             return View(instructor);
         }
 
-
         [HttpPost, ActionName("DeleteInstructor")]
         [ValidateAntiForgeryToken]
-        public IActionResult DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteInstructorConfirmed(int id)
         {
-            AdminRepo.DeleteInstructor(id);
+            var instructor = await AdminRepo.GetInstructorById(id);
+            if (instructor == null)
+            {
+                return NotFound();
+            }
+
+            
+            await AdminRepo.DeleteInstructor(id);
+
             return RedirectToAction(nameof(InstructorIndex));
         }
-        #endregion
-        #region intake
-        public async Task<IActionResult> IntakeIndex()
+    
+    #endregion
+    #region intake
+    public async Task<IActionResult> IntakeIndex()
         {
             var intakes = await AdminRepo.GetAllIntakes();
             return View(intakes);
@@ -375,13 +401,31 @@ namespace Attendance_Management_System.Controllers
 
 
         #region tracks
-        public async Task<IActionResult> TrackIndex()
+     
+
+public async Task<IActionResult> TrackIndex()
+    {
+        var tracks = await AdminRepo.GetAllTracks();
+
+        // Fetch program names for each track
+        var programIds = tracks.Select(t => t.ProgramId).ToList();
+        var programNames = await AdminRepo.GetProgramNames(programIds);
+
+        // Assign program names to corresponding tracks
+        foreach (var track in tracks)
         {
-            var tracks = await AdminRepo.GetAllTracks();
-            return View(tracks);
+            var programName = programNames.FirstOrDefault(p => p.Key == track.ProgramId).Value;
+            if (programName != null)
+            {
+                track.Program.Name = programName;
+            }
         }
 
-        public async Task<IActionResult> TrackDetails(int? id)
+        return View(tracks);
+    }
+
+
+    public async Task<IActionResult> TrackDetails(int? id)
         {
             if (id == null)
             {

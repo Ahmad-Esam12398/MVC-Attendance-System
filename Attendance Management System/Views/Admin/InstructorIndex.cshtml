@@ -1,19 +1,22 @@
 ﻿@model IEnumerable<Attendance_Management_System.Models.Instructor>
-@section NavList
-{
 
+@section NavList {
     @Html.Partial("navBar")
-
-
 }
-<a asp-action="CreateInstructor" class="btn btn-primary">Create Instructor</a>
+
+<h2>Instructors</h2>
+
+<p>
+    <a asp-action="CreateInstructor">Create New</a>
+</p>
 
 <table class="table">
     <thead>
         <tr>
             <th>ID</th>
-            <th>Username</th>
-            <th>Email</th>
+            <th>National ID</th>
+            <th>Phone</th>
+            <th>Gender</th>
             <th>Actions</th>
         </tr>
     </thead>
@@ -22,8 +25,9 @@
         {
             <tr>
                 <td>@instructor.Id</td>
-                <td>@instructor.UserName</td>
-                <td>@instructor.Email</td>
+                <td>@instructor.NationalId</td>
+                <td>@instructor.Phone</td>
+                <td>@instructor.Gender</td>
                 <td>
                     <a asp-action="InstructorDetails" asp-route-id="@instructor.Id">Details</a> |
                     <a asp-action="EditInstructor" asp-route-id="@instructor.Id">Edit</a> |

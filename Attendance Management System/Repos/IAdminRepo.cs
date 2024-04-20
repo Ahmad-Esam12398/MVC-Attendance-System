@@ -23,6 +23,9 @@ namespace Attendance_Management_System.Repos
         Task DeleteTrack(int id);
         Task<bool> TrackExists(int id);
         Task<bool> TrackHasStudents(int trackId);
+        Task<Dictionary<int, string>> GetProgramNames(List<int> programIds);
+       
+
         #endregion
 
         #region intake
@@ -35,12 +38,14 @@ namespace Attendance_Management_System.Repos
         Task<bool> IntakeHasTracks(int intakeId);
         #endregion
 
-
-        IEnumerable<Instructor> GetInstructors();
-        Instructor GetInstructorById(int id);
-        void InsertInstructor(Instructor instructor);
-        void UpdateInstructor(Instructor instructor);
-        void DeleteInstructor(int id);
+        #region instructor
+        Task<List<Instructor>> GetAllInstructors();
+        Task<Instructor> GetInstructorById(int id);
+        Task AddInstructor(Instructor instructor);
+        Task UpdateInstructor(Instructor instructor);
+        Task DeleteInstructor(int id);
+        Task<bool> InstructorExists(int id);
+        #endregion
 
         User GetCurrentUser();
         Task AddDummy();

@@ -20,10 +20,10 @@
                 @Html.DisplayNameFor(model => model.Name)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ProgramId)
+                Program Name
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.SupervisorId)
+                Supervisor Name
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.IsActive)
@@ -42,10 +42,17 @@
                     @Html.DisplayFor(modelItem => item.Name)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.ProgramId)
+                    @Html.DisplayFor(modelItem => item.Program.Name)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.SupervisorId)
+                    @if (item.Supervisor != null)
+                    {
+                        @Html.DisplayFor(modelItem => item.Supervisor.NationalId)
+                    }
+                    else
+                    {
+                        <text>No Supervisor Assigned</text>
+                    }
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.IsActive)

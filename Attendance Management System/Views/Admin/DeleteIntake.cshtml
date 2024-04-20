@@ -20,8 +20,10 @@
     <dt class="col-sm-2">End Date:</dt>
     <dd class="col-sm-10">@Model.EndDate.ToShortDateString()</dd>
 </dl>
-<form asp-action="DeleteIntake" method="post">
+
+<form id="deleteForm" asp-action="DeleteIntake" method="post">
     <input type="hidden" asp-for="Id" />
-    <input type="submit" value="Delete" class="btn btn-danger" />
-    <a asp-action="IntakeIndex" class="btn btn-primary">Cancel</a>
+
+    <input type="submit" value="Delete" class="btn btn-danger"  /> |
+    <a asp-action="IntakeIndex" class="btn btn-secondary">Back to List</a>
 </form>

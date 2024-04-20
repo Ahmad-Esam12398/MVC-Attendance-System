@@ -76,7 +76,14 @@ namespace Attendance_Management_System.Repos
         {
             return await db.Tracks.Where(t => t.IsActive).ToListAsync();
         }
+        public async Task<Dictionary<int, string>> GetProgramNames(List<int> programIds)
+        {
+            var programNames = await db.Programs
+                .Where(p => programIds.Contains(p.Id))
+                .ToDictionaryAsync(p => p.Id, p => p.Name);
 
+            return programNames;
+        }
         public async Task<Track> GetTrackById(int id)
         {
             return await db.Tracks.FindAsync(id);
@@ -153,50 +160,43 @@ namespace Attendance_Management_System.Repos
         }
         #endregion
 
-
-
-        public IEnumerable<Instructor> GetInstructors()
+        #region instructor
+        public async Task<List<Instructor>> GetAllInstructors()
         {
-            return db.Instructors.ToList();
+            return await db.Instructors.ToListAsync();
         }
 
-        public Instructor GetInstructorById(int id)
+        public async Task<Instructor> GetInstructorById(int id)
         {
-            return db.Instructors.FirstOrDefault(i => i.Id == id);
+            return await db.Instructors.FindAsync(id);
         }
 
-        public void InsertInstructor(Instructor instructor)
+        public async Task AddInstructor(Instructor instructor)
         {
             db.Instructors.Add(instructor);
-            db.SaveChanges();
+            await db.SaveChangesAsync();
         }
 
-        public void UpdateInstructor(Instructor instructor)
+        public async Task UpdateInstructor(Instructor instructor)
         {
-           // db.instructors.Update(instructor);
-         
-            var existingInstructor = db.Instructors.FirstOrDefault(i => i.Id == instructor.Id);
-
-            if (existingInstructor != null)
-            {
-
-                existingInstructor.UserName = instructor.UserName;
-                existingInstructor.Email = instructor.Email;
-                
-
-            }
-            db.SaveChanges();
+            db.Entry(instructor).State = EntityState.Modified;
+            await db.SaveChangesAsync();
         }
 
-        public void DeleteInstructor(int id)
+        public async Task DeleteInstructor(int id)
         {
-            var instructor = db.Instructors.FirstOrDefault(i => i.Id == id);
-            if (instructor != null)
-            {
-                db.Instructors.Remove(instructor);
-                db.SaveChanges();
-            }
+            var instructor = await db.Instructors.FindAsync(id);
+            db.Instructors.Remove(instructor);
+            await db.SaveChangesAsync();
         }
+
+        public async Task<bool> InstructorExists(int id)
+        {
+            return await db.Instructors.AnyAsync(i => i.Id == id);
+        }
+        #endregion
+
+
         public User GetCurrentUser()
         {
             return _userManager.GetUserAsync(_userPrincipal).Result; // Get the current user using the user principal

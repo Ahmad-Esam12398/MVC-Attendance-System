@@ -6,7 +6,7 @@
 
 <h2>Edit Track</h2>
 
-<form asp-action="EditTrack">
+<form asp-action="EditTrack" method="post">
     <input type="hidden" asp-for="Id" />
     <div class="form-group">
         <label asp-for="Name" class="control-label"></label>
@@ -24,9 +24,10 @@
         <span asp-validation-for="SupervisorId" class="text-danger"></span>
     </div>
     <div class="form-group">
-        <label asp-for="IsActive" class="control-label"></label>
-        <input asp-for="IsActive" class="form-control" />
-        <span asp-validation-for="IsActive" class="text-danger"></span>
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" asp-for="IsActive" />
+            <label class="form-check-label" asp-for="IsActive">Is Active</label>
+        </div>
     </div>
     <div class="form-group">
         <input type="submit" value="Save" class="btn btn-primary" />
