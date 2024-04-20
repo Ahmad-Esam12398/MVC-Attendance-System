@@ -75,6 +75,13 @@ namespace Attendance_Management_System.Data
                 }
                 db.SaveChanges();
             }
+            if (!db.Supervisors.Any())
+            {
+                // Insert Id 3 in the Instructor Table Using Raw SQL
+                db.Database.ExecuteSqlRaw("INsert into Instructors (Id) values (3)");
+                // Insert Id 3 and SupTrackId 1 in the Supervisor Table Using Raw SQL
+                db.Database.ExecuteSqlRaw("INsert into Supervisors (Id,SupTrackId) values (3,1)");    
+            }
         }
     }
 }
