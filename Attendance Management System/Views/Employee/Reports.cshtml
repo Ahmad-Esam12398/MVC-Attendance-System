@@ -38,6 +38,12 @@
                 <th>Absence Days Count</th>
                 <th>Absence Days With Perm.</th>
                 <th>Absence Days without Perm.</th>
+                <th>Let</th>
+                <th>5</th>
+                <th>10</th>
+                <th>15</th>
+                <th>20</th>
+                <th>25</th>
                 <th>Degree</th>
             </tr>
         </thead>
@@ -49,8 +55,14 @@
                     <td>@degree.Student.Track.Name</td>
                     <td>@degree.UntilDate</td>
                     <td>@degree.AbscenceDays</td>
-                    <td>@degree.AbsenceWithPermission</td>
-                    <td>@(degree.AbscenceDays - degree.AbsenceWithPermission)</td>
+                    <td>@degree.WithPermission</td>
+                    <td>@(degree.AbscenceDays - degree.WithPermission)</td>
+                    <td>@degree.Let</td>
+                    <td>@degree.Five</td>
+                    <td>@degree.Ten</td>
+                    <td>@degree.Fifteen</td>
+                    <td>@degree.twenty</td>
+                    <td>@degree.TwentFive</td>
                     <td>@degree.AttendanceDegrees</td>
                 </tr>
             }

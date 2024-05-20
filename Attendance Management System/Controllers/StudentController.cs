@@ -1,7 +1,7 @@
 ﻿using Attendance_Management_System.Data;
 using Attendance_Management_System.Dtos;
+using Attendance_Management_System.IRepos;
 using Attendance_Management_System.Models;
-using Attendance_Management_System.Repos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -212,14 +212,11 @@ namespace Attendance_Management_System.Controllers
                 else if (user is Student)
                 {
                     id = StudentRepo.GetCurrentUser().Id;
-
-
                 }
                 else
                 {
                     return RedirectToAction("Index", "Home");
                 }
-            
             StudentRepo.DeletePermission(id, permissionDate);
             return RedirectToAction("Permission", new { id });
         }

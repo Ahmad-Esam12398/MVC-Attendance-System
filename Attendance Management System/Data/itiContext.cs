@@ -10,33 +10,36 @@ namespace Attendance_Management_System.Data
     public class itiContext : IdentityDbContext<User, IdentityRole<int>, int>
     {
         #region DbSets
-        public DbSet<Student> Students { get; set; }
-        public DbSet<Attendance> Attendances { get; set; }
-        public DbSet<AttendanceDegree> AttendanceDegrees { get; set; }
-        public DbSet<Schedule> Schedules { get; set; }
-        public DbSet<ScheduleEvent> ScheduleEvents { get; set; }
-        public DbSet<Track> Tracks { get; set; }
-        public DbSet<Supervisor> Supervisors { get; set; }
-        public DbSet<Instructor> Instructors { get; set; }
+        public virtual DbSet<Student> Students { get; set; }
+        public virtual DbSet<Attendance> Attendances { get; set; }
+        public virtual DbSet<AttendanceDegree> AttendanceDegrees { get; set; }
+        public virtual DbSet<Schedule> Schedules { get; set; }
+        public virtual DbSet<ScheduleEvent> ScheduleEvents { get; set; }
+        public virtual DbSet<Track> Tracks { get; set; }
+        public virtual DbSet<Supervisor> Supervisors { get; set; }
+        public virtual DbSet<Instructor> Instructors { get; set; }
 
-        public DbSet<Intake> Intake { get; set; }
-        public DbSet<ITIProgram> Programs { get; set; }
-        public DbSet<Permission> Permissions { get; set; }
-        public DbSet<TrackIntake> TrackIntakes { get; set; }
-        public DbSet<User> Users { get; set; }
+        public virtual DbSet<Intake> Intake { get; set; }
+        public virtual DbSet<ITIProgram> Programs { get; set; }
+        public virtual DbSet<Permission> Permissions { get; set; }
+        public virtual DbSet<TrackIntake> TrackIntakes { get; set; }
         #endregion
 
         public readonly IConfiguration Configuration;
+        public itiContext()
+        {
+            Configuration.GetConnectionString("DefaultConnection");
+        }
         public itiContext(DbContextOptions<itiContext> options, IConfiguration _configuration) : base(options)
         {
             Configuration = _configuration;
         }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
-            base.OnConfiguring(optionsBuilder);
-        }
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //{
+        //    optionsBuilder.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
+        //    base.OnConfiguring(optionsBuilder);
+        //}
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

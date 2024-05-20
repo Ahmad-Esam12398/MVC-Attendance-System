@@ -1,6 +1,7 @@
 ﻿using Attendance_Management_System.Data;
+using Attendance_Management_System.IRepos;
 using Attendance_Management_System.Models;
-using Attendance_Management_System.ViewData;
+using Attendance_Management_System.ViewModels;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;

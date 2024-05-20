@@ -1,6 +1,4 @@
-﻿
-
-using Attendance_Management_System.Repos;
+﻿using Attendance_Management_System.Repos;
 using Xunit;
 
 namespace TestProject

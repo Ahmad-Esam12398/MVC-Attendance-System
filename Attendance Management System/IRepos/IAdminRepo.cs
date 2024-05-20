@@ -1,6 +1,6 @@
 ﻿using Attendance_Management_System.Models;
 
-namespace Attendance_Management_System.Repos
+namespace Attendance_Management_System.IRepos
 {
     public interface IAdminRepo
     {
@@ -24,7 +24,7 @@ namespace Attendance_Management_System.Repos
         Task<bool> TrackExists(int id);
         Task<bool> TrackHasStudents(int trackId);
         Task<Dictionary<int, string>> GetProgramNames(List<int> programIds);
-       
+
 
         #endregion
 

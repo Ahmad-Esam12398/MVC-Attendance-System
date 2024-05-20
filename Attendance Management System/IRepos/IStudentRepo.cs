@@ -1,11 +1,11 @@
 ﻿using Attendance_Management_System.Models;
-using Attendance_Management_System.ViewData;
+using Attendance_Management_System.ViewModels;
 
-namespace Attendance_Management_System.Repos
+namespace Attendance_Management_System.IRepos
 {
     public interface IStudentRepo
     {
-       Student GetStudentById(int id);
+        Student GetStudentById(int id);
         List<AttendanceViewData> Get_Student_Attendances_By_Id(int StdID);
 
 
@@ -14,13 +14,13 @@ namespace Attendance_Management_System.Repos
 
 
 
-         void CreatePermission(Permission permission);
+        void CreatePermission(Permission permission);
 
-         void UpdatePermission(Permission permission);
+        void UpdatePermission(Permission permission);
 
-         void DeletePermission(int stdID, DateTime permissionDate);
+        void DeletePermission(int stdID, DateTime permissionDate);
 
-         Permission PermissionDetails(int stdID, DateTime permissionDate);
+        Permission PermissionDetails(int stdID, DateTime permissionDate);
 
 
         List<Schedule> getSchedules(int stdID);

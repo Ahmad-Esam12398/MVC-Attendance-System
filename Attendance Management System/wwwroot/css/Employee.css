@@ -41,6 +41,12 @@ div.dt-container div.dt-info {
 .text-primary {
     color: var(--first) !important;
 }
+#mytable > thead > tr th {
+    background-color: var(--first) !important;
+    color: white !important;
+}
+
+
 
 
 

@@ -1,5 +1,7 @@
 ﻿using Attendance_Management_System.Data;
+using Attendance_Management_System.IRepos;
 using Attendance_Management_System.Models;
+using Attendance_Management_System.ViewModels;
 using Microsoft.EntityFrameworkCore;
 
 namespace Attendance_Management_System.Repos
@@ -7,7 +9,7 @@ namespace Attendance_Management_System.Repos
     public class EmployeeRepo : IEmployeeRepo
     {
         itiContext db;
-        int initialAbsenceDegrees = 500;
+        private int initialAbsenceDegrees = 250;
         public Dictionary<int, int> AbsenceDayswithPermission { get; set; }
         public EmployeeRepo(itiContext _db)
         {
@@ -20,8 +22,9 @@ namespace Attendance_Management_System.Repos
         }
         public List<Track> ReadAllTracks()
         {
-            return db.Tracks.Include(t=> t.Program).ToList();
+            return db.Tracks.Where(t=> t.IsActive == true).Include(t=> t.Program).ToList();
         }
+
         public List<Student> ReadTodaysStudents()
         {
             var todayDate = DateTime.Now;
@@ -40,11 +43,11 @@ namespace Attendance_Management_System.Repos
             {
                 return 1;
             }
-            var checkIn = db.Attendances.FirstOrDefault(a => a.StudentId == id && a.Date == DateOnly.FromDateTime(dateTime));
-            var checkOut = db.Attendances.FirstOrDefault(a => a.StudentId == id && a.Date == DateOnly.FromDateTime(dateTime));
+            var checkIn = db.Attendances.FirstOrDefault(a => a.StudentId == id && a.Date == DateOnly.FromDateTime(dateTime))?.Time_in;
+            //var checkOut = db.Attendances.FirstOrDefault(a => a.StudentId == id && a.Date == DateOnly.FromDateTime(dateTime))?.Time_out;
             if (type == "in" && checkIn != null)
                 return 2;
-            if(type == "out" && checkOut == null)
+            if(type == "out" && checkIn == null)
                 return 3;
             if(type == "in")
             {
@@ -68,6 +71,7 @@ namespace Attendance_Management_System.Repos
         }
         public void CalculateAttendanceDegrees()
         {
+            List<Attendance_Report_ViewData> attendanceReportsData = new();
             var students = db.Students.Include(s=> s.AttendanceDegrees).Where(s => s.AttendanceDegrees.Max(ad => ad.UntilDate) != DateOnly.FromDateTime(DateTime.Now)).ToList();
             foreach(var student in students)
             {
@@ -77,60 +81,87 @@ namespace Attendance_Management_System.Repos
                 List<DateOnly> approvedPermissions = db.Permissions.Where(p => p.StudentId == student.Id && p.Status == PermissionStatus.Accepted).Select(p => p.Date).Distinct().ToList();
                 List<DateOnly> absentWithPermissions = absentDates.Intersect(approvedPermissions).Distinct().ToList();
                 List<DateOnly> absentWithoutPermission = absentDates.Except(absentWithPermissions).Distinct().ToList();
-                var attendanceDegree = new AttendanceDegree()
-                {
-                    StudentId = student.Id,
-                    AbscenceDays = absentDates.Count,
-                    AttendanceDegrees = initialAbsenceDegrees 
-                    - CalculateReducedScoreForAbscenceWithoutPermission(absentWithoutPermission.Count) 
-                    - CalculateReducedScoreForAbscenceWithPermission(absentWithPermissions.Count, 3),
-                    AbsenceWithPermission = absentWithPermissions.Count,
-                    UntilDate = DateOnly.FromDateTime(DateTime.Now)
-                };
-                db.AttendanceDegrees.Add(attendanceDegree);
-                db.SaveChanges();
+                AttendanceDegree attDegree = CalculateReducedScoreForAbscenceWithPermission(absentWithPermissions.Count, 3);
+                attDegree.StudentId = student.Id;
+                attDegree.WithoutPermission = absentWithoutPermission.Count;
+                attDegree.WithPermission = absentWithPermissions.Count;
+                attDegree.TwentFive += absentWithoutPermission.Count;
+                attDegree.AbscenceDays = absentDates.Count;
+                attDegree.AttendanceDegrees = initialAbsenceDegrees - attDegree.ReducedDueToAbsenceWithPermission - CalculateReducedScoreForAbscenceWithoutPermission(absentWithoutPermission.Count);
+                attDegree.UntilDate = DateOnly.FromDateTime(DateTime.Now);
+                db.AttendanceDegrees.Add(attDegree);
             }
+            db.SaveChanges();
         }
-        private int  CalculateReducedScoreForAbscenceWithoutPermission(int n)
+        public int  CalculateReducedScoreForAbscenceWithoutPermission(int n)
         {
             return n * 25;
         }
-        private int CalculateReducedScoreForAbscenceWithPermission(int n, int repetitions)
+        public AttendanceDegree CalculateReducedScoreForAbscenceWithPermission(int n, int repetitions)
         {
+            AttendanceDegree report = new();
             int sum = 0;
             if (n > 0)
+            {
                 n -= 1;
-            if (n > 1)
+                report.Let = 1;
                 if (n <= repetitions)
-                    sum += n * 5; 
+                {
+                    sum += n * 5;
+                    report.Five = n;
+                }
                 else
+                {
                     sum += repetitions * 5;
+                    report.Five = repetitions;
+                }
+            }
             if(n > repetitions)
             {
                 if(n <= repetitions * 2)
+                {
                     sum += (n - repetitions) * 10;
+                    report.Ten = n - repetitions;
+                }
                 else
+                {
                     sum += repetitions * 10;
+                    report.Ten = repetitions;
+                }
             }
             if(n > repetitions * 2)
             {
                 if(n <= repetitions * 3)
+                {
                     sum += (n - repetitions * 2) * 15;
+                    report.Fifteen = (n - repetitions * 2);
+                }
                 else
+                {
                     sum += repetitions * 15;
+                    report.Fifteen = repetitions;
+                }
             }
             if(n > repetitions * 3)
             {
                 if(n <= repetitions * 4)
+                {
                     sum += (n - repetitions * 3) * 20;
+                    report.twenty = (n - repetitions * 3);
+                }
                 else
+                {
                     sum += repetitions * 20;
+                    report.twenty = repetitions;
+                }
             }
             if(n > repetitions * 4)
             {
                 sum += (n - repetitions * 4) * 25;
+                report.TwentFive = (n - repetitions * 4);
             }
-            return sum;
+            report.ReducedDueToAbsenceWithPermission = sum;
+            return report;
         }
         public List<AttendanceDegree> ReadAttendanceDegrees()
         {

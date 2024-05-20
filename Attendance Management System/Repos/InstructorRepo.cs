@@ -1,4 +1,5 @@
 ﻿using Attendance_Management_System.Data;
+using Attendance_Management_System.IRepos;
 using Attendance_Management_System.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
