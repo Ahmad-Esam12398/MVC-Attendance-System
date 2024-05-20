@@ -14,6 +14,11 @@ Attendance/Time Tracking System is a web application designed to simplify the pr
 - jQuery
 - Bootstrap
 
+![Screenshot 2024-05-20 103937](https://github.com/Ahmad-Esam12398/MVC-Attendance-System/assets/90632545/893fe34d-f321-41d0-a430-0384a559f035)
+![Screenshot 2024-05-20 103913](https://github.com/Ahmad-Esam12398/MVC-Attendance-System/assets/90632545/84b78e10-53a9-4a55-978c-8c182e948fec)
+![Screenshot 2024-05-20 103732](https://github.com/Ahmad-Esam12398/MVC-Attendance-System/assets/90632545/440d57f0-6f75-491d-ad05-d0403da1dc82)
+![ProjectScreen](https://github.com/Ahmad-Esam12398/MVC-Attendance-System/assets/90632545/f3f2d436-0235-4cb9-90b9-9acb357b3b07)
+
 ## Main Features
 
 1. **Registration**:
