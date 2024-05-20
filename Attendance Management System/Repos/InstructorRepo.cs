@@ -52,10 +52,6 @@ namespace Attendance_Management_System.Repos
 
         public async Task<List<Permission>> GetPendingPermissionsByTrackID(int trackID)
         {
-            // Add Dummy Instructors to the Database if there are no Instructors
-            await AddDummyInstructors();
-            var user = GetCurrentUser();
-            
             RefusePermissionsNotToday();
             return db.Permissions.Include(p => p.Student).Where(p => p.Status == PermissionStatus.Pending && p.Student.TrackID == trackID).ToList();
         }
@@ -65,11 +61,15 @@ namespace Attendance_Management_System.Repos
             return db.Schedules.Where(s => s.TrackId == TrackID).ToList();
         }
 
-        public void AddSchedule(Schedule Schedule)
+        public void AddSchedule(Schedule Schedule, int trackId)
         {
-            Schedule.TrackId = 1;
+            Schedule.TrackId = trackId;
             db.Schedules.Add(Schedule);
             db.SaveChanges();
+        }
+        public int GetTrackIdByInstructorId(int id)
+        {
+            return db.Supervisors.FirstOrDefault(s => s.Id == id).SupTrackId;
         }
 
         public void DeleteSchedule(int id)
@@ -124,6 +124,32 @@ namespace Attendance_Management_System.Repos
             user.Email = student.Email;
             await _userManager.UpdateAsync(user);
         }
+        public List<ScheduleEvent> getSchedulesEventsByScheduleId(int id)
+        {
+            return db.ScheduleEvents.Where(s => s.ScheduleId == id).ToList();
+        }
+        public void AddScheduleEvent(ScheduleEvent Schedule)
+        
+        {
+
+            db.ScheduleEvents.Add(Schedule);
+            db.SaveChanges();
+
+        }
+        public void DeleteScheduleEvent(int id)
+        {             var Schedule = db.ScheduleEvents.Find(id);
+                   db.ScheduleEvents.Remove(Schedule);
+                   db.SaveChanges();
+               }
+        public void UpdateScheduleEvent(ScheduleEvent schedule)
+        {
+            var Schedule = db.ScheduleEvents.FirstOrDefault(s => s.Id == schedule.Id);
+            Schedule.Name = schedule.Name;
+            Schedule.StartTime = schedule.StartTime;
+            Schedule.EndTime = schedule.EndTime;
+            db.SaveChanges();
+        }
+
 
     }
 }
