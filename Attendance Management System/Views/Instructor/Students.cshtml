@@ -111,7 +111,9 @@
         <link rel="stylesheet" href="https://cdn.datatables.net/2.0.3/css/dataTables.dataTables.css" />
     }
 
-
+@section NavList {
+    @Html.Partial("_navButtons")
+}
 
 @*Modal for Add With Add button*@
 <div class="modal fade " id="AddModal" tabindex="-1" aria-labelledby="AddModalLabel" aria-hidden="true">
